@@ -17,11 +17,11 @@ return new class extends Migration
         Schema::create('employee_financial_details', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('user_id');
-            $table->double('basic_salary', 8, 2);
-            $table->json('allowances')->default(new Expression('(JSON_ARRAY())'));
-            $table->json('deductions')->default(new Expression('(JSON_ARRAY())'));
-            $table->double('monthly_salary', 8, 2)->nullable();
-            $table->double('yearly_salary', 8, 2)->nullable();
+            $table->double('basic_salary', 20, 2);
+            $table->json('allowances')->default(new Expression('(JSON_ARRAY())'))->nullable();
+            $table->json('deductions')->default(new Expression('(JSON_ARRAY())'))->nullable();
+            $table->double('monthly_salary', 20, 2)->nullable();
+            $table->double('yearly_salary', 20, 2)->nullable();
             $table->timestamps();
         });
     }

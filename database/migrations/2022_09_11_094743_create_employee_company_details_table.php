@@ -19,9 +19,9 @@ return new class extends Migration
             $table->string('employee_id');
             $table->string('department_id');
             $table->string('designation_id');
-            $table->string('assigned_manager_id');
+            $table->string('assigned_manager_id')->nullable();
             $table->date('doj')->comment('Date of Joining');
-            $table->date('dol')->comment('Date of Leaving');
+            $table->date('dol')->comment('Date of Leaving')->nullable();
             $table->enum('status', ['enable', 'disable'])->default('enable');
             $table->timestamps();
         });

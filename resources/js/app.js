@@ -5,7 +5,7 @@ import { createApp } from 'vue/dist/vue.esm-bundler.js';
 import router from './router/index.js';
 import HeaderComponent from './components/HeaderComponent.vue';
 import RouterComponent from './components/RouterComponent.vue';
-
+import axios from 'axios';
 
 const app = createApp({}); 
 app.use(router);

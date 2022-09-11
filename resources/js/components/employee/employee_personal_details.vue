@@ -1,0 +1,183 @@
+<template>
+  <div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0">Personal Details</h1>
+        </div>
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item">
+              <router-link to="/dashboard">Dashboard</router-link>
+            </li>
+            <li class="breadcrumb-item active">Employee</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="content">
+    <div class="container-fluid">
+      <div class="card card-primary">
+        	<div class="row">
+        		<div class="col-md-6">
+              <div class="card-header">
+                <h3 class="card-title">Personal Details</h3>
+              </div>
+              <div class="card-body">
+                <div class="form-group row">
+                  <label for="name" class="col-sm-3 col-form-label">Name*</label>
+                  <div class="col-sm-9">
+                    <input type="text" v-model="form.name" class="form-control" id="name" placeholder="Enter Full Name"  />
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="father_name" class="col-sm-3 col-form-label">Father Name*</label>
+                  <div class="col-sm-9">
+                    <input type="text" v-model="form.father_name" class="form-control" id="father_name" placeholder="Enter Father Name"  />
+                    
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="dob" class="col-sm-3 col-form-label">Date of Birth*</label>
+                  <div class="col-sm-9">
+                    <input type="date" v-model="form.dob" class="form-control" id="dob" placeholder="Enter Date of Birth"  />
+                    
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="gender" class="col-sm-3 col-form-label">Gender*</label>
+                  <div class="col-sm-9">
+                    <select class="form-control select2" style="width: 100%;" v-model="form.gender" name="gender" id="gender" >
+                      <option value="">Select Gender</option>
+                      <option value="male">Male</option>
+                      <option value="female">Female</option>
+                    </select>
+                    
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="contact_number_1" class="col-sm-3 col-form-label">Contact Number 1</label>
+                  <div class="col-sm-9">
+                    <input type="text" v-model="form.contact_number_1" name="contact_number_1" id="contact_number_1" class="form-control" placeholder="Enter Contact Number 1"  max="10"/>
+                    
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="contact_number_2"  class="col-sm-3 col-form-label">Contact Number 2</label>
+                  <div class="col-sm-9">
+                    <input type="text" v-model="form.contact_number_2" name="contact_number_2" id="contact_number_2" class="form-control" placeholder="Enter Contact Number 2"  max="10" />
+                    
+                  </div>
+                </div> 
+                <div class="form-group row">
+                  <label for="current_address" class="col-sm-3 col-form-label">Current Address</label>
+                  <div class="col-sm-9">
+                    <textarea class="form-control" v-model="form.current_address" name="current_address" id="current_address" placeholder="Enter Current Address" ></textarea>
+                    
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="permanent_address" class="col-sm-3 col-form-label">Permanent Address*</label>
+                  <div class="col-sm-9">
+                    <textarea class="form-control" v-model="form.permanent_address" name="permanent_address" id="permanent_address" placeholder="Enter Permanent Address" ></textarea>
+                    
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="nationality" class="col-sm-3 col-form-label">Nationality*</label>
+                  <div class="col-sm-9">
+                    <select class="form-control select2" v-model="form.nationality" name="nationality" id="nationality" style="width: 100%;" >
+                      <option value="">Select Nationality</option>
+                      <option value="indian">Indian</option>
+                    </select>
+                    
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="maritial_status" class="col-sm-3 col-form-label">Maritial Status*</label>
+                  <div class="col-sm-9">
+                    <select class="form-control select2" v-model="form.maritial_status" name="maritial_status" id="maritial_status" style="width: 100%;" >
+                      <option value="">Select Maritial Status</option>
+                      <option value="married">Married</option>
+                      <option value="single">Single</option>
+                    </select>
+                    
+                  </div>
+                </div>
+                 <!-- <div class="form-group row">
+                  <label for="photo" class="col-sm-3 col-form-label">Photo*</label>
+                  <div class="col-sm-9">
+                    <div class="input-group">
+                      <div class="custom-file">
+                        <input type="file" class="custom-file-input" name="photo" id="photo"  />
+                        <label class="custom-file-label" for="photo">Choose Photo</label>
+                      </div>
+                      
+                    </div>
+                  </div>
+                </div>  -->
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card-header">
+                <h3 class="card-title">Account Login</h3>
+              </div>
+              <div class="card-body">
+                <div class="form-group row">
+                  <label for="email" class="col-sm-3 col-form-label">Email*</label>
+                  <div class="col-sm-9">
+                    <input type="email" v-model="form.email" name="email" id="email" class="form-control"  placeholder="Enter Email"  />
+                    
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="password" class="col-sm-3 col-form-label">Password*</label>
+                  <div class="col-sm-9">
+                    <input type="password" v-model="form.password" name="password" id="password" class="form-control"  placeholder="Enter Password"  />
+                    
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card-footer col-md-12">
+              <button type="submit" @click="addEmployeePersonalDetail" class="btn btn-primary float-sm-right mr-20">Submit</button>
+            </div>
+          </div>
+        
+      </div>
+    </div>
+  </div>
+</template>
+<script setup>
+	import { ref, onMounted , reactive} from 'vue';
+	import { useToastr } from '../../toastr.js';
+	
+	const toastr = useToastr();
+	const form = reactive({
+				name: '',
+				father_name: '',
+				dob: '',
+				gender: '',
+				contact_number_1: '',
+				contact_number_2: '',
+				current_address: '',
+				permanent_address: '',
+				nationality: '',
+				maritial_status: '',
+				email: '',
+				password: '',
+				photo:'',
+	});
+
+	const addEmployeePersonalDetail = () => {
+		axios.post('/api/add-employee-personal-detail',form).then((response) => {
+				Swal.fire('Failed!', 'Something went wrong.', 'warning');
+		});
+	}
+
+	onMounted (() => {
+			toastr.info('Success');
+	});
+
+</script>

@@ -20,3 +20,9 @@ Route::get('/', function () {
 Auth::routes();
 Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard');
 Route::get('{view}',App\Http\Controllers\HomeController::class)->where('view','(.*)');
+
+Route::post('/api/add-employee-personal-detail',[App\Http\Controllers\API\EmployeeControllers::class, 'storeEmployeePersonalDetail']);
+Route::post('/api/add-employee-company-detail',[App\Http\Controllers\API\EmployeeControllers::class, 'storeEmployeeCompanyDetail']);
+Route::post('/api/add-employee-financial-detail',[App\Http\Controllers\API\EmployeeControllers::class, 'storeEmployeeFinancialDetail']);
+Route::post('/api/add-employee-bank-account-detail',[App\Http\Controllers\API\EmployeeControllers::class, 'storeEmployeeBankAccountDetail']);
+Route::post('/api/add-employee-document-detail',[App\Http\Controllers\API\EmployeeControllers::class, 'storeEmployeeDocumentDetail']);
