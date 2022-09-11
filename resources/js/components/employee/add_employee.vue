@@ -740,10 +740,44 @@
 					   <div class="form-group row">
 							<label for="inputEmail3" class="col-sm-3 col-form-label">Date of Birth*</label>
 							<div class="col-sm-9">
-								<input type="text" class="form-control datetimepicker-input" data-target="#reservationdate" />
+								<input type="date" class="form-control" id="inputFName" placeholder="inputFName">
 							</div>
 					   </div>	
-					   
+					   <div class="form-group row">
+							<label for="inputEmail3" class="col-sm-3 col-form-label">Gender*</label>
+							<div class="col-sm-9">
+								<select class="form-control select2" style="width: 100%;">
+									<option value="">Select Gender</option>
+									<option value="male">Male</option>
+									<option value="female">Female</option>
+								</select>
+							</div>
+					   </div>
+					   <div class="form-group row">
+							<label for="inputEmail3" class="col-sm-3 col-form-label">Contact Number 1</label>
+							<div class="col-sm-9">
+								<input type="text" class="form-control" id="inputFName" placeholder="inputFName">
+							</div>
+					   </div>
+					   <div class="form-group row">
+							<label for="inputEmail3" class="col-sm-3 col-form-label">Contact Number 2</label>
+							<div class="col-sm-9">
+								<input type="text" class="form-control" id="inputFName" placeholder="inputFName">
+							</div>
+					   </div>
+					   <div class="form-group row">
+							<label for="inputEmail3" class="col-sm-3 col-form-label">Current Address</label>
+							<div class="col-sm-9">
+								<textarea class="form-control" id="inputFName" placeholder="inputFName"></textarea> 
+							</div>
+					   </div>
+					   <div class="form-group row">
+							<label for="inputEmail3" class="col-sm-3 col-form-label">Permanent Address</label>
+							<div class="col-sm-9">
+								<textarea class="form-control" id="inputFName" placeholder="inputFName"></textarea> 
+							</div>
+					   </div>
+			        </div>
 			        <div class="card-footer">
 			          <button type="submit" class="btn btn-primary">Submit</button>
 			        </div>
