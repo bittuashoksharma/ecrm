@@ -187,11 +187,24 @@ class EmployeeControllers extends Controller
     public function storeEmployeeDocumentDetail(Request $request)
     {
 
-        if(!empty($request->all())){
-           
-           echo "<pre>"; print_r($request->all());die; 
-           
-        }
+         $request->validate([
+               'user_id' => 'required',  
+               'resume_file' => 'required|mimes:jpg,jpeg,png,csv,txt,xlx,xls,pdf|max:2048'
+            ]);
+
+            $uploadDocuments = new EmployeeDocumentsDetail;
+             $uploadDocuments->user_id = $request->input('user_id');
+             if($request->hasFile('resume_file')) {
+                $resume = $request->file('resume_file');
+                $file_name = time().'_resume_'.$resume->getClientOriginalName();
+                $file_path = $request->file('resume_file')->storeAs('employee_documents', $file_name, 'public');
+    
+                $uploadDocuments->document_name = 'resume';
+                $uploadDocuments->upload_file_name = $file_name;
+                
+            } 
+            $uploadDocuments->save();
+            return response()->json(['success'=>'File uploaded successfully.']);
     }
 
 }
