@@ -29,34 +29,35 @@
                   <label for="account_holder_name" class="col-sm-3 col-form-label">Account Holder Name*</label>
                   <div class="col-sm-9">
                     <input type="text" v-model="form.account_holder_name" class="form-control" id="account_holder_name" placeholder="Enter Account Holder Name" />
+                    <div v-if="errors.account_holder_name" class="text-danger">{{ errors.account_holder_name[0] }}</div>
                   </div>
                 </div>
                 <div class="form-group row">
                   <label for="account_number" class="col-sm-3 col-form-label">Account Number*</label>
                   <div class="col-sm-9">
                     <input type="text" v-model="form.account_number" class="form-control" id="account_number" placeholder="Enter Account Number"  />
-                    
+                    <div v-if="errors.account_number" class="text-danger">{{ errors.account_number[0] }}</div>
                   </div>
                 </div>
                 <div class="form-group row">
                   <label for="bank_name" class="col-sm-3 col-form-label">Bank Name*</label>
                   <div class="col-sm-9">
                     <input type="text" v-model="form.bank_name" class="form-control" id="bank_name" placeholder="Enter Bank Name"  />
-                    
+                    <div v-if="errors.bank_name" class="text-danger">{{ errors.bank_name[0] }}</div>
                   </div>
                 </div>
                 <div class="form-group row">
                   <label for="branch" class="col-sm-3 col-form-label">Branch*</label>
                   <div class="col-sm-9">
                     <input type="text" v-model="form.branch" class="form-control" id="branch" placeholder="Enter Branch"  />
-                    
+                    <div v-if="errors.branch" class="text-danger">{{ errors.branch[0] }}</div>
                   </div>
                 </div>
                 <div class="form-group row">
                   <label for="ifsc_code" class="col-sm-3 col-form-label">IFSC Code*</label>
                   <div class="col-sm-9">
                     <input type="text" v-model="form.ifsc_code" class="form-control" id="ifsc_code" placeholder="Enter Bank Name"  />
-                    
+                    <div v-if="errors.ifsc_code" class="text-danger">{{ errors.ifsc_code[0] }}</div>
                   </div>
                 </div>
               </div>
@@ -70,14 +71,14 @@
                   <label for="search_by_email" class="col-sm-3 col-form-label">Search by Email</label>
                   <div class="col-sm-9">
                     <input type="text" v-model="form.search_by_email" name="search_by_email" id="search_by_email" class="form-control"  placeholder="Enter Search Email"  />
-                    
+                    <div v-if="errors.search_by_email" class="text-danger">{{ errors.search_by_email[0] }}</div>
                   </div>
                 </div>
                 <div class="form-group row">
                   <label for="search_by_email" class="col-sm-3 col-form-label">Search by Name</label>
                   <div class="col-sm-9">
                     <input type="text" v-model="form.search_by_name" name="search_by_name" id="search_by_name" class="form-control"  placeholder="Enter Search Name"  />
-                    
+                    <div v-if="errors.search_by_name" class="text-danger">{{ errors.search_by_name[0] }}</div>
                   </div>
                 </div>
               </div>
@@ -94,7 +95,7 @@
 <script setup>
 	import { ref, onMounted , reactive} from 'vue';
 	import { useToastr } from '../../toastr.js';
-	
+	const errors = ref('');
 	const toastr = useToastr();
 	const form = reactive({
 				user_id: '',
@@ -108,10 +109,15 @@
 	});
 
 	const addEmployeeBankAccountDetail = () => {
+    errors.value = '';
 		axios.post('/api/add-employee-bank-account-detail',form).then((response) => {
       window.location = '/employee/documents-detail';
 				//Swal.fire('Failed!', 'Something went wrong.', 'warning');
-		});
+		}).catch((e) => {
+            if (e.response.status === 422) {
+                errors.value = e.response.data.errors;
+            }
+    });
 	}
 
 	onMounted (() => {

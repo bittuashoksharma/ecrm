@@ -29,6 +29,7 @@
                   <label for="basis_salary" class="col-sm-5 col-form-label">Basic Salary*</label>
                   <div class="col-sm-5">
                     <input type="text" v-model="form.basis_salary" class="form-control" id="basis_salary" placeholder="Enter Basic Salary"  />
+                    <div v-if="errors.basis_salary" class="text-danger">{{ errors.basis_salary[0] }}</div>
                   </div>
                 </div>
                 <div class="form-group row">
@@ -37,9 +38,10 @@
                     <option value="1">Allowances 1</option>
                     <option value="2">Allowances 2</option>
                   </select>
+                  <div v-if="errors.allowances" class="text-danger">{{ errors.allowances[0] }}</div>
                   <div class="col-sm-5 offset-md-1">
                     <input type="text" v-model="form.allowances_amount" class="form-control" id="allowances_amount" placeholder="Enter Allowances Amount"  />
-                    
+                    <div v-if="errors.allowances_amount" class="text-danger">{{ errors.allowances_amount[0] }}</div>
                   </div>
                 </div>
                 <div class="form-group row">
@@ -48,22 +50,24 @@
                     <option value="1">Deduction 1</option>
                     <option value="2">Deduction 2</option>
                   </select>
+                  <div v-if="errors.deduction" class="text-danger">{{ errors.deduction[0] }}</div>
                   <div class="col-sm-5 offset-md-1">
                     <input type="text" v-model="form.deduction_amount" class="form-control" id="deduction_amount" placeholder="Enter Deduction Amount" />
+                    <div v-if="errors.deduction_amount" class="text-danger">{{ errors.deduction_amount[0] }}</div>
                   </div>
                 </div>
                 <div class="form-group row">
                   <label for="monthly_salary" class="col-sm-5 col-form-label">Monthly Salary*</label>
                   <div class="col-sm-5">
                     <input type="text" v-model="form.monthly_salary" class="form-control" id="monthly_salary" placeholder="Enter Monthly Salary"  />
-                    
+                    <div v-if="errors.monthly_salary" class="text-danger">{{ errors.monthly_salary[0] }}</div>
                   </div>
                 </div>
                 <div class="form-group row">
                   <label for="yearly_salary" class="col-sm-5 col-form-label">Yearly  Salary*</label>
                   <div class="col-sm-5">
                     <input type="text" v-model="form.yearly_salary" class="form-control" id="yearly_salary" placeholder="Enter Yearly Salary"  />
-                    
+                    <div v-if="errors.yearly_salary" class="text-danger">{{ errors.yearly_salary[0] }}</div>
                   </div>
                 </div>
                 
@@ -81,7 +85,7 @@
 <script setup>
 	import { ref, onMounted , reactive} from 'vue';
 	import { useToastr } from '../../toastr.js';
-	
+	const errors = ref('');
 	const toastr = useToastr();
 	const form = reactive({
 				user_id: '',
@@ -95,10 +99,15 @@
 	});
 
 	const addEmployeeFinancialDetail = () => {
+    errors.value = '';
 		axios.post('/api/add-employee-financial-detail',form).then((response) => {
       window.location = '/employee/bank-account-detail';
 				//Swal.fire('Failed!', 'Something went wrong.', 'warning');
-		});
+		}).catch((e) => {
+          if (e.response.status === 422) {
+              errors.value = e.response.data.errors;
+          }
+    });
 	}
 
 	onMounted (() => {
