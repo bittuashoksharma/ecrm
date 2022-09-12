@@ -61,7 +61,8 @@ class EmployeeControllers extends Controller
 
 
         }
-        return $userData;
+
+        return json_encode(array('code'=>'success','data'=>$userData));
         
     }
 
@@ -85,7 +86,7 @@ class EmployeeControllers extends Controller
             'status' => 'required',
         ]);
 
-        if(!empty($request->all())){
+        if(!empty(request('user_id'))){
             $empCompanyData = EmployeeCompanyDetail::create([
                             'user_id' => (!empty(request('user_id'))?request('user_id'):2),
                             'employee_id' => (!empty(request('employee_id'))?request('employee_id'):''),
@@ -97,8 +98,10 @@ class EmployeeControllers extends Controller
                             'status' => (!empty(request('status'))?request('status'):''),
                             
                         ]);
-
-             return $empCompanyData;
+            return json_encode(array('code'=>'success','data'=>$empCompanyData));
+           
+        }else{
+            return json_encode(array('code'=>'error','message'=>'Something went wrong !! Please try again.'));
         }
     }
 
@@ -116,32 +119,36 @@ class EmployeeControllers extends Controller
             'basis_salary' => 'required',
             'allowances' => 'nullable',
             'allowances_amount' => 'nullable',
-            'deduction' => 'nullable',
-            'deduction_amount' => 'nullable',
+            'deductions' => 'nullable',
+            'deductions_amount' => 'nullable',
             'monthly_salary' => 'required',
             'yearly_salary' => 'required',
         ]);
 
-        if(!empty($request->all())){
+        if(!empty(request('user_id'))){
+
             $allowancesArr = array();
             $deductionArr = array();
             if(!empty(request('allowances'))){
                 $allowancesArr[request('allowances')] = request('allowances_amount');
             }
-            if(!empty(request('deduction'))){
-                $deductionArr[request('deduction')] = request('deduction_amount');
+            if(!empty(request('deductions'))){
+                $deductionArr[request('deductions')] = request('deductions_amount');
             }
             
             $empFinancialData = EmployeeFinancialDetail::create([
                             'user_id' => (!empty(request('user_id'))?request('user_id'):2),
                             'basic_salary' => (!empty(request('basis_salary'))?request('basis_salary'):''),
                             'allowances' => (!empty(request('allowances'))?json_encode($allowancesArr):''),
-                            'deduction' => (!empty(request('deduction'))?json_encode($deductionArr):''),
+                            'deductions' => (!empty(request('deductions'))?json_encode($deductionArr):''),
                             'monthly_salary' => (!empty(request('monthly_salary'))?request('monthly_salary'):''),
                             'yearly_salary' => (!empty(request('yearly_salary'))?request('yearly_salary'):''),
                         ]);
 
-             return $empFinancialData;
+            return json_encode(array('code'=>'success','data'=>$empFinancialData));
+
+        }else{
+            return json_encode(array('code'=>'error','message'=>'Something went wrong !! Please try again.'));
         }
     }
         
@@ -163,7 +170,7 @@ class EmployeeControllers extends Controller
             'ifsc_code' => 'required',
         ]);
 
-        if(!empty($request->all())){
+        if(!empty(request('user_id'))){
             
             $empBankData = EmployeeBankDetail::create([
                             'user_id' => (!empty(request('user_id'))?request('user_id'):2),
@@ -174,7 +181,10 @@ class EmployeeControllers extends Controller
                             'ifsc_code' => (!empty(request('ifsc_code'))?request('ifsc_code'):''),
                         ]);
 
-             return $empBankData;
+             return json_encode(array('code'=>'success','data'=>$empBankData));
+
+        }else{
+            return json_encode(array('code'=>'error','message'=>'Something went wrong !! Please try again.'));
         }
     }
 
@@ -187,10 +197,14 @@ class EmployeeControllers extends Controller
     public function storeEmployeeDocumentDetail(Request $request)
     {
 
-        if(!empty($request->all())){
+        if(!empty(request('user_id'))){
            
            echo "<pre>"; print_r($request->all());die; 
            
+            return json_encode(array('code'=>'success','data'=>$request->all()));
+
+        }else{
+            return json_encode(array('code'=>'error','message'=>'Something went wrong !! Please try again.'));
         }
     }
 

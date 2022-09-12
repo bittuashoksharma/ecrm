@@ -104,14 +104,19 @@
 	
 	const toastr = useToastr();
 	const form = reactive({
-				user_id: '',
+				user_id: localStorage.getItem('emp_id'),
 				dropbox_url: '',
 				google_drive: '',
   });
 
 	const addEmployeeDocumentDetail = () => {
 		axios.post('/api/add-employee-document-detail',form).then((response) => {
-				Swal.fire('Failed!', 'Something went wrong.', 'warning');
+        if(response.data.code == 'success'){
+            localStorage.removeItem('emp_id');
+        }else{
+           console.log(response.data.message);
+           Swal.fire('Failed!', response.data.message, 'warning');
+        }
 		});
 	}
 

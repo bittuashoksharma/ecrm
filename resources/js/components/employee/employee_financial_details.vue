@@ -45,15 +45,15 @@
                   </div>
                 </div>
                 <div class="form-group row">
-                  <select class="form-control select2 col-sm-4" style="width: 100%;" v-model="form.deduction" name="deduction" id="deduction" >
+                  <select class="form-control select2 col-sm-4" style="width: 100%;" v-model="form.deductions" name="deductions" id="deductions" >
                     <option value="">Select Deduction</option>
                     <option value="1">Deduction 1</option>
                     <option value="2">Deduction 2</option>
                   </select>
-                  <div v-if="errors.deduction" class="text-danger">{{ errors.deduction[0] }}</div>
+                  <div v-if="errors.deductions" class="text-danger">{{ errors.deductions[0] }}</div>
                   <div class="col-sm-5 offset-md-1">
-                    <input type="text" v-model="form.deduction_amount" class="form-control" id="deduction_amount" placeholder="Enter Deduction Amount" />
-                    <div v-if="errors.deduction_amount" class="text-danger">{{ errors.deduction_amount[0] }}</div>
+                    <input type="text" v-model="form.deductions_amount" class="form-control" id="deductions_amount" placeholder="Enter Deduction Amount" />
+                    <div v-if="errors.deductions_amount" class="text-danger">{{ errors.deductions_amount[0] }}</div>
                   </div>
                 </div>
                 <div class="form-group row">
@@ -88,12 +88,12 @@
 	const errors = ref('');
 	const toastr = useToastr();
 	const form = reactive({
-				user_id: '',
+				user_id: localStorage.getItem('emp_id'),
         basis_salary: '',
         allowances: '',
         allowances_amount: '',
-        deduction: '',
-        deduction_amount: '',
+        deductions: '',
+        deductions_amount: '',
         monthly_salary: '',
         yearly_salary: '',
 	});
@@ -101,8 +101,13 @@
 	const addEmployeeFinancialDetail = () => {
     errors.value = '';
 		axios.post('/api/add-employee-financial-detail',form).then((response) => {
-      window.location = '/employee/bank-account-detail';
-				//Swal.fire('Failed!', 'Something went wrong.', 'warning');
+          if(response.data.code == 'success'){
+              window.location = '/employee/bank-account-detail';
+          }else{
+             console.log(response.data.message);
+             Swal.fire('Failed!', response.data.message, 'warning');
+          }
+          
 		}).catch((e) => {
           if (e.response.status === 422) {
               errors.value = e.response.data.errors;
