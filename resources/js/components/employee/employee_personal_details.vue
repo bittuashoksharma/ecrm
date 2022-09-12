@@ -18,9 +18,10 @@
   </div>
   <div class="content">
     <div class="container-fluid">
+      <form action="#" class="form newtopic" @submit.prevent="submit">
       <div class="card card-primary">
-        	<div class="row">
-        		<div class="col-md-6">
+          <div class="row">
+            <div class="col-md-6">
               <div class="card-header">
                 <h3 class="card-title">Personal Details</h3>
               </div>
@@ -146,38 +147,43 @@
           </div>
         
       </div>
+      </form>
     </div>
   </div>
 </template>
 <script setup>
-	import { ref, onMounted , reactive} from 'vue';
-	import { useToastr } from '../../toastr.js';
-	
-	const toastr = useToastr();
-	const form = reactive({
-				name: '',
-				father_name: '',
-				dob: '',
-				gender: '',
-				contact_number_1: '',
-				contact_number_2: '',
-				current_address: '',
-				permanent_address: '',
-				nationality: '',
-				maritial_status: '',
-				email: '',
-				password: '',
-				photo:'',
-	});
+  import { ref, onMounted , reactive} from 'vue';
+  import { useToastr } from '../../toastr.js';
+  
+  const toastr = useToastr();
+  const form = reactive({
+        name: '',
+        father_name: '',
+        dob: '',
+        gender: '',
+        contact_number_1: '',
+        contact_number_2: '',
+        current_address: '',
+        permanent_address: '',
+        nationality: '',
+        maritial_status: '',
+        email: '',
+        password: '',
+        photo:'',
+  });
 
-	const addEmployeePersonalDetail = () => {
-		axios.post('/api/add-employee-personal-detail',form).then((response) => {
-				Swal.fire('Failed!', 'Something went wrong.', 'warning');
-		});
-	}
+  const addEmployeePersonalDetail = () => {
+    axios.post('/api/add-employee-personal-detail',form).then((response) => {
+       window.location = '/employee/company-detail';
+      // console.log('data inserted')
+      //   Swal.fire('Failed!', 'Something went wrong.', 'warning');
+    }).catch((error) => {
+          console.log(error.AxiosError);
+        });
+  }
 
-	onMounted (() => {
-			toastr.info('Success');
-	});
+  onMounted (() => {
+      toastr.info('Success');
+  });
 
 </script>

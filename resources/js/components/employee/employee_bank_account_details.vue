@@ -109,7 +109,8 @@
 
 	const addEmployeeBankAccountDetail = () => {
 		axios.post('/api/add-employee-bank-account-detail',form).then((response) => {
-				Swal.fire('Failed!', 'Something went wrong.', 'warning');
+      window.location = '/employee/documents-detail';
+				//Swal.fire('Failed!', 'Something went wrong.', 'warning');
 		});
 	}
 

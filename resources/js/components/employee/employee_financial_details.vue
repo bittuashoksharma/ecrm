@@ -96,7 +96,8 @@
 
 	const addEmployeeFinancialDetail = () => {
 		axios.post('/api/add-employee-financial-detail',form).then((response) => {
-				Swal.fire('Failed!', 'Something went wrong.', 'warning');
+      window.location = '/employee/bank-account-detail';
+				//Swal.fire('Failed!', 'Something went wrong.', 'warning');
 		});
 	}
 

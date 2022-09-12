@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->integer('role_id')->after('id');
+            $table->integer('role_id')->after('id')->default(3);
             $table->string('phone_number')->after('email')->nullable();
         });
     }

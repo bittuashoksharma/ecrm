@@ -107,7 +107,8 @@
 
 	const addEmployeeCompanyDetail = () => {
 		axios.post('/api/add-employee-company-detail',form).then((response) => {
-				Swal.fire('Failed!', 'Something went wrong.', 'warning');
+      window.location = '/employee/financial-detail';
+				//Swal.fire('Failed!', 'Something went wrong.', 'warning');
 		});
 	}
 

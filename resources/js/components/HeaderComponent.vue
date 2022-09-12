@@ -7,11 +7,11 @@
             </a>
           </li>
           <li class="nav-item d-none d-sm-inline-block">
-            <router-link to="/dashboard" class="nav-link">Home</router-link>
+            <router-link to="/dashboard" class="nav-link">Dashboard</router-link>
           </li>
-          <li class="nav-item d-none d-sm-inline-block">
+          <!-- <li class="nav-item d-none d-sm-inline-block">
             <router-link to="/dashboard" class="nav-link">Contact</router-link>
-          </li>
+          </li> -->
         </ul>
         <!-- <ul class="navbar-nav ml-auto">
           <li class="nav-item">
