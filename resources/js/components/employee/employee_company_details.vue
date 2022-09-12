@@ -29,7 +29,7 @@
                   <label for="employee_id" class="col-sm-3 col-form-label">Employee ID*</label>
                   <div class="col-sm-9">
                     <input type="text" v-model="form.employee_id" class="form-control" id="employee_id" placeholder="Enter Employee ID"  />
-                    
+                    <div v-if="errors.employee_id" class="text-danger">{{ errors.employee_id[0] }}</div>
                   </div>
                 </div>
                 <div class="form-group row">
@@ -40,7 +40,7 @@
                       <option value="1">Accounts</option>
                       <option value="2">Exam Dept</option>
                     </select>
-                    
+                    <div v-if="errors.department" class="text-danger">{{ errors.department[0] }}</div>
                   </div>
                 </div>
                 <div class="form-group row">
@@ -51,20 +51,21 @@
                       <option value="1">Manager</option>
                       <option value="2">Supervisor</option>
                     </select>
+                    <div v-if="errors.designation" class="text-danger">{{ errors.designation[0] }}</div>
                   </div>
                 </div>
                 <div class="form-group row">
                   <label for="doj" class="col-sm-3 col-form-label">Date of Joining*</label>
                   <div class="col-sm-9">
                     <input type="date" v-model="form.doj" class="form-control" id="doj" placeholder="Enter Date of Joining"  />
-                    
+                    <div v-if="errors.doj" class="text-danger">{{ errors.doj[0] }}</div>
                   </div>
                 </div>
                 <div class="form-group row">
                   <label for="dol" class="col-sm-3 col-form-label">Date of Leaving</label>
                   <div class="col-sm-9">
                     <input type="date" v-model="form.dol" class="form-control" id="dol" placeholder="Enter Date of Leaving"  />
-                    
+                    <div v-if="errors.dol" class="text-danger">{{ errors.dol[0] }}</div>
                   </div>
                 </div>
                 <div class="form-group row">
@@ -75,7 +76,7 @@
                       <option value="enable">Active</option>
                       <option value="disable">Inactive</option>
                     </select>
-                    
+                    <div v-if="errors.status" class="text-danger">{{ errors.status[0] }}</div>
                   </div>
                 </div>
                </div>
@@ -92,7 +93,7 @@
 <script setup>
 	import { ref, onMounted , reactive} from 'vue';
 	import { useToastr } from '../../toastr.js';
-	
+	const errors = ref('');
 	const toastr = useToastr();
 	const form = reactive({
         user_id: '',
@@ -106,10 +107,15 @@
 	});
 
 	const addEmployeeCompanyDetail = () => {
+    errors.value = '';
 		axios.post('/api/add-employee-company-detail',form).then((response) => {
       window.location = '/employee/financial-detail';
 				//Swal.fire('Failed!', 'Something went wrong.', 'warning');
-		});
+		}).catch((e) => {
+            if (e.response.status === 422) {
+                errors.value = e.response.data.errors;
+            }
+    });
 	}
 
 	onMounted (() => {

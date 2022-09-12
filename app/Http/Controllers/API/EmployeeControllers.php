@@ -24,17 +24,17 @@ class EmployeeControllers extends Controller
 
         $validated = $request->validate([
             'name' => 'required|max:255',
-            'father_name' => 'required',
-            'dob' => 'required',
+            'father_name' => 'required|max:255',
+            'dob' => 'required|date',
             'gender' => 'required',
-            'contact_number_1' => 'required',
-            'contact_number_2' => 'nullable',
+            'contact_number_1' => 'required|numeric',
+            'contact_number_2' => 'nullable|numeric',
             'current_address' => 'nullable',
             'permanent_address' => 'required',
             'nationality' => 'required',
             'maritial_status' => 'required',
-            'email' => 'required',
-            'password' => 'required',
+            'email' => 'required|unique:users|max:255|email',
+            'password' => 'required|min:8',
             'photo' => 'nullable',
         ]);
 
