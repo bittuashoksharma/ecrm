@@ -11,6 +11,7 @@ use App\Models\EmployeeCompanyDetail;
 use App\Models\EmployeeFinancialDetail;
 use App\Models\EmployeeBankDetail;
 use App\Models\EmployeeDocumentsDetail;
+use App\Models\EmployeeAdditionalDetail;
 class EmployeeControllers extends Controller
 {
     /**
@@ -21,8 +22,8 @@ class EmployeeControllers extends Controller
      */
     public function storeEmployeePersonalDetail(Request $request)
     {
-
-        $validated = $request->validate([
+        
+        $validator = Validator::make($request->all(),[
             'name' => 'required|max:255',
             'father_name' => 'required|max:255',
             'dob' => 'required|date',
@@ -35,9 +36,16 @@ class EmployeeControllers extends Controller
             'maritial_status' => 'required',
             'email' => 'required|unique:users|max:255|email',
             'password' => 'required|min:8',
-            'photo' => 'nullable',
+            'photo' => 'required|mimes:jpg,jpeg,png,csv,txt,xlx,xls,pdf',
         ]);
 
+        if ($validator->fails()) {
+
+          $validationError = [];
+          $validationErrors = $validator->errors();
+          return json_encode(array('code'=>'error_validate','errors'=>$validator->errors()));
+          
+        }
         $userData = User::create([
                         'name' => request('name'),
                         'email' => request('email'),
@@ -61,6 +69,17 @@ class EmployeeControllers extends Controller
 
 
         }
+        if($request->hasFile('photo') && !empty($userData->id)) {
+                $uploadDocuments = new EmployeeDocumentsDetail;
+                $profilePic = $request->file('photo');
+                $file_name = time().'_profilepic_'.$profilePic->getClientOriginalName();
+                $file_path = $request->file('photo')->storeAs('profile_pics', $file_name, 'public');
+                $uploadDocuments->user_id = $userData->id;
+                $uploadDocuments->document_name = 'profile_pic';
+                $uploadDocuments->upload_file_name = $file_name; 
+                $uploadDocuments->save();
+            }
+            $this->checkAndUpdateEmpFormStep(request('user_id'), 1);
 
         return json_encode(array('code'=>'success','data'=>$userData));
         
@@ -74,9 +93,8 @@ class EmployeeControllers extends Controller
      */
     public function storeEmployeeCompanyDetail(Request $request)
     {
-
-        $validated = $request->validate([
-            'user_id' => 'nullable',
+        $validator = Validator::make($request->all(),[
+            'user_id' => 'required',
             'employee_id' => 'required',
             'department' => 'required',
             'designation' => 'required',
@@ -86,6 +104,14 @@ class EmployeeControllers extends Controller
             'status' => 'required',
         ]);
 
+        if ($validator->fails()) {
+
+          $validationError = [];
+          $validationErrors = $validator->errors();
+          return json_encode(array('code'=>'error_validate','errors'=>$validator->errors()));
+          
+        }
+        
         if(!empty(request('user_id'))){
             $empCompanyData = EmployeeCompanyDetail::create([
                             'user_id' => (!empty(request('user_id'))?request('user_id'):2),
@@ -98,6 +124,7 @@ class EmployeeControllers extends Controller
                             'status' => (!empty(request('status'))?request('status'):''),
                             
                         ]);
+            $this->checkAndUpdateEmpFormStep(request('user_id'), 2);
             return json_encode(array('code'=>'success','data'=>$empCompanyData));
            
         }else{
@@ -114,8 +141,8 @@ class EmployeeControllers extends Controller
     public function storeEmployeeFinancialDetail(Request $request)
     {
 
-        $validated = $request->validate([
-            'user_id' => 'nullable',
+        $validator = Validator::make($request->all(),[
+            'user_id' => 'required',
             'basis_salary' => 'required',
             'allowances' => 'nullable',
             'allowances_amount' => 'nullable',
@@ -125,6 +152,14 @@ class EmployeeControllers extends Controller
             'yearly_salary' => 'required',
         ]);
 
+        if ($validator->fails()) {
+
+          $validationError = [];
+          $validationErrors = $validator->errors();
+          return json_encode(array('code'=>'error_validate','errors'=>$validator->errors()));
+          
+        }
+        
         if(!empty(request('user_id'))){
 
             $allowancesArr = array();
@@ -144,6 +179,7 @@ class EmployeeControllers extends Controller
                             'monthly_salary' => (!empty(request('monthly_salary'))?request('monthly_salary'):''),
                             'yearly_salary' => (!empty(request('yearly_salary'))?request('yearly_salary'):''),
                         ]);
+            $this->checkAndUpdateEmpFormStep(request('user_id'), 3);
 
             return json_encode(array('code'=>'success','data'=>$empFinancialData));
 
@@ -161,8 +197,8 @@ class EmployeeControllers extends Controller
     public function storeEmployeeBankAccountDetail(Request $request)
     {
 
-        $validated = $request->validate([
-            'user_id' => 'nullable',
+        $validator = Validator::make($request->all(),[
+            'user_id' => 'required',
             'account_holder_name' => 'required',
             'account_number' => 'required',
             'bank_name' => 'required',
@@ -170,6 +206,14 @@ class EmployeeControllers extends Controller
             'ifsc_code' => 'required',
         ]);
 
+        if ($validator->fails()) {
+
+          $validationError = [];
+          $validationErrors = $validator->errors();
+          return json_encode(array('code'=>'error_validate','errors'=>$validator->errors()));
+          
+        }
+        
         if(!empty(request('user_id'))){
             
             $empBankData = EmployeeBankDetail::create([
@@ -180,6 +224,7 @@ class EmployeeControllers extends Controller
                             'branch' => (!empty(request('bank_name'))?request('branch'):''),
                             'ifsc_code' => (!empty(request('ifsc_code'))?request('ifsc_code'):''),
                         ]);
+            $this->checkAndUpdateEmpFormStep(request('user_id'), 4);
 
              return json_encode(array('code'=>'success','data'=>$empBankData));
 
@@ -196,60 +241,99 @@ class EmployeeControllers extends Controller
      */
     public function storeEmployeeDocumentDetail(Request $request)
     {
-         $request->validate([
-               'user_id' => 'required',  
-               'resume_file' => 'mimes:jpg,jpeg,png,csv,txt,xlx,xls,pdf',
-               'offer_letter' => 'mimes:jpg,jpeg,png,csv,txt,xlx,xls,pdf',
-               'joining_letter' => 'mimes:jpg,jpeg,png,csv,txt,xlx,xls,pdf',
-               'agreement' => 'mimes:jpg,jpeg,png,csv,txt,xlx,xls,pdf',
-               // 'dropbox_url' => 'required',
-               // 'google_drive' => 'required'
-            ]);
 
-           
-             
+        $validator = Validator::make($request->all(),[
+             'user_id' => 'required',  
+             'resume_file' => 'mimes:jpg,jpeg,png,csv,txt,xlx,xls,pdf',
+             'offer_letter' => 'mimes:jpg,jpeg,png,csv,txt,xlx,xls,pdf',
+             'joining_letter' => 'mimes:jpg,jpeg,png,csv,txt,xlx,xls,pdf',
+             'agreement' => 'mimes:jpg,jpeg,png,csv,txt,xlx,xls,pdf',
+             'dropbox_url' => 'nullable',
+             'google_drive' => 'nullable'
+        ]);
 
-             if($request->hasFile('resume_file')) {
-                $uploadDocuments = new EmployeeDocumentsDetail;
-                $resume = $request->file('resume_file');
-                $file_name = time().'_resume_'.$resume->getClientOriginalName();
-                $file_path = $request->file('resume_file')->storeAs('employee_documents', $file_name, 'public');
-                $uploadDocuments->user_id = $request->input('user_id');
-                $uploadDocuments->document_name = 'resume';
-                $uploadDocuments->upload_file_name = $file_name; 
-                $uploadDocuments->save();
-            } 
-            if($request->hasFile('offer_letter')) {
-                 $uploadDocuments = new EmployeeDocumentsDetail;
-                $resume = $request->file('offer_letter');
-                $file_name = time().'_resume_'.$resume->getClientOriginalName();
-                $file_path = $request->file('offer_letter')->storeAs('employee_documents', $file_name, 'public');
-                $uploadDocuments->user_id = $request->input('user_id');
-                $uploadDocuments->document_name = 'offer_letter';
-                $uploadDocuments->upload_file_name = $file_name;
-                $uploadDocuments->save(); 
-            } 
-            if($request->hasFile('joining_letter')) {
-                 $uploadDocuments = new EmployeeDocumentsDetail;
-                $resume = $request->file('joining_letter');
-                $file_name = time().'_resume_'.$resume->getClientOriginalName();
-                $file_path = $request->file('joining_letter')->storeAs('employee_documents', $file_name, 'public');
-                $uploadDocuments->user_id = $request->input('user_id'); 
-                $uploadDocuments->document_name = 'joining_letter';
-                $uploadDocuments->upload_file_name = $file_name; 
-                $uploadDocuments->save();
-            } 
-            if($request->hasFile('agreement')) {
-                 $uploadDocuments = new EmployeeDocumentsDetail;
-                $resume = $request->file('agreement');
-                $file_name = time().'_resume_'.$resume->getClientOriginalName();
-                $file_path = $request->file('agreement')->storeAs('employee_documents', $file_name, 'public');
-                $uploadDocuments->user_id = $request->input('user_id');
-                $uploadDocuments->document_name = 'agreement';
-                $uploadDocuments->upload_file_name = $file_name; 
-                $uploadDocuments->save();
-            } 
-            return response()->json(['success'=>'File uploaded successfully.']);
+        if ($validator->fails()) {
+
+          $validationError = [];
+          $validationErrors = $validator->errors();
+          return json_encode(array('code'=>'error_validate','errors'=>$validator->errors()));
+          
+        }
+         
+        $userID = $request->input('user_id');
+
+         if($request->hasFile('resume_file')) {
+            $uploadDocuments = new EmployeeDocumentsDetail;
+            $resume = $request->file('resume_file');
+            $file_name = time().'_resume_'.$resume->getClientOriginalName();
+            $file_path = $request->file('resume_file')->storeAs('employee_documents', $file_name, 'public');
+            $uploadDocuments->user_id = $userID;
+            $uploadDocuments->document_name = 'resume';
+            $uploadDocuments->upload_file_name = $file_name; 
+            $uploadDocuments->save();
+        } 
+        if($request->hasFile('offer_letter')) {
+             $uploadDocuments = new EmployeeDocumentsDetail;
+            $resume = $request->file('offer_letter');
+            $file_name = time().'_resume_'.$resume->getClientOriginalName();
+            $file_path = $request->file('offer_letter')->storeAs('employee_documents', $file_name, 'public');
+            $uploadDocuments->user_id = $userID;
+            $uploadDocuments->document_name = 'offer_letter';
+            $uploadDocuments->upload_file_name = $file_name;
+            $uploadDocuments->save(); 
+        } 
+        if($request->hasFile('joining_letter')) {
+             $uploadDocuments = new EmployeeDocumentsDetail;
+            $resume = $request->file('joining_letter');
+            $file_name = time().'_resume_'.$resume->getClientOriginalName();
+            $file_path = $request->file('joining_letter')->storeAs('employee_documents', $file_name, 'public');
+            $uploadDocuments->user_id = $userID; 
+            $uploadDocuments->document_name = 'joining_letter';
+            $uploadDocuments->upload_file_name = $file_name; 
+            $uploadDocuments->save();
+        } 
+        if($request->hasFile('agreement')) {
+             $uploadDocuments = new EmployeeDocumentsDetail;
+            $resume = $request->file('agreement');
+            $file_name = time().'_resume_'.$resume->getClientOriginalName();
+            $file_path = $request->file('agreement')->storeAs('employee_documents', $file_name, 'public');
+            $uploadDocuments->user_id = $userID;
+            $uploadDocuments->document_name = 'agreement';
+            $uploadDocuments->upload_file_name = $file_name; 
+            $uploadDocuments->save();
+        } 
+        //check if user is already exist
+
+        EmployeeAdditionalDetail::updateOrCreate([
+             'user_id' => $userID,
+        ],
+        [
+            'dropbox_url' => (!empty(request('dropbox_url'))?request('dropbox_url'):''),
+            'google_drive' => (!empty(request('google_drive'))?request('google_drive'):''),
+        ]);
+
+        $this->checkAndUpdateEmpFormStep($userID,5);
+
+        return response()->json(['success'=>'File uploaded successfully.']);
+    }
+
+    /**
+     * Check Step value for employee form.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function checkAndUpdateEmpFormStep($userId,$stepVal){
+        if(!empty($userId) && !empty($stepVal)){
+            $employeeAdditionalData = EmployeeAdditionalDetail::where('user_id', $userId)->first();
+            if (empty($employeeAdditionalData) || (!empty($employeeAdditionalData) && ($employeeAdditionalData->step_completed < $stepVal))){
+                 EmployeeAdditionalDetail::updateOrCreate([
+                    'user_id' => $userId,
+                 ],[
+                    'step_completed' => $stepVal,
+                 ]);
+            }
+        }
     }
 
 }
