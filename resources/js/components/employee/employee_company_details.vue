@@ -96,9 +96,9 @@
 	const errors = ref('');
 	const toastr = useToastr();
 	const form = reactive({
-        user_id: '',
+        user_id: localStorage.getItem('emp_id'),
         assigned_manager: '',
-        employee_id: '',
+        employee_id: 'EMP000'+localStorage.getItem('emp_id'),
         department: '',
         designation: '',
         doj: '',
@@ -109,8 +109,13 @@
 	const addEmployeeCompanyDetail = () => {
     errors.value = '';
 		axios.post('/api/add-employee-company-detail',form).then((response) => {
-      window.location = '/employee/financial-detail';
-				//Swal.fire('Failed!', 'Something went wrong.', 'warning');
+          if(response.data.code == 'success'){
+              window.location = '/employee/financial-detail';
+          }else{
+             console.log(response.data.message);
+             Swal.fire('Failed!', response.data.message, 'warning');
+          }
+    		  
 		}).catch((e) => {
             if (e.response.status === 422) {
                 errors.value = e.response.data.errors;

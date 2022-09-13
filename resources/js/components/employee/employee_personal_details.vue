@@ -18,7 +18,7 @@
   </div>
   <div class="content">
     <div class="container-fluid">
-      <form action="#" class="form newtopic" @submit.prevent="submit">
+      <form action="javascript:void(0)" class="form newtopic" @submit.prevent="submit">
       <div class="card card-primary">
           <div class="row">
           	<div class="col-md-6">
@@ -177,11 +177,17 @@
   const addEmployeePersonalDetail = () => {
 	  	errors.value = '';
 	    axios.post('/api/add-employee-personal-detail',form).then((response) => {
-	       window.location = '/employee/company-detail';
-	      // console.log('data inserted')
-	      //   Swal.fire('Failed!', 'Something went wrong.', 'warning');
+	    		if(response.data.code == 'success'){
+	    				localStorage.setItem("emp_id", JSON.stringify(response.data.data.id));
+	    				window.location = '/employee/company-detail';
+	    				//this.$router.push('/employee/company-detail'); 
+	    		}else{
+             console.log(response.data.message);
+             Swal.fire('Failed!', response.data.message, 'warning');
+          }
+	    		
 	    }).catch((e) => {
-	    			if (e.response.status === 422) {
+	    			if ((e.response.status != '') && (e.response.status === 422)) {
 	               errors.value = e.response.data.errors;
 	          }
 	    });
