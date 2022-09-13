@@ -21,6 +21,22 @@
       <div class="card card-primary">
         <form @submit="formSubmit" method="post" enctype="multipart/form-data">
         	<div class="row">
+            <div class="progress-panel col-md-12">
+                <ul id="progressbar">
+                    <router-link to="/employee/personal-detail"><li class="personal_detail active"><strong>Personal Detail</strong></li></router-link>
+
+                    <router-link to="/employee/company-detail"><li class="company_detail active"><strong>Company Detail</strong></li></router-link>
+
+                    <router-link to="/employee/financial-detail"><li class="financial_detail active"><strong>Financial Detail</strong></li></router-link>
+
+                    <router-link to="/employee/bank-account-detail"><li class="bank_detail active"><strong>Bank Detail</strong></li></router-link>
+                    
+                    <router-link to="/employee/documents-detail"><li class="document_detail active"><strong>Document Detail</strong></li></router-link>
+                </ul>
+                <div class="progress">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+            </div>
         		<div class="col-md-8">
               <div class="card-header">
                 <h3 class="card-title">Document Details</h3>
@@ -93,9 +109,11 @@
                 
               </div>
             </div>
-            <div class="card-footer col-md-12">
-              <button type="submit" @click="addEmployeeDocumentDetail" class="btn btn-primary float-sm-right mr-20">Submit</button>
+            <div class="card-footer col-md-12 ">
+              <button type="submit" @click="addEmployeeDocumentDetail" class="btn btn-primary float-sm-right mr-10">Submit</button>
+              <button type="button" @click="goPreviousStepForm" class="btn btn-primary mr-20 float-right mr-10">Previous</button>
             </div>
+            
           </div>
         </form>
       </div>
@@ -119,6 +137,9 @@
             };
         },
         methods: {
+            goPreviousStepForm() {
+                 window.location = '/employee/bank-account-detail';
+            },
             onChangeResumeFile(e) {
                 this.documentFieldsData.resume_file = e.target.files[0];
             },
