@@ -1,19 +1,20 @@
 <template>
 <nav class="main-header navbar navbar-expand navbar-white navbar-light py-3">
-<small class="text-success h6 font-weight-bold my-1 ml-2">We Provide Best Payroll and Admin Solutions</small>
-       <!-- <ul class="navbar-nav">
+
+        <ul class="navbar-nav">
           <li class="nav-item">
-            <a class="nav-link" data-widget="pushmenu" href="#" role="button">
+            <a class="nav-link px-2" data-widget="pushmenu" href="#" role="button">
               <i class="fas fa-bars"></i>
             </a>
           </li>
-          <li class="nav-item d-none d-sm-inline-block">
+         <!-- <li class="nav-item d-none d-sm-inline-block">
             <router-link to="/dashboard" class="nav-link">Dashboard</router-link>
           </li>
           <li class="nav-item d-none d-sm-inline-block">
             <router-link to="/dashboard" class="nav-link">Contact</router-link>
-          </li> 
-        </ul>-->
+          </li> -->
+        </ul>
+        <small class="text-success h6 font-weight-bold my-1 ml-2">We Provide Best Payroll and Admin Solutions</small>
        <ul class="navbar-nav ml-auto">
         
          

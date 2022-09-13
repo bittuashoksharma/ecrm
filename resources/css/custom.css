@@ -7,7 +7,8 @@
 #progressbar {
     margin-bottom: 30px;
     overflow: hidden;
-    color: lightgrey
+    color: lightgrey;
+    padding-left: 0;
 }
 
 #progressbar .active {
@@ -107,4 +108,28 @@
 
 .progress-bar {
     background-color: #009ef7;
+}
+#progressbar li.onProgress:before, #progressbar li.onProgress:after {
+    background: #ffc107;
+}
+.progress {
+    height: 0;
+}
+label:not(.form-check-label):not(.custom-file-label) {
+    font-weight: 400;
+}
+.form-container {
+    border: 1px solid #eff2f5!important;
+    margin: 20px;
+}
+.custom-file-label.col-form-label-sm {
+    padding-top: .25rem !important;
+    padding-bottom: .25rem !important;
+    font-size: .875rem !important;
+    height: calc(1.5em + .75rem + 0px) !important;
+}
+.card-footer {
+    padding: .75rem 1.25rem;
+    background-color: transparent!important;
+    border-top: none!important;
 }
