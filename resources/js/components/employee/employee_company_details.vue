@@ -3,7 +3,7 @@
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-sm-6">
-          <h1 class="m-0">Company Details</h1>
+          <!-- <h1 class="m-0">Company Details</h1> -->
         </div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
@@ -16,10 +16,27 @@
       </div>
     </div>
   </div>
+  
   <div class="content">
     <div class="container-fluid">
       <div class="card card-primary">
         	<div class="row">
+            <div class="progress-panel col-md-12">
+                <ul id="progressbar">
+                    <router-link to="/employee/personal-detail"><li class="personal_detail active"><strong>Personal Detail</strong></li></router-link>
+
+                    <router-link to="/employee/company-detail"><li class="company_detail active"><strong>Company Detail</strong></li></router-link>
+
+                    <router-link to="/employee/financial-detail"><li class="financial_detail"><strong>Financial Detail</strong></li></router-link>
+
+                    <router-link to="/employee/bank-account-detail"><li class="bank_detail"><strong>Bank Detail</strong></li></router-link>
+                    
+                    <router-link to="/employee/documents-detail"><li class="document_detail"><strong>Document Detail</strong></li></router-link>
+                </ul>
+                <div class="progress">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+            </div>
         		<div class="col-md-8">
               <div class="card-header">
                 <h3 class="card-title">Company Details</h3>
@@ -81,8 +98,9 @@
                 </div>
                </div>
             </div>
-            <div class="card-footer col-md-12">
-              <button type="submit" @click="addEmployeeCompanyDetail" class="btn btn-primary float-sm-right mr-20">Submit</button>
+            <div class="card-footer col-md-12 ">
+              <button type="submit" @click="addEmployeeCompanyDetail" class="btn btn-primary float-sm-right mr-10">Submit & Continue</button>
+              <button type="button" @click="goPreviousStepForm" class="btn btn-primary mr-20 float-right mr-10">Previous</button>
             </div>
           </div>
         
@@ -105,21 +123,23 @@
         dol: '',
         status: '',
 	});
-
+  const goPreviousStepForm = () => {
+       window.location = '/employee/personal-detail';
+  }
 	const addEmployeeCompanyDetail = () => {
     errors.value = '';
 		axios.post('/api/add-employee-company-detail',form).then((response) => {
           if(response.data.code == 'success'){
               window.location = '/employee/financial-detail';
+          }else if(response.data.code == 'error_validate'){
+                errors.value = response.data.errors;
           }else{
              console.log(response.data.message);
              Swal.fire('Failed!', response.data.message, 'warning');
           }
     		  
 		}).catch((e) => {
-            if (e.response.status === 422) {
-                errors.value = e.response.data.errors;
-            }
+          console.log(e);
     });
 	}
 

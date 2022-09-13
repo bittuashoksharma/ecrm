@@ -3,7 +3,7 @@
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-sm-6">
-          <h1 class="m-0">Personal Details</h1>
+          <!-- <h1 class="m-0">Personal Details</h1> -->
         </div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
@@ -16,11 +16,28 @@
       </div>
     </div>
   </div>
+
   <div class="content">
     <div class="container-fluid">
       <form action="javascript:void(0)" class="form newtopic" @submit.prevent="submit">
       <div class="card card-primary">
           <div class="row">
+            <div class="progress-panel col-md-12">
+                <ul id="progressbar">
+                    <router-link to="/employee/personal-detail"><li class="personal_detail active"><strong>Personal Detail</strong></li></router-link>
+
+                    <router-link to="/employee/company-detail"><li class="company_detail"><strong>Company Detail</strong></li></router-link>
+
+                    <router-link to="/employee/financial-detail"><li class="financial_detail"><strong>Financial Detail</strong></li></router-link>
+
+                    <router-link to="/employee/bank-account-detail"><li class="bank_detail"><strong>Bank Detail</strong></li></router-link>
+                    
+                    <router-link to="/employee/documents-detail"><li class="document_detail"><strong>Document Detail</strong></li></router-link>
+                </ul>
+                <div class="progress">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+            </div>
           	<div class="col-md-6">
               <div class="card-header">
                 <h3 class="card-title">Personal Details</h3>
@@ -61,14 +78,14 @@
                 <div class="form-group row">
                   <label for="contact_number_1" class="col-sm-3 col-form-label">Contact Number 1</label>
                   <div class="col-sm-9">
-                    <input type="text" v-model="form.contact_number_1" name="contact_number_1" id="contact_number_1" class="form-control" placeholder="Enter Contact Number 1"  max="10"/>
+                    <input type="text" v-model="form.contact_number_1" name="contact_number_1" id="contact_number_1" class="form-control" placeholder="Enter Contact Number 1"  maxlength="10"/>
                     <div v-if="errors.contact_number_1" class="text-danger">{{ errors.contact_number_1[0] }}</div>
                   </div>
                 </div>
                 <div class="form-group row">
                   <label for="contact_number_2"  class="col-sm-3 col-form-label">Contact Number 2</label>
                   <div class="col-sm-9">
-                    <input type="text" v-model="form.contact_number_2" name="contact_number_2" id="contact_number_2" class="form-control" placeholder="Enter Contact Number 2"  max="10" />
+                    <input type="text" v-model="form.contact_number_2" name="contact_number_2" id="contact_number_2" class="form-control" placeholder="Enter Contact Number 2"  maxlength="10" />
                     <div v-if="errors.contact_number_2" class="text-danger">{{ errors.contact_number_2[0] }}</div>
                   </div>
                 </div> 
@@ -107,19 +124,20 @@
                     <div v-if="errors.nationality" class="text-danger">{{ errors.nationality[0] }}</div>
                   </div>
                 </div>
-                 <!-- <div class="form-group row">
+                 <div class="form-group row">
                   <label for="photo" class="col-sm-3 col-form-label">Photo*</label>
                   <div class="col-sm-9">
                     <div class="input-group">
                       <div class="custom-file">
-                        <input type="file" class="custom-file-input" name="photo" id="photo"  />
+                        <input type="file" class="custom-file-input" name="photo" id="photo" v-on:change="onChangeProfilePicFile"/>
                         <label class="custom-file-label" for="photo">Choose Photo</label>
                       </div>
                       
                     </div>
+                    <div v-if="errors.photo" class="text-danger">{{ errors.photo[0] }}</div>
                   </div>
-                  <div v-if="errors.photo" class="text-danger">{{ errors.photo[0] }}</div>
-                </div>  -->
+                  
+                </div> 
               </div>
             </div>
             <div class="col-md-6">
@@ -144,7 +162,7 @@
               </div>
             </div>
             <div class="card-footer col-md-12">
-              <button type="submit" @click="addEmployeePersonalDetail" class="btn btn-primary float-sm-right mr-20">Submit</button>
+              <button type="submit" @click="addEmployeePersonalDetail" class="btn btn-primary float-sm-right mr-20">Next</button>
             </div>
           </div>
         
@@ -173,23 +191,40 @@
         password: '',
         photo:'',
   });
-
+const onChangeProfilePicFile = (e)=>{
+  form.photo = e.target.files[0];
+}
   const addEmployeePersonalDetail = () => {
+      let formData = new FormData();
+      formData.append('name', form.name);
+      formData.append('father_name', form.father_name);
+      formData.append('dob', form.dob);
+      formData.append('gender', form.gender);
+      formData.append('contact_number_1', form.contact_number_1);
+      formData.append('contact_number_2', form.contact_number_2);
+      formData.append('current_address', form.current_address);
+      formData.append('permanent_address', form.permanent_address);
+      formData.append('nationality', form.nationality);
+      formData.append('maritial_status', form.maritial_status);
+      formData.append('email', form.email);
+      formData.append('password', form.password);
+      formData.append('photo', form.photo);
 	  	errors.value = '';
-	    axios.post('/api/add-employee-personal-detail',form).then((response) => {
+	    axios.post('/api/add-employee-personal-detail',formData).then((response) => {
 	    		if(response.data.code == 'success'){
 	    				localStorage.setItem("emp_id", JSON.stringify(response.data.data.id));
-	    				window.location = '/employee/company-detail';
+	    				//window.location = '/employee/company-detail';
 	    				//this.$router.push('/employee/company-detail'); 
-	    		}else{
+          }else if(response.data.code == 'error_validate'){
+                errors.value = response.data.errors;
+          }else{
              console.log(response.data.message);
-             Swal.fire('Failed!', response.data.message, 'warning');
+             //Swal.fire('Failed!', response.data.message, 'warning');
           }
 	    		
 	    }).catch((e) => {
-	    			if ((e.response.status != '') && (e.response.status === 422)) {
-	               errors.value = e.response.data.errors;
-	          }
+	    			console.log(e);
+            // Swal.fire('Failed!','Something went wrong.', 'warning');
 	    });
   }
 
