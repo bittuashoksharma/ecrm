@@ -41,7 +41,7 @@
             </li>
           </ul> 
           </nav>
-        </div>
+        </div> 
       </aside>
       <div class="content-wrapper">
         <router-view></router-view>

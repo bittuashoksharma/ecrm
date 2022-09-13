@@ -16,7 +16,7 @@
         </ul>-->
        <ul class="navbar-nav ml-auto">
         
-         
+        
           <li class="nav-item dropdown">
       <a class="nav-item nav-link dropdown-toggle mr-md-2 p-0" href="#" id="bd-versions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
        <div class="image"><img src="images/profile_img.jpg" width="40" class="img-circle elevation-1" alt="User Image"></div>
