@@ -12,11 +12,11 @@
     <div class="wrapper" id="app">
         <header-component></header-component>
       
-      <aside class="main-sidebar sidebar-dark-primary elevation-4">
-        <router-link to="/dashboard" class="brand-link">
+      <aside class="main-sidebar sidebar-dark-primary shadow-sm ">
+        <router-link to="/dashboard" class="brand-link bg-white py-2">
           <!-- <img src="https://adminlte.io/themes/v3/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8"> -->
-          <img src="{{asset('/images/new_logo.png')}}" alt="AdminLTE Logo" class=" brand-image img-circle elevation-3 " style="opacity: .8">
-          <span class="brand-text font-weight-light">ECRM</span>
+          <img src="{{asset('/images/new_logo.png')}}" alt="AdminLTE Logo" class=" img-fluid " width="104" style="opacity: .8">
+          
         </router-link>
         <div class="sidebar">
           <div class="user-panel mt-3 pb-3 mb-3 d-flex">
@@ -41,7 +41,7 @@
             </li>
           </ul> 
           </nav>
-        </div>
+        </div> 
       </aside>
       <div class="content-wrapper">
         <router-view></router-view>
@@ -57,6 +57,6 @@
         <strong>Copyright &copy; 2022 <a href="#">ECRM</a>. </strong> All rights reserved.
       </footer>
     </div>
-    
+
   </body>
 </html>
