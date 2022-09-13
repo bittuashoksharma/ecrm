@@ -98,7 +98,7 @@
 	const errors = ref('');
 	const toastr = useToastr();
 	const form = reactive({
-				user_id: '',
+				user_id: localStorage.getItem('emp_id'),
 				account_holder_name: '',
         account_number: '',
         bank_name: '',
@@ -111,9 +111,13 @@
 	const addEmployeeBankAccountDetail = () => {
     errors.value = '';
 		axios.post('/api/add-employee-bank-account-detail',form).then((response) => {
-      window.location = '/employee/documents-detail';
-				//Swal.fire('Failed!', 'Something went wrong.', 'warning');
-		}).catch((e) => {
+          if(response.data.code == 'success'){
+              window.location = '/employee/documents-detail';
+          }else{
+             console.log(response.data.message);
+             Swal.fire('Failed!', response.data.message, 'warning');
+          }
+    }).catch((e) => {
             if (e.response.status === 422) {
                 errors.value = e.response.data.errors;
             }
