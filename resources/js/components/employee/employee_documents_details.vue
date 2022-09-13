@@ -19,6 +19,7 @@
   <div class="content">
     <div class="container-fluid">
       <div class="card card-primary">
+        <form @submit="formSubmit" method="post" enctype="multipart/form-data">
         	<div class="row">
         		<div class="col-md-8">
               <div class="card-header">
@@ -26,12 +27,15 @@
               </div>
               <div class="card-body">
                 <div class="form-group row">
+                  
                   <label for="resume" class="col-sm-3 col-form-label">Resume</label>
                   <div class="col-sm-9">
                     <div class="input-group">
                       <div class="custom-file">
-                        <input type="file" class="custom-file-input" name="resume" id="resume"  />
+                        
+                        <input type="file" class="custom-file-input" v-on:change="onChangeResumeFile"  />
                         <label class="custom-file-label" for="resume">Choose File</label>
+                        
                       </div>
                       
                     </div>
@@ -42,7 +46,7 @@
                   <div class="col-sm-9">
                     <div class="input-group">
                       <div class="custom-file">
-                        <input type="file" class="custom-file-input" name="offer_letter" id="offer_letter"  />
+                        <input type="file" class="custom-file-input" name="offer_letter" id="offer_letter"  v-on:change="onChangeOfferLetterFile"   />
                         <label class="custom-file-label" for="offer_letter">Choose File</label>
                       </div>
                       
@@ -54,7 +58,7 @@
                   <div class="col-sm-9">
                     <div class="input-group">
                       <div class="custom-file">
-                        <input type="file" class="custom-file-input" name="joining_letter" id="joining_letter"  />
+                        <input type="file" class="custom-file-input" name="joining_letter" id="joining_letter"  v-on:change="onChangeJoiningLetterFile" />
                         <label class="custom-file-label" for="joining_letter">Choose File</label>
                       </div>
                       
@@ -66,7 +70,7 @@
                   <div class="col-sm-9">
                     <div class="input-group">
                       <div class="custom-file">
-                        <input type="file" class="custom-file-input" name="agreement" id="agreement"  />
+                        <input type="file" class="custom-file-input" name="agreement" id="agreement"   v-on:change="onChangeAgreementFile"/>
                         <label class="custom-file-label" for="agreement">Choose File</label>
                       </div>
                       
@@ -76,13 +80,13 @@
                 <div class="form-group row">
                   <label for="name" class="col-sm-3 col-form-label">Dropbox URL</label>
                   <div class="col-sm-9">
-                    <input type="text" v-model="form.dropbox_url" class="form-control" id="dropbox_url" placeholder="Enter Dropbox URL"  />
+                    <input type="text" v-model="documentFieldsData.dropbox_url" class="form-control" id="dropbox_url" placeholder="Enter Dropbox URL"  />
                   </div>
                 </div>
                 <div class="form-group row">
                   <label for="name" class="col-sm-3 col-form-label">Google Drive</label>
                   <div class="col-sm-9">
-                    <input type="text" v-model="form.google_drive" class="form-control" id="google_drive" placeholder="Enter Google Drive"  />
+                    <input type="text" v-model="documentFieldsData.google_drive" class="form-control" id="google_drive" placeholder="Enter Google Drive"  />
                   </div>
                 </div>
                 
@@ -93,35 +97,64 @@
               <button type="submit" @click="addEmployeeDocumentDetail" class="btn btn-primary float-sm-right mr-20">Submit</button>
             </div>
           </div>
-        
+        </form>
       </div>
     </div>
   </div>
 </template>
-<script setup>
-	import { ref, onMounted , reactive} from 'vue';
-	import { useToastr } from '../../toastr.js';
-	
-	const toastr = useToastr();
-	const form = reactive({
-				user_id: localStorage.getItem('emp_id'),
-				dropbox_url: '',
-				google_drive: '',
-  });
 
-	const addEmployeeDocumentDetail = () => {
-		axios.post('/api/add-employee-document-detail',form).then((response) => {
-        if(response.data.code == 'success'){
-            localStorage.removeItem('emp_id');
-        }else{
-           console.log(response.data.message);
-           Swal.fire('Failed!', response.data.message, 'warning');
+<script>
+  export default {
+        data() {
+            return {
+              documentFieldsData : {
+                 'user_id' : 12,
+                 'resume_file' : '',
+                 'offer_letter' : '',
+                 'joining_letter' : '',
+                 'agreement' : '',
+                 'dropbox_url' : '',
+                 'google_drive' : ''
+              }
+            };
+        },
+        methods: {
+            onChangeResumeFile(e) {
+                this.documentFieldsData.resume_file = e.target.files[0];
+            },
+            onChangeOfferLetterFile(e){
+              this.documentFieldsData.offer_letter = e.target.files[0];
+            },
+            onChangeJoiningLetterFile(e){
+              this.documentFieldsData.joining_letter = e.target.files[0];
+            },
+            onChangeAgreementFile(e){
+              this.documentFieldsData.agreement = e.target.files[0];
+            },
+            formSubmit(e) {
+                e.preventDefault();
+                let existingObj = this.documentFieldsData;
+                const config = {
+                    headers: {
+                        'content-type': 'multipart/form-data'
+                    }
+                }
+                let data = new FormData();
+                data.append('resume_file', this.documentFieldsData.resume_file);
+                data.append('offer_letter', this.documentFieldsData.offer_letter);
+                data.append('joining_letter', this.documentFieldsData.joining_letter);
+                data.append('agreement', this.documentFieldsData.agreement);
+                data.append('dropbox_url', this.documentFieldsData.dropbox_url);
+                data.append('google_drive', this.documentFieldsData.google_drive);
+                data.append('user_id', this.documentFieldsData.user_id);
+                axios.post('/api/add-employee-document-detail', data, config)
+                    .then(function (res) {
+                        existingObj.success = res.data.success;
+                    })
+                    .catch(function (err) {
+                        existingObj.output = err;
+                    });
+            }
         }
-		});
-	}
-
-	onMounted (() => {
-			toastr.info('Success');
-	});
-
+    }
 </script>
