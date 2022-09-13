@@ -189,21 +189,57 @@ class EmployeeControllers extends Controller
 
          $request->validate([
                'user_id' => 'required',  
-               'resume_file' => 'required|mimes:jpg,jpeg,png,csv,txt,xlx,xls,pdf|max:2048'
+               'resume_file' => 'mimes:jpg,jpeg,png,csv,txt,xlx,xls,pdf',
+               'offer_letter' => 'mimes:jpg,jpeg,png,csv,txt,xlx,xls,pdf',
+               'joining_letter' => 'mimes:jpg,jpeg,png,csv,txt,xlx,xls,pdf',
+               'agreement' => 'mimes:jpg,jpeg,png,csv,txt,xlx,xls,pdf',
+               // 'dropbox_url' => 'required',
+               // 'google_drive' => 'required'
             ]);
 
-            $uploadDocuments = new EmployeeDocumentsDetail;
-             $uploadDocuments->user_id = $request->input('user_id');
+           
+             
+
              if($request->hasFile('resume_file')) {
+                $uploadDocuments = new EmployeeDocumentsDetail;
                 $resume = $request->file('resume_file');
                 $file_name = time().'_resume_'.$resume->getClientOriginalName();
                 $file_path = $request->file('resume_file')->storeAs('employee_documents', $file_name, 'public');
-    
+                $uploadDocuments->user_id = $request->input('user_id');
                 $uploadDocuments->document_name = 'resume';
-                $uploadDocuments->upload_file_name = $file_name;
-                
+                $uploadDocuments->upload_file_name = $file_name; 
+                $uploadDocuments->save();
             } 
-            $uploadDocuments->save();
+            if($request->hasFile('offer_letter')) {
+                 $uploadDocuments = new EmployeeDocumentsDetail;
+                $resume = $request->file('offer_letter');
+                $file_name = time().'_resume_'.$resume->getClientOriginalName();
+                $file_path = $request->file('offer_letter')->storeAs('employee_documents', $file_name, 'public');
+                $uploadDocuments->user_id = $request->input('user_id');
+                $uploadDocuments->document_name = 'offer_letter';
+                $uploadDocuments->upload_file_name = $file_name;
+                $uploadDocuments->save(); 
+            } 
+            if($request->hasFile('joining_letter')) {
+                 $uploadDocuments = new EmployeeDocumentsDetail;
+                $resume = $request->file('joining_letter');
+                $file_name = time().'_resume_'.$resume->getClientOriginalName();
+                $file_path = $request->file('joining_letter')->storeAs('employee_documents', $file_name, 'public');
+                $uploadDocuments->user_id = $request->input('user_id'); 
+                $uploadDocuments->document_name = 'joining_letter';
+                $uploadDocuments->upload_file_name = $file_name; 
+                $uploadDocuments->save();
+            } 
+            if($request->hasFile('agreement')) {
+                 $uploadDocuments = new EmployeeDocumentsDetail;
+                $resume = $request->file('agreement');
+                $file_name = time().'_resume_'.$resume->getClientOriginalName();
+                $file_path = $request->file('agreement')->storeAs('employee_documents', $file_name, 'public');
+                $uploadDocuments->user_id = $request->input('user_id');
+                $uploadDocuments->document_name = 'agreement';
+                $uploadDocuments->upload_file_name = $file_name; 
+                $uploadDocuments->save();
+            } 
             return response()->json(['success'=>'File uploaded successfully.']);
     }
 
