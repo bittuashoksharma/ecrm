@@ -133,3 +133,6 @@ label:not(.form-check-label):not(.custom-file-label) {
     background-color: transparent!important;
     border-top: none!important;
 }
+.title_decoration{
+    color: #007bff!important;
+}

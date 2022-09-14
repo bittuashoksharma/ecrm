@@ -26,7 +26,7 @@
         		<div class="col-md-6">
             	<div class="form-container">
               <div class="card-header">
-                <h3 class="card-title">Document Details</h3>
+                <h2 class="card-title title_decoration">Document Details</h2>
               </div>
               <div class="card-body">
                 <div class="form-group row">
