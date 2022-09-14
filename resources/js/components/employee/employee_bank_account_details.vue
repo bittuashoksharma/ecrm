@@ -24,7 +24,7 @@
                 <ul id="progressbar">
                     <router-link to="/employee/personal-detail"><li class="personal_detail active"><strong>Personal Detail</strong></li></router-link>
 
-                    <router-link to="/employee/company-detail"><li class="company_detail active"><strong>Company Detail</strong></li></router-link>
+                    <router-link to="/employee/company-detail"><li class="company_detail onProgress"><strong>Company Detail</strong></li></router-link>
 
                     <router-link to="/employee/financial-detail"><li class="financial_detail active"><strong>Financial Detail</strong></li></router-link>
 
@@ -36,69 +36,73 @@
                     <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
                 </div>
             </div>
-        		<div class="col-md-6">
+            <div class="col-md-6">
+        		<div class="form-container">
               <div class="card-header">
                 <h3 class="card-title">Bank Account Details</h3>
               </div>
               <div class="card-body">
                 <div class="form-group row">
-                  <label for="account_holder_name" class="col-sm-3 col-form-label">Account Holder Name*</label>
-                  <div class="col-sm-9">
-                    <input type="text" v-model="form.account_holder_name" class="form-control" id="account_holder_name" placeholder="Enter Account Holder Name" />
+                  <label for="account_holder_name" class="col-sm-4 col-form-label col-form-label-sm">Account Holder Name*</label>
+                  <div class="col-sm-8">
+                    <input type="text" v-model="form.account_holder_name" class="form-control form-control-sm" id="account_holder_name" placeholder="Enter Account Holder Name" />
                     <div v-if="errors.account_holder_name" class="text-danger">{{ errors.account_holder_name[0] }}</div>
                   </div>
                 </div>
                 <div class="form-group row">
-                  <label for="account_number" class="col-sm-3 col-form-label">Account Number*</label>
-                  <div class="col-sm-9">
-                    <input type="text" v-model="form.account_number" class="form-control" id="account_number" placeholder="Enter Account Number"  />
+                  <label for="account_number" class="col-sm-4 col-form-label col-form-label-sm">Account Number*</label>
+                  <div class="col-sm-8">
+                    <input type="text" v-model="form.account_number" class="form-control form-control-sm" id="account_number" placeholder="Enter Account Number"  />
                     <div v-if="errors.account_number" class="text-danger">{{ errors.account_number[0] }}</div>
                   </div>
                 </div>
                 <div class="form-group row">
-                  <label for="bank_name" class="col-sm-3 col-form-label">Bank Name*</label>
-                  <div class="col-sm-9">
-                    <input type="text" v-model="form.bank_name" class="form-control" id="bank_name" placeholder="Enter Bank Name"  />
+                  <label for="bank_name" class="col-sm-4 col-form-label col-form-label-sm">Bank Name*</label>
+                  <div class="col-sm-8">
+                    <input type="text" v-model="form.bank_name" class="form-control form-control-sm" id="bank_name" placeholder="Enter Bank Name"  />
                     <div v-if="errors.bank_name" class="text-danger">{{ errors.bank_name[0] }}</div>
                   </div>
                 </div>
                 <div class="form-group row">
-                  <label for="branch" class="col-sm-3 col-form-label">Branch*</label>
-                  <div class="col-sm-9">
-                    <input type="text" v-model="form.branch" class="form-control" id="branch" placeholder="Enter Branch"  />
+                  <label for="branch" class="col-sm-4 col-form-label col-form-label-sm">Branch*</label>
+                  <div class="col-sm-8">
+                    <input type="text" v-model="form.branch" class="form-control form-control-sm" id="branch" placeholder="Enter Branch"  />
                     <div v-if="errors.branch" class="text-danger">{{ errors.branch[0] }}</div>
                   </div>
                 </div>
                 <div class="form-group row">
-                  <label for="ifsc_code" class="col-sm-3 col-form-label">IFSC Code*</label>
-                  <div class="col-sm-9">
-                    <input type="text" v-model="form.ifsc_code" class="form-control" id="ifsc_code" placeholder="Enter Bank Name"  />
+                  <label for="ifsc_code" class="col-sm-4 col-form-label col-form-label-sm">IFSC Code*</label>
+                  <div class="col-sm-8">
+                    <input type="text" v-model="form.ifsc_code" class="form-control form-control-sm" id="ifsc_code" placeholder="Enter Bank Name"  />
                     <div v-if="errors.ifsc_code" class="text-danger">{{ errors.ifsc_code[0] }}</div>
                   </div>
                 </div>
               </div>
             </div>
-            <div class="col-md-6">
+            </div>
+             <div class="col-md-6">
+            	<div class="form-container">
               <div class="card-header">
                 <h3 class="card-title">Assign Manager</h3>
               </div>
               <div class="card-body">
                 <div class="form-group row">
-                  <label for="search_by_email" class="col-sm-3 col-form-label">Search by Email</label>
-                  <div class="col-sm-9">
-                    <input type="text" v-model="form.search_by_email" name="search_by_email" id="search_by_email" class="form-control"  placeholder="Enter Search Email"  />
+                  <label for="search_by_email" class="col-sm-4 col-form-label col-form-label-sm">Search by Email</label>
+                  <div class="col-sm-8">
+                    <input type="text" v-model="form.search_by_email" name="search_by_email" id="search_by_email" class="form-control form-control-sm"  placeholder="Enter Search Email"  />
                     <div v-if="errors.search_by_email" class="text-danger">{{ errors.search_by_email[0] }}</div>
                   </div>
                 </div>
                 <div class="form-group row">
-                  <label for="search_by_email" class="col-sm-3 col-form-label">Search by Name</label>
-                  <div class="col-sm-9">
-                    <input type="text" v-model="form.search_by_name" name="search_by_name" id="search_by_name" class="form-control"  placeholder="Enter Search Name"  />
+                  <label for="search_by_email" class="col-sm-4 col-form-label col-form-label-sm">Search by Name</label>
+                  <div class="col-sm-8">
+                    <input type="text" v-model="form.search_by_name" name="search_by_name" id="search_by_name" class="form-control form-control-sm"  placeholder="Enter Search Name"  />
                     <div v-if="errors.search_by_name" class="text-danger">{{ errors.search_by_name[0] }}</div>
                   </div>
                 </div>
               </div>
             </div>
+             </div>
             <div class="card-footer col-md-12 ">
               <button type="submit" @click="addEmployeeBankAccountDetail" class="btn btn-primary float-sm-right mr-10">Submit & Continue</button>
               <button type="button" @click="goPreviousStepForm" class="btn btn-primary mr-20 float-right mr-10">Previous</button>

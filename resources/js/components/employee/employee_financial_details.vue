@@ -38,57 +38,62 @@
                 </div>
             </div>
 
-        		<div class="col-md-8">
+        		<div class="col-md-6">
+            	<div class="form-container">
               <div class="card-header">
                 <h3 class="card-title">Financial Details</h3>
               </div>
               <div class="card-body">
                 <div class="form-group row">
-                  <label for="basis_salary" class="col-sm-5 col-form-label">Basic Salary*</label>
-                  <div class="col-sm-5">
-                    <input type="text" v-model="form.basis_salary" class="form-control" id="basis_salary" placeholder="Enter Basic Salary"  />
+                  <label for="basis_salary" class="col-sm-6 col-form-label col-form-label-sm">Basic Salary*</label>
+                  <div class="col-sm-6">
+                    <input type="text" v-model="form.basis_salary" class="form-control form-control-sm" id="basis_salary" placeholder="Enter Basic Salary"  />
                     <div v-if="errors.basis_salary" class="text-danger">{{ errors.basis_salary[0] }}</div>
                   </div>
                 </div>
                 <div class="form-group row">
-                  <select class="form-control select2 col-sm-4" style="width: 100%;" v-model="form.allowances" name="allowances" id="allowances" >
+                <div class="col-sm-6">
+                  <select class="form-control form-control-sm select2" style="width: 100%;" v-model="form.allowances" name="allowances" id="allowances" >
                     <option value="">Select Allowances</option>
                     <option value="1">Allowances 1</option>
                     <option value="2">Allowances 2</option>
                   </select>
+                  </div>
                   <div v-if="errors.allowances" class="text-danger">{{ errors.allowances[0] }}</div>
-                  <div class="col-sm-5 offset-md-1">
-                    <input type="text" v-model="form.allowances_amount" class="form-control" id="allowances_amount" placeholder="Enter Allowances Amount"  />
+                  <div class="col-sm-6">
+                    <input type="text" v-model="form.allowances_amount" class="form-control form-control-sm" id="allowances_amount" placeholder="Enter Allowances Amount"  />
                     <div v-if="errors.allowances_amount" class="text-danger">{{ errors.allowances_amount[0] }}</div>
                   </div>
                 </div>
                 <div class="form-group row">
-                  <select class="form-control select2 col-sm-4" style="width: 100%;" v-model="form.deductions" name="deductions" id="deductions" >
+                <div class="col-sm-6">
+                  <select class="form-control form-control-sm select2" style="width: 100%;" v-model="form.deductions" name="deductions" id="deductions" >
                     <option value="">Select Deduction</option>
                     <option value="1">Deduction 1</option>
                     <option value="2">Deduction 2</option>
                   </select>
+                  </div>
                   <div v-if="errors.deductions" class="text-danger">{{ errors.deductions[0] }}</div>
-                  <div class="col-sm-5 offset-md-1">
-                    <input type="text" v-model="form.deductions_amount" class="form-control" id="deductions_amount" placeholder="Enter Deduction Amount" />
+                  <div class="col-sm-6">
+                    <input type="text" v-model="form.deductions_amount" class="form-control form-control-sm" id="deductions_amount" placeholder="Enter Deduction Amount" />
                     <div v-if="errors.deductions_amount" class="text-danger">{{ errors.deductions_amount[0] }}</div>
                   </div>
                 </div>
                 <div class="form-group row">
-                  <label for="monthly_salary" class="col-sm-5 col-form-label">Monthly Salary*</label>
-                  <div class="col-sm-5">
-                    <input type="text" v-model="form.monthly_salary" class="form-control" id="monthly_salary" placeholder="Enter Monthly Salary"  />
+                  <label for="monthly_salary" class="col-sm-6 col-form-label col-form-label-sm">Monthly Salary*</label>
+                  <div class="col-sm-6">
+                    <input type="text" v-model="form.monthly_salary" class="form-control form-control-sm" id="monthly_salary" placeholder="Enter Monthly Salary"  />
                     <div v-if="errors.monthly_salary" class="text-danger">{{ errors.monthly_salary[0] }}</div>
                   </div>
                 </div>
                 <div class="form-group row">
-                  <label for="yearly_salary" class="col-sm-5 col-form-label">Yearly  Salary*</label>
-                  <div class="col-sm-5">
-                    <input type="text" v-model="form.yearly_salary" class="form-control" id="yearly_salary" placeholder="Enter Yearly Salary"  />
+                  <label for="yearly_salary" class="col-sm-6 col-form-label col-form-label-sm">Yearly  Salary*</label>
+                  <div class="col-sm-6">
+                    <input type="text" v-model="form.yearly_salary" class="form-control form-control-sm" id="yearly_salary" placeholder="Enter Yearly Salary"  />
                     <div v-if="errors.yearly_salary" class="text-danger">{{ errors.yearly_salary[0] }}</div>
                   </div>
                 </div>
-                
+                </div>
               </div>
             </div>
             <div class="card-footer col-md-12 ">

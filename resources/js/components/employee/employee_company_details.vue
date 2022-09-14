@@ -37,22 +37,23 @@
                     <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
                 </div>
             </div>
-        		<div class="col-md-8">
+        		<div class="col-md-6">
+            	<div class="form-container">
               <div class="card-header">
                 <h3 class="card-title">Company Details</h3>
               </div>
               <div class="card-body">
                 <div class="form-group row">
-                  <label for="employee_id" class="col-sm-3 col-form-label">Employee ID*</label>
-                  <div class="col-sm-9">
-                    <input type="text" v-model="form.employee_id" class="form-control" id="employee_id" placeholder="Enter Employee ID"  />
+                  <label for="employee_id" class="col-sm-4 col-form-label col-form-label-sm">Employee ID*</label>
+                  <div class="col-sm-8">
+                    <input type="text" v-model="form.employee_id" class="form-control form-control-sm" id="employee_id" placeholder="Enter Employee ID"  />
                     <div v-if="errors.employee_id" class="text-danger">{{ errors.employee_id[0] }}</div>
                   </div>
                 </div>
                 <div class="form-group row">
-                  <label for="department" class="col-sm-3 col-form-label">Department*</label>
-                  <div class="col-sm-9">
-                    <select class="form-control select2" style="width: 100%;" v-model="form.department" name="department" id="department" >
+                  <label for="department" class="col-sm-4 col-form-label col-form-label-sm">Department*</label>
+                  <div class="col-sm-8">
+                    <select class="form-control form-control-sm select2" style="width: 100%;" v-model="form.department" name="department" id="department" >
                       <option value="">Select Department</option>
                       <option value="1">Accounts</option>
                       <option value="2">Exam Dept</option>
@@ -61,9 +62,9 @@
                   </div>
                 </div>
                 <div class="form-group row">
-                  <label for="designation" class="col-sm-3 col-form-label">Designation*</label>
-                  <div class="col-sm-9">
-                    <select class="form-control select2" style="width: 100%;" v-model="form.designation" name="designation" id="designation" >
+                  <label for="designation" class="col-sm-4 col-form-label col-form-label-sm">Designation*</label>
+                  <div class="col-sm-8">
+                    <select class="form-control form-control-sm select2" style="width: 100%;" v-model="form.designation" name="designation" id="designation" >
                       <option value="">Select Designation</option>
                       <option value="1">Manager</option>
                       <option value="2">Supervisor</option>
@@ -72,23 +73,23 @@
                   </div>
                 </div>
                 <div class="form-group row">
-                  <label for="doj" class="col-sm-3 col-form-label">Date of Joining*</label>
-                  <div class="col-sm-9">
-                    <input type="date" v-model="form.doj" class="form-control" id="doj" placeholder="Enter Date of Joining"  />
+                  <label for="doj" class="col-sm-4 col-form-label col-form-label-sm">Date of Joining*</label>
+                  <div class="col-sm-8">
+                    <input type="date" v-model="form.doj" class="form-control form-control-sm" id="doj" placeholder="Enter Date of Joining"  />
                     <div v-if="errors.doj" class="text-danger">{{ errors.doj[0] }}</div>
                   </div>
                 </div>
                 <div class="form-group row">
-                  <label for="dol" class="col-sm-3 col-form-label">Date of Leaving</label>
-                  <div class="col-sm-9">
-                    <input type="date" v-model="form.dol" class="form-control" id="dol" placeholder="Enter Date of Leaving"  />
+                  <label for="dol" class="col-sm-4 col-form-label col-form-label-sm">Date of Leaving</label>
+                  <div class="col-sm-8">
+                    <input type="date" v-model="form.dol" class="form-control form-control-sm" id="dol" placeholder="Enter Date of Leaving"  />
                     <div v-if="errors.dol" class="text-danger">{{ errors.dol[0] }}</div>
                   </div>
                 </div>
                 <div class="form-group row">
-                  <label for="status" class="col-sm-3 col-form-label">Status*</label>
-                  <div class="col-sm-9">
-                    <select class="form-control select2" style="width: 100%;" v-model="form.status" name="status" id="status" >
+                  <label for="status" class="col-sm-4 col-form-label col-form-label-sm">Status*</label>
+                  <div class="col-sm-8">
+                    <select class="form-control form-control-sm select2" style="width: 100%;" v-model="form.status" name="status" id="status" >
                       <option value="">Select Status</option>
                       <option value="enable">Active</option>
                       <option value="disable">Inactive</option>
@@ -97,6 +98,7 @@
                   </div>
                 </div>
                </div>
+            </div>
             </div>
             <div class="card-footer col-md-12 ">
               <button type="submit" @click="addEmployeeCompanyDetail" class="btn btn-primary float-sm-right mr-10">Submit & Continue</button>
