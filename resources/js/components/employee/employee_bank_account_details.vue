@@ -26,7 +26,7 @@
             <div class="col-md-6">
         		<div class="form-container">
               <div class="card-header">
-                <h3 class="card-title">Bank Account Details</h3>
+                <h2 class="card-title title_decoration">Bank Account Details</h2>
               </div>
               <div class="card-body">
                 <div class="form-group row">
@@ -70,7 +70,7 @@
              <div class="col-md-6">
             	<div class="form-container">
               <div class="card-header">
-                <h3 class="card-title">Assign Manager</h3>
+                <h2 class="card-title title_decoration">Assign Manager</h2>
               </div>
               <div class="card-body">
                 <div class="form-group row">

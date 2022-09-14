@@ -27,7 +27,7 @@
         		<div class="col-md-6">
             	<div class="form-container">
               <div class="card-header">
-                <h3 class="card-title">Company Details</h3>
+                <h2 class="card-title title_decoration">Company Details</h2>
               </div>
               <div class="card-body">
                 <div class="form-group row">
