@@ -20,7 +20,7 @@
 <div class="info-box">
 <span class="info-box-icon bg-primary"><i class="fas fa-users"></i></span>
 <div class="info-box-content">
-<span class="info-box-text">Total Employees</span>
+<span class="info-box-text">Total Employees : {{ totalEmployeeCount }}</span>
 </div>
 
 </div>
@@ -31,7 +31,7 @@
 <div class="info-box">
 <span class="info-box-icon bg-primary"><i class="fas fa-code-branch"></i></span>
 <div class="info-box-content">
-<span class="info-box-text">Total Deptt</span>
+<span class="info-box-text">Total Deptt : 0</span>
 </div>
 
 </div>
@@ -42,7 +42,7 @@
 <div class="info-box">
 <span class="info-box-icon bg-primary"><i class="fas fa-hand-paper"></i></span>
 <div class="info-box-content">
-<span class="info-box-text">Present Today</span>
+<span class="info-box-text">Present Today : 0</span>
 </div>
 
 </div>
@@ -52,7 +52,7 @@
 <div class="info-box">
 <span class="info-box-icon bg-primary"><i class="fas fa-bed"></i></span>
 <div class="info-box-content">
-<span class="info-box-text">On Leave Today</span>
+<span class="info-box-text">On Leave Today : 0</span>
 </div>
 
 </div>
@@ -62,13 +62,33 @@
 </div> </div>
       </div>
 </template>
-<script>
-export default {
-  name: 'dashboard',
-  data () {
-    return {
-      msg: 'Welcome to Your Vue.js App'
-    }
+<script setup>
+
+  import { ref, onMounted , reactive} from 'vue';
+  import Swal from 'sweetalert2'
+  
+  
+
+  const totalEmployeeCount = ref(0);
+  
+ 
+  const getTotalEmployee = () => {
+        axios.post('/api/get-total-employee-count').then((response) => {
+            if(response.data.code == 'success'){
+
+               totalEmployeeCount.value = response.data.totalEmployeeCount;
+            }
+        
+        }).catch((e) => {
+            console.log(e);
+            // Swal.fire('Failed!','Something went wrong.', 'warning');
+        });
   }
-}
+
+  
+  onMounted (() => {
+      getTotalEmployee();
+     
+  });
+
 </script>

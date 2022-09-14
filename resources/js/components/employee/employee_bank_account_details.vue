@@ -21,20 +21,7 @@
       <div class="card card-primary">
         	<div class="row">
             <div class="progress-panel col-md-12">
-                <ul id="progressbar">
-                    <router-link to="/employee/personal-detail"><li class="personal_detail active"><strong>Personal Detail</strong></li></router-link>
-
-                    <router-link to="/employee/company-detail"><li class="company_detail onProgress"><strong>Company Detail</strong></li></router-link>
-
-                    <router-link to="/employee/financial-detail"><li class="financial_detail active"><strong>Financial Detail</strong></li></router-link>
-
-                    <router-link to="/employee/bank-account-detail"><li class="bank_detail active"><strong>Bank Detail</strong></li></router-link>
-                    
-                    <router-link to="/employee/documents-detail"><li class="document_detail"><strong>Document Detail</strong></li></router-link>
-                </ul>
-                <div class="progress">
-                    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
-                </div>
+                <progressbar-component ref="progressbarRef" :setup="4" :step_completed="step_completed"></progressbar-component>
             </div>
             <div class="col-md-6">
         		<div class="form-container">
@@ -114,12 +101,21 @@
     </div>
   </div>
 </template>
+<script>
+  import ProgressbarComponent from "@/components/employee/form_progress_bar.vue"
+  export default {
+    components: {
+      ProgressbarComponent
+    }
+  };
+</script>
 <script setup>
 	import { ref, onMounted , reactive} from 'vue';
   import Swal from 'sweetalert2'
 	import { useToastr } from '../../toastr.js';
 	const errors = ref('');
 	const toastr = useToastr();
+  const step_completed = ref('');
 	const form = reactive({
 				user_id: localStorage.getItem('emp_id'),
 				account_holder_name: '',
@@ -132,6 +128,19 @@
 	});
   const goPreviousStepForm = () => {
        window.location = '/employee/financial-detail';
+  }
+  const getFilledFormSetup = () => {
+      let userId = localStorage.getItem('emp_id');
+      if((userId != '') && (userId != null)){
+          axios.post('/api/get-filled-form-setup',{ 'userId':userId}).then((response) => {
+              if(response.data.code == 'success'){
+                 step_completed.value = response.data.step_completed;
+              }
+          }).catch((e) => {
+                console.log(e);
+                // Swal.fire('Failed!','Something went wrong.', 'warning');
+          });
+      }
   }
 	const addEmployeeBankAccountDetail = () => {
     errors.value = '';
@@ -163,6 +172,7 @@
 	}
 
 	onMounted (() => {
+      getFilledFormSetup();
 			toastr.info('Success');
 	});
 
