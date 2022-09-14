@@ -129,8 +129,8 @@
                   <div class="col-sm-9">
                     <div class="input-group">
                       <div class="custom-file">
-                        <input type="file" class="custom-file-input" name="photo" id="photo" v-on:change="onChangeProfilePicFile"/>
-                        <label class="custom-file-label" for="photo">Choose Photo</label>
+                        <input type="file" class="form-control file-upload-input" name="photo" id="photo" v-on:change="onChangeProfilePicFile"/>
+                        <!-- <label class="custom-file-label" for="photo">Choose Photo</label> -->
                       </div>
                       
                     </div>
@@ -173,6 +173,7 @@
 </template>
 <script setup>
   import { ref, onMounted , reactive} from 'vue';
+  import Swal from 'sweetalert2'
   import { useToastr } from '../../toastr.js';
   const errors = ref('');
   const toastr = useToastr();
@@ -213,8 +214,19 @@ const onChangeProfilePicFile = (e)=>{
 	    axios.post('/api/add-employee-personal-detail',formData).then((response) => {
 	    		if(response.data.code == 'success'){
 	    				localStorage.setItem("emp_id", JSON.stringify(response.data.data.id));
-	    				//window.location = '/employee/company-detail';
-	    				//this.$router.push('/employee/company-detail'); 
+              Swal.fire({
+                  title: 'Data Saved!',
+                  text: "Employee Personal Detail has been saved!",
+                  icon: 'success',
+                  allowOutsideClick: false,
+                  confirmButtonColor: '#3085d6',
+                  cancelButtonColor: '#d33',
+                  confirmButtonText: 'ok'
+                }).then((result) => {
+                  if (result.isConfirmed) {
+                    window.location = '/employee/company-detail';
+                  }
+                })
           }else if(response.data.code == 'error_validate'){
                 errors.value = response.data.errors;
           }else{

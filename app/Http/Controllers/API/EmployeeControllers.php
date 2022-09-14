@@ -36,7 +36,7 @@ class EmployeeControllers extends Controller
             'maritial_status' => 'required',
             'email' => 'required|unique:users|max:255|email',
             'password' => 'required|min:8',
-            'photo' => 'required|mimes:jpg,jpeg,png,csv,txt,xlx,xls,pdf',
+            'photo' => 'required|mimes:jpg,jpeg,png',
         ]);
 
         if ($validator->fails()) {
@@ -143,13 +143,13 @@ class EmployeeControllers extends Controller
 
         $validator = Validator::make($request->all(),[
             'user_id' => 'required',
-            'basis_salary' => 'required',
-            'allowances' => 'nullable',
-            'allowances_amount' => 'nullable',
-            'deductions' => 'nullable',
-            'deductions_amount' => 'nullable',
-            'monthly_salary' => 'required',
-            'yearly_salary' => 'required',
+            'basis_salary' => 'required|numeric|between:0,99.99',
+            // 'allowances' => 'required|numeric|between:0,99.99',
+            // 'allowances_amount' => 'required|numeric|between:0,99.99',
+            // 'deductions' => 'required|numeric|between:0,99.99',
+            // 'deductions_amount' => 'required|numeric|between:0,99.99',
+            'monthly_salary' => 'required|numeric|between:0,99.99',
+            'yearly_salary' => 'required|numeric|between:0,99.99',
         ]);
 
         if ($validator->fails()) {
@@ -200,7 +200,7 @@ class EmployeeControllers extends Controller
         $validator = Validator::make($request->all(),[
             'user_id' => 'required',
             'account_holder_name' => 'required',
-            'account_number' => 'required',
+            'account_number' => 'required|numeric',
             'bank_name' => 'required',
             'branch' => 'required',
             'ifsc_code' => 'required',
@@ -244,12 +244,10 @@ class EmployeeControllers extends Controller
 
         $validator = Validator::make($request->all(),[
              'user_id' => 'required',  
-             'resume_file' => 'mimes:jpg,jpeg,png,csv,txt,xlx,xls,pdf',
-             'offer_letter' => 'mimes:jpg,jpeg,png,csv,txt,xlx,xls,pdf',
-             'joining_letter' => 'mimes:jpg,jpeg,png,csv,txt,xlx,xls,pdf',
-             'agreement' => 'mimes:jpg,jpeg,png,csv,txt,xlx,xls,pdf',
-             'dropbox_url' => 'nullable',
-             'google_drive' => 'nullable'
+             'resume_file' => 'required|mimes:jpg,jpeg,png',
+             'offer_letter' => 'required|mimes:jpg,jpeg,png',
+             'joining_letter' => 'required|mimes:jpg,jpeg,png',
+             'agreement' => 'required|mimes:jpg,jpeg,png'
         ]);
 
         if ($validator->fails()) {
@@ -259,8 +257,9 @@ class EmployeeControllers extends Controller
           return json_encode(array('code'=>'error_validate','errors'=>$validator->errors()));
           
         }
-         
-        $userID = $request->input('user_id');
+
+        if(!empty(request('user_id'))){
+         $userID = $request->input('user_id');
 
          if($request->hasFile('resume_file')) {
             $uploadDocuments = new EmployeeDocumentsDetail;
@@ -313,8 +312,11 @@ class EmployeeControllers extends Controller
         ]);
 
         $this->checkAndUpdateEmpFormStep($userID,5);
-
-        return response()->json(['success'=>'File uploaded successfully.']);
+ 
+       return json_encode(array('code'=>'success','data'=>[]));
+     }else{
+        return json_encode(array('code'=>'error','message'=>'Something went wrong !! Please try again.'));
+     }
     }
 
     /**

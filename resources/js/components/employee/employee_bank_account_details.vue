@@ -112,6 +112,7 @@
 </template>
 <script setup>
 	import { ref, onMounted , reactive} from 'vue';
+  import Swal from 'sweetalert2'
 	import { useToastr } from '../../toastr.js';
 	const errors = ref('');
 	const toastr = useToastr();
@@ -132,7 +133,20 @@
     errors.value = '';
 		axios.post('/api/add-employee-bank-account-detail',form).then((response) => {
           if(response.data.code == 'success'){
-              window.location = '/employee/documents-detail';
+            Swal.fire({
+                  title: 'Data Saved!',
+                  text: "Employee Bank Account Detail has been saved!",
+                  icon: 'success',
+                  allowOutsideClick: false,
+                  confirmButtonColor: '#3085d6',
+                  cancelButtonColor: '#d33',
+                  confirmButtonText: 'ok'
+                }).then((result) => {
+                  if (result.isConfirmed) {
+                    window.location = '/employee/documents-detail';
+                  }
+                })
+              
           }else if(response.data.code == 'error_validate'){
                 errors.value = response.data.errors;
           }else{

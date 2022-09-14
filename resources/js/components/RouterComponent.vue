@@ -16,10 +16,10 @@
          <li class="nav-item">
            <router-link to="/employee/personal-detail" active-class="active" class="nav-link">
              <i class="far fa-user nav-icon"></i>
-             <p>Personal Details</p>
+             <p>Add Employee</p>
            </router-link>
          </li>
-         <li class="nav-item">
+ <!--         <li class="nav-item">
            <router-link to="/employee/company-detail" active-class="active" class="nav-link">
              <i class="far fa-user nav-icon"></i>
              <p>Company Details</p>
@@ -42,7 +42,7 @@
              <i class="far fa-user nav-icon"></i>
              <p>Documents Details</p>
            </router-link>
-         </li>
+         </li> -->
        </ul>
      </li>
      <!-- <li class="nav-item">

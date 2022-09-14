@@ -110,6 +110,7 @@
 </template>
 <script setup>
 	import { ref, onMounted , reactive} from 'vue';
+  import Swal from 'sweetalert2'
 	import { useToastr } from '../../toastr.js';
 	const errors = ref('');
 	const toastr = useToastr();
@@ -124,13 +125,27 @@
         status: '',
 	});
   const goPreviousStepForm = () => {
-       window.location = '/employee/personal-detail';
+    this.$swal('Hello Vue world!!!');
+      // window.location = '/employee/personal-detail';
   }
 	const addEmployeeCompanyDetail = () => {
     errors.value = '';
 		axios.post('/api/add-employee-company-detail',form).then((response) => {
           if(response.data.code == 'success'){
-              window.location = '/employee/financial-detail';
+            Swal.fire({
+                  title: 'Data Saved!',
+                  text: "Employee Company Detail has been saved!",
+                  icon: 'success',
+                  allowOutsideClick: false,
+                  confirmButtonColor: '#3085d6',
+                  cancelButtonColor: '#d33',
+                  confirmButtonText: 'ok'
+                }).then((result) => {
+                  if (result.isConfirmed) {
+                    window.location = '/employee/financial-detail';
+                  }
+                })
+              
           }else if(response.data.code == 'error_validate'){
                 errors.value = response.data.errors;
           }else{
