@@ -15,7 +15,7 @@
       <aside class="main-sidebar sidebar-dark-primary shadow-sm ">
         <router-link to="/dashboard" class="brand-link bg-white py-2">
           <!-- <img src="https://adminlte.io/themes/v3/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8"> -->
-          <img src="{{asset('/images/new_logo.png')}}" alt="AdminLTE Logo" class=" img-fluid " width="104" style="opacity: .8">
+          <img src="{{asset('/images/new_logo.png')}}" alt="AdminLTE Logo" class=" img-fluid " width="104" style="opacity: .8;min-width:104px">
           
         </router-link>
         <div class="sidebar">

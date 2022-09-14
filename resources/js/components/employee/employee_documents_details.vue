@@ -37,76 +37,73 @@
                     <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
                 </div>
             </div>
-        		<div class="col-md-8">
+        		<div class="col-md-6">
+            	<div class="form-container">
               <div class="card-header">
                 <h3 class="card-title">Document Details</h3>
               </div>
               <div class="card-body">
                 <div class="form-group row">
                   
-                  <label for="resume" class="col-sm-3 col-form-label">Resume</label>
-                  <div class="col-sm-9">
-                    <div class="input-group">
+                  <label for="resume" class="col-sm-4 col-form-label col-form-label-sm">Resume</label>
+                  <div class="col-sm-8">
+                    
                       <div class="custom-file">
                         
-                        <input type="file" class="custom-file-input" v-on:change="onChangeResumeFile"  />
-                        <label class="custom-file-label" for="resume">Choose File</label>
+                        <input type="file" class="custom-file-input form-control-sm" v-on:change="onChangeResumeFile"  />
+                        <label class="custom-file-label col-form-label-sm" for="resume">Choose File</label>
                         
                       </div>
                       
-                    </div>
+                   
                   </div>
                 </div> 
                 <div class="form-group row">
-                  <label for="offer_letter" class="col-sm-3 col-form-label">Offer Letter</label>
-                  <div class="col-sm-9">
-                    <div class="input-group">
+                  <label for="offer_letter" class="col-sm-4 col-form-label col-form-label-sm">Offer Letter</label>
+                  <div class="col-sm-8">
                       <div class="custom-file">
-                        <input type="file" class="custom-file-input" name="offer_letter" id="offer_letter"  v-on:change="onChangeOfferLetterFile"   />
-                        <label class="custom-file-label" for="offer_letter">Choose File</label>
+                        <input type="file" class="custom-file-input form-control-sm" name="offer_letter" id="offer_letter"  v-on:change="onChangeOfferLetterFile"   />
+                        <label class="custom-file-label col-form-label-sm" for="offer_letter">Choose File</label>
+                      </div>
+                   
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="joining_letter" class="col-sm-4 col-form-label col-form-label-sm">Joining Letter</label>
+                  <div class="col-sm-8">
+                   
+                      <div class="custom-file">
+                        <input type="file" class="custom-file-input form-control-sm" name="joining_letter" id="joining_letter"  v-on:change="onChangeJoiningLetterFile" />
+                        <label class="custom-file-label col-form-label-sm" for="joining_letter">Choose File</label>
                       </div>
                       
-                    </div>
                   </div>
                 </div>
                 <div class="form-group row">
-                  <label for="joining_letter" class="col-sm-3 col-form-label">Joining Letter</label>
-                  <div class="col-sm-9">
-                    <div class="input-group">
+                  <label for="agreement" class="col-sm-4 col-form-label col-form-label-sm">Agreement</label>
+                  <div class="col-sm-8">
+                   
                       <div class="custom-file">
-                        <input type="file" class="custom-file-input" name="joining_letter" id="joining_letter"  v-on:change="onChangeJoiningLetterFile" />
-                        <label class="custom-file-label" for="joining_letter">Choose File</label>
+                        <input type="file" class="custom-file-input form-control-sm" name="agreement" id="agreement"   v-on:change="onChangeAgreementFile"/>
+                        <label class="custom-file-label col-form-label-sm" for="agreement">Choose File</label>
                       </div>
                       
-                    </div>
                   </div>
                 </div>
                 <div class="form-group row">
-                  <label for="agreement" class="col-sm-3 col-form-label">Agreement</label>
-                  <div class="col-sm-9">
-                    <div class="input-group">
-                      <div class="custom-file">
-                        <input type="file" class="custom-file-input" name="agreement" id="agreement"   v-on:change="onChangeAgreementFile"/>
-                        <label class="custom-file-label" for="agreement">Choose File</label>
-                      </div>
-                      
-                    </div>
+                  <label for="name" class="col-sm-4 col-form-label col-form-label-sm">Dropbox URL</label>
+                  <div class="col-sm-8">
+                    <input type="text" v-model="documentFieldsData.dropbox_url" class="form-control form-control-sm" id="dropbox_url" placeholder="Enter Dropbox URL"  />
                   </div>
                 </div>
                 <div class="form-group row">
-                  <label for="name" class="col-sm-3 col-form-label">Dropbox URL</label>
-                  <div class="col-sm-9">
-                    <input type="text" v-model="documentFieldsData.dropbox_url" class="form-control" id="dropbox_url" placeholder="Enter Dropbox URL"  />
-                  </div>
-                </div>
-                <div class="form-group row">
-                  <label for="name" class="col-sm-3 col-form-label">Google Drive</label>
-                  <div class="col-sm-9">
-                    <input type="text" v-model="documentFieldsData.google_drive" class="form-control" id="google_drive" placeholder="Enter Google Drive"  />
+                  <label for="name" class="col-sm-4 col-form-label col-form-label-sm">Google Drive</label>
+                  <div class="col-sm-8">
+                    <input type="text" v-model="documentFieldsData.google_drive" class="form-control form-control-sm" id="google_drive" placeholder="Enter Google Drive"  />
                   </div>
                 </div>
                 
-                
+                </div>
               </div>
             </div>
             <div class="card-footer col-md-12 ">
