@@ -19,10 +19,10 @@
         
         
           <li class="nav-item dropdown">
-      <a class="nav-item nav-link dropdown-toggle mr-md-2 p-0" href="#" id="bd-versions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-       <div class="image"><img src="images/profile_img.jpg" width="40" class="img-circle elevation-1" alt="User Image"></div>
-      </a>
-      <div class="dropdown-menu dropdown-menu-right elevation-1 border-0 p-2" aria-labelledby="bd-versions"><div class="user-panel  d-flex"><div class="image pl-0"><img src="images/profile_img.jpg" width="30" class="img-circle " alt="User Image"></div><div class="info font-weight-bold">Alexander Pierce</div></div><a href="#" class="btn btn-primary btn-sm w-100 mt-2"><i class="nav-icon fas fa-sign-out-alt"></i> Logout </a></div>
+      <!-- <a class="nav-item nav-link dropdown-toggle mr-md-2 p-0" href="#" id="bd-versions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+       <div class="image"><img src="/images/profile_img.jpg" width="40" class="img-circle elevation-1" alt="User Image"></div>
+      </a> -->
+     <!--  <div class="dropdown-menu dropdown-menu-right elevation-1 border-0 p-2" aria-labelledby="bd-versions"><div class="user-panel  d-flex"><div class="image pl-0"><img src="/images/profile_img.jpg" width="30" class="img-circle " alt="User Image"></div><div class="info font-weight-bold">Alexander Pierce</div></div><a href="#" class="btn btn-primary btn-sm w-100 mt-2"><i class="nav-icon fas fa-sign-out-alt"></i> Logout </a></div> -->
     </li>
         </ul> 
       </nav>

@@ -9,7 +9,7 @@ class EmployeeAdditionalDetail extends Model
 {
     use HasFactory;
 
-    $fillable = [
+    protected $fillable = [
       'user_id',
       'step_completed',
       'dropbox_url',

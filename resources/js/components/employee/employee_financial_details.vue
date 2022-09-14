@@ -108,6 +108,7 @@
 </template>
 <script setup>
 	import { ref, onMounted , reactive} from 'vue';
+  import Swal from 'sweetalert2'
 	import { useToastr } from '../../toastr.js';
 	const errors = ref('');
 	const toastr = useToastr();
@@ -121,14 +122,27 @@
         monthly_salary: '',
         yearly_salary: '',
 	});
-  const goPreviousStepForm = () => {
-       window.location = '/employee/company-detail';
+  const goPreviousStepForm = () => {   
+   window.location = '/employee/company-detail';
   }
 	const addEmployeeFinancialDetail = () => {
     errors.value = '';
 		axios.post('/api/add-employee-financial-detail',form).then((response) => {
           if(response.data.code == 'success'){
-              window.location = '/employee/bank-account-detail';
+            Swal.fire({
+                  title: 'Data Saved!',
+                  text: "Employee Financial Detail has been saved!",
+                  icon: 'success',
+                  allowOutsideClick: false,
+                  confirmButtonColor: '#3085d6',
+                  cancelButtonColor: '#d33',
+                  confirmButtonText: 'ok'
+                }).then((result) => {
+                  if (result.isConfirmed) {
+                    window.location = '/employee/bank-account-detail';
+                  }
+                })
+              
           }else if(response.data.code == 'error_validate'){
                 errors.value = response.data.errors;
           }else{
