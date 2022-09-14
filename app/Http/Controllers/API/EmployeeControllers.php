@@ -66,7 +66,7 @@ class EmployeeControllers extends Controller
                             'maritial_status' => (!empty(request('maritial_status'))?request('maritial_status'):''),
                             'photo' => (!empty(request('photo'))?request('photo'):''),
                         ]);
-
+            $this->checkAndUpdateEmpFormStep($userData->id,1);
 
         }
         if($request->hasFile('photo') && !empty($userData->id)) {
@@ -79,7 +79,7 @@ class EmployeeControllers extends Controller
                 $uploadDocuments->upload_file_name = $file_name; 
                 $uploadDocuments->save();
             }
-            $this->checkAndUpdateEmpFormStep(request('user_id'), 1);
+            
 
         return json_encode(array('code'=>'success','data'=>$userData));
         
@@ -124,7 +124,7 @@ class EmployeeControllers extends Controller
                             'status' => (!empty(request('status'))?request('status'):''),
                             
                         ]);
-            $this->checkAndUpdateEmpFormStep(request('user_id'), 2);
+            $this->checkAndUpdateEmpFormStep(request('user_id'),2);
             return json_encode(array('code'=>'success','data'=>$empCompanyData));
            
         }else{
@@ -247,7 +247,9 @@ class EmployeeControllers extends Controller
              'resume_file' => 'required|mimes:jpg,jpeg,png',
              'offer_letter' => 'required|mimes:jpg,jpeg,png',
              'joining_letter' => 'required|mimes:jpg,jpeg,png',
-             'agreement' => 'required|mimes:jpg,jpeg,png'
+             'agreement' => 'required|mimes:jpg,jpeg,png',
+             'dropbox_url' => 'required',
+             'google_drive' => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -327,15 +329,58 @@ class EmployeeControllers extends Controller
      */
     public function checkAndUpdateEmpFormStep($userId,$stepVal){
         if(!empty($userId) && !empty($stepVal)){
-            $employeeAdditionalData = EmployeeAdditionalDetail::where('user_id', $userId)->first();
-            if (empty($employeeAdditionalData) || (!empty($employeeAdditionalData) && ($employeeAdditionalData->step_completed < $stepVal))){
-                 EmployeeAdditionalDetail::updateOrCreate([
+            $employeeAdditionalData = EmployeeAdditionalDetail::where('user_id', $userId)->get();
+
+            if ((count($employeeAdditionalData) == 0) || (!empty($employeeAdditionalData[0]) && ($employeeAdditionalData[0]->step_completed < $stepVal))){
+                 $abc= EmployeeAdditionalDetail::updateOrCreate([
                     'user_id' => $userId,
                  ],[
                     'step_completed' => $stepVal,
                  ]);
+
+                
             }
         }
     }
 
+    public function getEmployeePersonalDetail(Request $request){
+        if(!empty(request('userId'))){
+            $employeeDetails = User::where('id',request('userId'))->with('employeePersonalInfo')->first();
+            return json_encode(array('code'=>'success','data'=>$employeeDetails));
+
+        }else{
+             return json_encode(array('code'=>'error','message'=>'Something went wrong !! Please try again.'));
+        }
+        
+
+    }
+
+    public function getTotalEmployeeCount(Request $request){
+
+            $employeeCount = User::where('role_id',3)
+                            ->whereHas('employeeAditionalInfo', function($q){
+                                    $q->where('step_completed',5);
+                            })->count();
+            //$employeeCount = User::where('role_id',3)->with('employeePersonalInfo')->count();
+            if(!empty($employeeCount)){
+                return json_encode(array('code'=>'success','totalEmployeeCount'=>$employeeCount));
+            }else{
+                return json_encode(array('code'=>'error','message'=>'Something went wrong !! Please try again.'));
+            }
+        
+
+    }
+    
+    public function getFilledFormSetup(Request $request){
+        if(!empty(request('userId'))){
+            $employeeAdditionalDetail = EmployeeAdditionalDetail::where('user_id',request('userId'))->first();
+            if(!empty($employeeAdditionalDetail)){
+                return json_encode(array('code'=>'success','step_completed'=>$employeeAdditionalDetail->step_completed));
+            }else{
+                 return json_encode(array('code'=>'error','message'=>'Data not found.'));
+            }
+        }else{
+             return json_encode(array('code'=>'error','message'=>'Something went wrong !! Please try again.'));
+        }
+    }
 }

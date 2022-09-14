@@ -21,20 +21,7 @@
       <div class="card card-primary">
         	<div class="row">
             <div class="progress-panel col-md-12">
-                <ul id="progressbar">
-                    <router-link to="/employee/personal-detail"><li class="personal_detail active"><strong>Personal Detail</strong></li></router-link>
-
-                    <router-link to="/employee/company-detail"><li class="company_detail active"><strong>Company Detail</strong></li></router-link>
-
-                    <router-link to="/employee/financial-detail"><li class="financial_detail active"><strong>Financial Detail</strong></li></router-link>
-
-                    <router-link to="/employee/bank-account-detail"><li class="bank_detail active"><strong>Bank Detail</strong></li></router-link>
-                    
-                    <router-link to="/employee/documents-detail"><li class="document_detail active"><strong>Document Detail</strong></li></router-link>
-                </ul>
-                <div class="progress">
-                    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
-                </div>
+                <progressbar-component ref="progressbarRef" :setup="5" :step_completed="step_completed"></progressbar-component>
             </div>
         		<div class="col-md-6">
             	<div class="form-container">
@@ -44,71 +31,71 @@
               <div class="card-body">
                 <div class="form-group row">
                   
-                  <label for="resume" class="col-sm-4 col-form-label col-form-label-sm">Resume</label>
+                  <label for="resume" class="col-sm-4 col-form-label col-form-label-sm">Resume*</label>
                   <div class="col-sm-8">
                     
                       <div class="custom-file">
                         
 
                         <input type="file" class="form-control file-upload-input" v-on:change="onChangeResumeFile"  />
-                        <!-- <div v-if="errors.resume_file" class="text-danger">{{ errors.resume_file[0] }}</div> -->
-
-                        
+                        <div v-if="errors.resume_file" class="text-danger">{{ errors.resume_file[0] }}</div> 
                       </div>
                       
                    
                   </div>
                 </div> 
                 <div class="form-group row">
-                  <label for="offer_letter" class="col-sm-4 col-form-label col-form-label-sm">Offer Letter</label>
+                  <label for="offer_letter" class="col-sm-4 col-form-label col-form-label-sm">Offer Letter*</label>
                   <div class="col-sm-8">
                       <div class="custom-file">
 
                         <input type="file" class="form-control file-upload-input" name="offer_letter" id="offer_letter"  v-on:change="onChangeOfferLetterFile"   />
-                        
+                        <div v-if="errors.offer_letter" class="text-danger">{{ errors.offer_letter[0] }}</div> 
 
                       </div>
                    
                   </div>
                 </div>
                 <div class="form-group row">
-                  <label for="joining_letter" class="col-sm-4 col-form-label col-form-label-sm">Joining Letter</label>
+                  <label for="joining_letter" class="col-sm-4 col-form-label col-form-label-sm">Joining Letter*</label>
                   <div class="col-sm-8">
                    
                       <div class="custom-file">
 
                         <input type="file" class="form-control file-upload-input" name="joining_letter" id="joining_letter"  v-on:change="onChangeJoiningLetterFile" />
                         <!-- <label class="custom-file-label" for="joining_letter">Choose File</label> -->
+                        <div v-if="errors.joining_letter" class="text-danger">{{ errors.joining_letter[0] }}</div> 
 
                       </div>
                       
                   </div>
                 </div>
                 <div class="form-group row">
-                  <label for="agreement" class="col-sm-4 col-form-label col-form-label-sm">Agreement</label>
+                  <label for="agreement" class="col-sm-4 col-form-label col-form-label-sm">Agreement*</label>
                   <div class="col-sm-8">
                    
                       <div class="custom-file">
 
                         <input type="file" class="form-control file-upload-input" name="agreement" id="agreement"   v-on:change="onChangeAgreementFile"/>
                        <!--  <label class="custom-file-label" for="agreement">Choose File</label> -->
-
+                       <div v-if="errors.agreement" class="text-danger">{{ errors.agreement[0] }}</div> 
                       </div>
                       
                   </div>
                 </div>
                 <div class="form-group row">
 
-                  <label for="name" class="col-sm-3 col-form-label">Dropbox URL</label>
-                  <div class="col-sm-9">
-                    <input type="text" class="form-control" id="dropbox_url" placeholder="Enter Dropbox URL"  />
+                  <label for="name" class="col-sm-4 col-form-label">Dropbox URL*</label>
+                  <div class="col-sm-8">
+                    <input type="text" class="form-control" id="dropbox_url" placeholder="Enter Dropbox URL" v-model="documentFieldsData.dropbox_url" />
+                    <div v-if="errors.dropbox_url" class="text-danger">{{ errors.dropbox_url[0] }}</div>
                   </div>
                 </div>
                 <div class="form-group row">
-                  <label for="name" class="col-sm-3 col-form-label">Google Drive</label>
-                  <div class="col-sm-9">
-                    <input type="text" class="form-control" id="google_drive" placeholder="Enter Google Drive"  />
-
+                  <label for="name" class="col-sm-4 col-form-label">Google Drive*</label>
+                  <div class="col-sm-8">
+                    <input type="text" class="form-control" id="google_drive" placeholder="Enter Google Drive" v-model="documentFieldsData.google_drive" />
+                    <div v-if="errors.google_drive" class="text-danger">{{ errors.google_drive[0] }}</div>
                   </div>
                 </div>
                 
@@ -129,7 +116,7 @@
   import { ref, onMounted , reactive} from 'vue';
   import Swal from 'sweetalert2'
   import { useToastr } from '../../toastr.js';
-  const errors = ref('');
+  //const errors = ref('');
   const toastr = useToastr();
 //   const form = reactive({
 //         user_id: localStorage.getItem('emp_id'),
@@ -203,22 +190,28 @@
 
 
 
-
-
-
+import ProgressbarComponent from "@/components/employee/form_progress_bar.vue"
 export default {
         data() {
             return {
               documentFieldsData : {
-                 'user_id' : 12,
+                 'user_id' : localStorage.getItem('emp_id'),
                  'resume_file' : '',
                  'offer_letter' : '',
                  'joining_letter' : '',
                  'agreement' : '',
                  'dropbox_url' : '',
                  'google_drive' : ''
-              }
+              },
+              step_completed:'',
+              errors:{},
             };
+        },
+        components: {
+          ProgressbarComponent
+        },
+        created() {
+          this.getFilledFormSetup();
         },
         methods: {
             goPreviousStepForm() {
@@ -236,7 +229,19 @@ export default {
             onChangeAgreementFile(e){
               this.documentFieldsData.agreement = e.target.files[0];
             },
-
+            getFilledFormSetup(){
+                let userId = localStorage.getItem('emp_id');
+                if((userId != '') && (userId != null)){
+                    axios.post('/api/get-filled-form-setup',{ 'userId':userId}).then((response) => {
+                        if(response.data.code == 'success'){
+                            this.step_completed = response.data.step_completed;
+                        }
+                    }).catch((e) => {
+                          console.log(e);
+                          // Swal.fire('Failed!','Something went wrong.', 'warning');
+                    });
+                }
+            },
             addEmployeeDocumentDetail(e) {
                 e.preventDefault();
                 let existingObj = this.documentFieldsData;
@@ -253,10 +258,11 @@ export default {
                 formData.append('dropbox_url', this.documentFieldsData.dropbox_url);
                 formData.append('google_drive', this.documentFieldsData.google_drive);
                 formData.append('user_id', this.documentFieldsData.user_id);
-                errors.value = '';
+                this.errors = {};
 
                 axios.post('/api/add-employee-document-detail',formData).then((response) => {
                       if(response.data.code == 'success'){
+                        localStorage.removeItem("emp_id");
                         Swal.fire({
                               title: 'Data Saved!',
                               text: "Employee Financial Detail has been saved!",
@@ -272,7 +278,7 @@ export default {
                             })
                           
                       }else if(response.data.code == 'error_validate'){
-                            errors.value = response.data.errors;
+                            this.errors = response.data.errors;
                       }else{
                          console.log(response.data.message);
                          Swal.fire('Failed!', response.data.message, 'warning');
@@ -284,5 +290,5 @@ export default {
 
             }
         }
-    }
+    };
 </script>
