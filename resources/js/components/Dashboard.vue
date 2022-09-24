@@ -59,6 +59,31 @@
 
 </div>
 
+<div class="col-md-8 col-sm-8 col-8">
+  <div class="card card-primary card-outline">
+  <div class="card-header">
+  <h5 class="card-title m-0">Daily Quotes</h5>
+  </div>
+  <div class="card-body">
+  <!-- <h6 class="card-title">Special title treatment</h6> -->
+  <p class="card-text">Your time is limited, so don't waste it living someone else's life. Don't be trapped by dogma – which is living with the results of other people's thinking. -Steve Jobs</p>
+  <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
+  </div>
+  </div>
+</div>
+<div class="col-md-4 col-sm-4 col-4">
+  <div class="card card-primary card-outline">
+  <div class="card-header">
+  <h5 class="card-title m-0">Activity Log</h5>
+  </div>
+  <div class="card-body">
+  <!-- <h6 class="card-title">Special title treatment</h6> -->
+ <!--  <p class="card-text">With supporting text below as a natural lead-in to additional content.</p> -->
+  <a href="#" class="btn btn-primary">View Activity Logs</a>
+  </div>
+  </div>
+</div>
+
 </div> </div>
       </div>
 </template>
