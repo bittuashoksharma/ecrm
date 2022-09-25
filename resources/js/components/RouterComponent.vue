@@ -7,12 +7,18 @@
        </router-link>
      </li>  
      <li class="nav-item">
-       <a href="javascript:void(0)" class="nav-link">
+       <router-link to="/employees" active-class="active" class="nav-link">
          <i class="nav-icon fas fa-users"></i>
          <p>Employee Management <i class="right fas fa-angle-left"></i>
          </p>
-       </a>
+       </router-link>
        <ul class="nav nav-treeview">
+        <li class="nav-item">
+           <router-link to="/employees" active-class="active" class="nav-link">
+             <i class="far fa-user nav-icon"></i>
+             <p>Manage Employees</p>
+           </router-link>
+         </li>
          <li class="nav-item">
            <router-link to="/employee/personal-detail" active-class="active" class="nav-link">
              <i class="far fa-user nav-icon"></i>

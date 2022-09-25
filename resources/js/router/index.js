@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 
 import dashboard from '@/components/Dashboard.vue';
+import ManageEmployees from '@/components/employee/manage_employees.vue';
 import PersonalDetail from '@/components/employee/employee_personal_details.vue';
 import CompanyDetail from '@/components/employee/employee_company_details.vue';
 import FinancialDetail from '@/components/employee/employee_financial_details.vue';
@@ -18,6 +19,11 @@ const routes = [
 	    	title: 'dashboard',
 	    },
 		
+	},
+	{
+		path:'/employees',
+		name:'manage-employees',
+		component:ManageEmployees,
 	},
 	{
 		path:'/employee/personal-detail',
@@ -44,6 +50,7 @@ const routes = [
 		name:'documents-detail',
 		component:DocumentsDetail,
 	},
+
 	{
 	  path: '/:pathMatch(.*)*',
 	  component: NotFound,

@@ -31,14 +31,14 @@
               </div>
               <div class="card-body">
                 <div class="form-group row">
-                  <label for="employee_id" class="col-sm-4 col-form-label col-form-label-sm">Employee ID*</label>
+                  <label for="employee_id" class="col-sm-4 col-form-label col-form-label-sm">Employee ID<span class="text-danger font-weight-bold">*</span></label>
                   <div class="col-sm-8">
                     <input type="text" v-model="form.employee_id" class="form-control form-control-sm" id="employee_id" placeholder="Enter Employee ID"  />
                     <div v-if="errors.employee_id" class="text-danger">{{ errors.employee_id[0] }}</div>
                   </div>
                 </div>
                 <div class="form-group row">
-                  <label for="department" class="col-sm-4 col-form-label col-form-label-sm">Department*</label>
+                  <label for="department" class="col-sm-4 col-form-label col-form-label-sm">Department<span class="text-danger font-weight-bold">*</span></label>
                   <div class="col-sm-8">
                     <select class="form-control form-control-sm select2" style="width: 100%;" v-model="form.department" name="department" id="department" >
                       <option value="">Select Department</option>
@@ -49,7 +49,7 @@
                   </div>
                 </div>
                 <div class="form-group row">
-                  <label for="designation" class="col-sm-4 col-form-label col-form-label-sm">Designation*</label>
+                  <label for="designation" class="col-sm-4 col-form-label col-form-label-sm">Designation<span class="text-danger font-weight-bold">*</span></label>
                   <div class="col-sm-8">
                     <select class="form-control form-control-sm select2" style="width: 100%;" v-model="form.designation" name="designation" id="designation" >
                       <option value="">Select Designation</option>
@@ -60,7 +60,7 @@
                   </div>
                 </div>
                 <div class="form-group row">
-                  <label for="doj" class="col-sm-4 col-form-label col-form-label-sm">Date of Joining*</label>
+                  <label for="doj" class="col-sm-4 col-form-label col-form-label-sm">Date of Joining<span class="text-danger font-weight-bold">*</span></label>
                   <div class="col-sm-8">
                     <input type="date" v-model="form.doj" class="form-control form-control-sm" id="doj" placeholder="Enter Date of Joining"  />
                     <div v-if="errors.doj" class="text-danger">{{ errors.doj[0] }}</div>
@@ -74,7 +74,7 @@
                   </div>
                 </div>
                 <div class="form-group row">
-                  <label for="status" class="col-sm-4 col-form-label col-form-label-sm">Status*</label>
+                  <label for="status" class="col-sm-4 col-form-label col-form-label-sm">Status<span class="text-danger font-weight-bold">*</span></label>
                   <div class="col-sm-8">
                     <select class="form-control form-control-sm select2" style="width: 100%;" v-model="form.status" name="status" id="status" >
                       <option value="">Select Status</option>
@@ -86,7 +86,30 @@
                 </div>
                </div>
             </div>
+            </div> 
+            <div class="col-md-6">
+              <div class="form-container">
+              <div class="card-header">
+                <h2 class="card-title title_decoration">Assign Manager</h2>
+              </div>
+              <div class="card-body">
+                <div class="form-group row">
+                  <label for="search_by_email" class="col-sm-4 col-form-label col-form-label-sm">Search by Email</label>
+                  <div class="col-sm-8">
+                    <input type="text" v-model="form.search_by_email" name="search_by_email" id="search_by_email" class="form-control form-control-sm"  placeholder="Enter Search Email"  />
+                    <div v-if="errors.search_by_email" class="text-danger">{{ errors.search_by_email[0] }}</div>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="search_by_email" class="col-sm-4 col-form-label col-form-label-sm">Search by Name</label>
+                  <div class="col-sm-8">
+                    <input type="text" v-model="form.search_by_name" name="search_by_name" id="search_by_name" class="form-control form-control-sm"  placeholder="Enter Search Name"  />
+                    <div v-if="errors.search_by_name" class="text-danger">{{ errors.search_by_name[0] }}</div>
+                  </div>
+                </div>
+              </div>
             </div>
+             </div>
             <div class="card-footer col-md-12 ">
               <button type="submit" @click="addEmployeeCompanyDetail" class="btn btn-primary float-sm-right mr-10">Submit & Continue</button>
               <button type="button" @click="goPreviousStepForm" class="btn btn-primary mr-20 float-right mr-10">Previous</button>
@@ -121,6 +144,8 @@
         doj: '',
         dol: '',
         status: '',
+        search_by_email: '',
+        search_by_name: '',
 	});
   const goPreviousStepForm = () => {
     this.$swal('Hello Vue world!!!');
@@ -169,8 +194,36 @@
     });
 	}
 
+  const getEmployeeCompanyDetail = () => {
+      let userId = localStorage.getItem('emp_id');
+      if((userId != '') && (userId != null)){
+          axios.post('/api/get-employee-company-detail',{ 'userId':userId}).then((response) => {
+          if(response.data.code == 'success'){
+            console.log(response.data.code)
+             //form.reset();
+             //form.clear();
+             //Object.assign(form, response.data.data);
+             Object.assign(form, response.data.data);
+             form.department = response.data.data.department_id;
+             form.designation = response.data.data.designation_id;
+             
+             
+          }else{
+             //console.log(response.data.message);
+             Swal.fire('Failed!', response.data.message, 'warning');
+          }
+          
+          }).catch((e) => {
+              console.log(e);
+              // Swal.fire('Failed!','Something went wrong.', 'warning');
+          });
+      }
+      
+  }
+
 	onMounted (() => {
       getFilledFormSetup();
+      getEmployeeCompanyDetail();
 			toastr.info('Success');
 	});
 

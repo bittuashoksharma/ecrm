@@ -17,4 +17,9 @@ class EmployeeFinancialDetail extends Model
         'monthly_salary',
         'yearly_salary'
     ];
+
+    public function employeeFinancialInfo()
+    {
+        return $this->hasOne(EmployeeBankDetail::class,'user_id','user_id');
+    }
 }

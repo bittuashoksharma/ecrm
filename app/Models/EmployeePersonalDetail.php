@@ -19,6 +19,11 @@ class EmployeePersonalDetail extends Model
         'permanent_address',
         'nationality',
         'maritial_status',
-        'photo'
+        'photo',
+        'pan_number',
+        'adhaar_number',
+        'esi_number',
+        'pf_account',
+
     ];
 }

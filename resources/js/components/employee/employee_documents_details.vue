@@ -21,7 +21,7 @@
       <div class="card card-primary">
         	<div class="row">
             <div class="progress-panel col-md-12">
-                <progressbar-component ref="progressbarRef" :setup="5" :step_completed="step_completed"></progressbar-component>
+                <progressbar-component ref="progressbarRef" :setup="4" :step_completed="step_completed"></progressbar-component>
             </div>
         		<div class="col-md-6">
             	<div class="form-container">
@@ -31,13 +31,12 @@
               <div class="card-body">
                 <div class="form-group row">
                   
-                  <label for="resume" class="col-sm-4 col-form-label col-form-label-sm">Resume*</label>
+                  <label for="resume" class="col-sm-4 col-form-label col-form-label-sm">Resume<span class="text-danger font-weight-bold">*</span></label>
                   <div class="col-sm-8">
                     
                       <div class="custom-file">
-                        
-
-                        <input type="file" class="form-control file-upload-input" v-on:change="onChangeResumeFile"  />
+                        <input type="file" class="form-control file-upload-input" v-on:change="onChangeResumeFile"  id="resume" />
+                        <label class="custom-file-label" id="resume_label" for="resume">Choose File</label>
                         <div v-if="errors.resume_file" class="text-danger">{{ errors.resume_file[0] }}</div> 
                       </div>
                       
@@ -45,11 +44,12 @@
                   </div>
                 </div> 
                 <div class="form-group row">
-                  <label for="offer_letter" class="col-sm-4 col-form-label col-form-label-sm">Offer Letter*</label>
+                  <label for="offer_letter" class="col-sm-4 col-form-label col-form-label-sm">Offer Letter<span class="text-danger font-weight-bold">*</span></label>
                   <div class="col-sm-8">
                       <div class="custom-file">
 
                         <input type="file" class="form-control file-upload-input" name="offer_letter" id="offer_letter"  v-on:change="onChangeOfferLetterFile"   />
+                        <label class="custom-file-label" id="offer_letter_label" for="offer_letter">Choose File</label>
                         <div v-if="errors.offer_letter" class="text-danger">{{ errors.offer_letter[0] }}</div> 
 
                       </div>
@@ -57,13 +57,13 @@
                   </div>
                 </div>
                 <div class="form-group row">
-                  <label for="joining_letter" class="col-sm-4 col-form-label col-form-label-sm">Joining Letter*</label>
+                  <label for="joining_letter" class="col-sm-4 col-form-label col-form-label-sm">Joining Letter<span class="text-danger font-weight-bold">*</span></label>
                   <div class="col-sm-8">
                    
                       <div class="custom-file">
 
                         <input type="file" class="form-control file-upload-input" name="joining_letter" id="joining_letter"  v-on:change="onChangeJoiningLetterFile" />
-                        <!-- <label class="custom-file-label" for="joining_letter">Choose File</label> -->
+                        <label class="custom-file-label" id ="joining_letter_label" for="joining_letter">Choose File</label>
                         <div v-if="errors.joining_letter" class="text-danger">{{ errors.joining_letter[0] }}</div> 
 
                       </div>
@@ -71,13 +71,13 @@
                   </div>
                 </div>
                 <div class="form-group row">
-                  <label for="agreement" class="col-sm-4 col-form-label col-form-label-sm">Agreement*</label>
+                  <label for="agreement" class="col-sm-4 col-form-label col-form-label-sm">Agreement<span class="text-danger font-weight-bold">*</span></label>
                   <div class="col-sm-8">
                    
                       <div class="custom-file">
 
                         <input type="file" class="form-control file-upload-input" name="agreement" id="agreement"   v-on:change="onChangeAgreementFile"/>
-                       <!--  <label class="custom-file-label" for="agreement">Choose File</label> -->
+                       <label class="custom-file-label" id="agreement_label" for="agreement">Choose File</label>
                        <div v-if="errors.agreement" class="text-danger">{{ errors.agreement[0] }}</div> 
                       </div>
                       
@@ -85,14 +85,14 @@
                 </div>
                 <div class="form-group row">
 
-                  <label for="name" class="col-sm-4 col-form-label">Dropbox URL*</label>
+                  <label for="name" class="col-sm-4 col-form-label">Dropbox URL<span class="text-danger font-weight-bold">*</span></label>
                   <div class="col-sm-8">
                     <input type="text" class="form-control" id="dropbox_url" placeholder="Enter Dropbox URL" v-model="documentFieldsData.dropbox_url" />
                     <div v-if="errors.dropbox_url" class="text-danger">{{ errors.dropbox_url[0] }}</div>
                   </div>
                 </div>
                 <div class="form-group row">
-                  <label for="name" class="col-sm-4 col-form-label">Google Drive*</label>
+                  <label for="name" class="col-sm-4 col-form-label">Google Drive<span class="text-danger font-weight-bold">*</span></label>
                   <div class="col-sm-8">
                     <input type="text" class="form-control" id="google_drive" placeholder="Enter Google Drive" v-model="documentFieldsData.google_drive" />
                     <div v-if="errors.google_drive" class="text-danger">{{ errors.google_drive[0] }}</div>
@@ -218,16 +218,37 @@ export default {
                  window.location = '/employee/bank-account-detail';
             },
             onChangeResumeFile(e) {
-                this.documentFieldsData.resume_file = e.target.files[0];
+              if(e.target.files[0].name != ''){
+                 this.documentFieldsData.resume_file = e.target.files[0];
+                 document.getElementById("resume_label").innerHTML = e.target.files[0].name; 
+              }else{
+                 document.getElementById("resume_label").innerHTML = 'Choose File';
+              }
+               
             },
             onChangeOfferLetterFile(e){
-              this.documentFieldsData.offer_letter = e.target.files[0];
+              if(e.target.files[0].name != ''){
+                 this.documentFieldsData.offer_letter = e.target.files[0];
+                 document.getElementById("offer_letter_label").innerHTML = e.target.files[0].name; 
+              }else{
+                 document.getElementById("offer_letter_label").innerHTML = 'Choose File';
+              }
             },
             onChangeJoiningLetterFile(e){
-              this.documentFieldsData.joining_letter = e.target.files[0];
+              if(e.target.files[0].name != ''){
+                 this.documentFieldsData.joining_letter = e.target.files[0];
+                 document.getElementById("joining_letter_label").innerHTML = e.target.files[0].name; 
+              }else{
+                 document.getElementById("joining_letter_label").innerHTML = 'Choose File';
+              }
             },
             onChangeAgreementFile(e){
-              this.documentFieldsData.agreement = e.target.files[0];
+              if(e.target.files[0].name != ''){
+                 this.documentFieldsData.agreement = e.target.files[0];
+                 document.getElementById("agreement_label").innerHTML = e.target.files[0].name; 
+              }else{
+                 document.getElementById("agreement_label").innerHTML = 'Choose File';
+              }
             },
             getFilledFormSetup(){
                 let userId = localStorage.getItem('emp_id');
@@ -265,7 +286,7 @@ export default {
                         localStorage.removeItem("emp_id");
                         Swal.fire({
                               title: 'Data Saved!',
-                              text: "Employee Financial Detail has been saved!",
+                              text: "New employee has been added!",
                               icon: 'success',
                               allowOutsideClick: false,
                               confirmButtonColor: '#3085d6',
