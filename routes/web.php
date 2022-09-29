@@ -25,6 +25,10 @@ Route::get('{view}',App\Http\Controllers\HomeController::class)->where('view','(
 Route::post('/api/get-filled-form-setup',[App\Http\Controllers\API\EmployeeControllers::class, 'getFilledFormSetup']);
 Route::post('/api/get-employee-personal-detail',[App\Http\Controllers\API\EmployeeControllers::class, 'getEmployeePersonalDetail']);
 Route::post('/api/get-total-employee-count',[App\Http\Controllers\API\EmployeeControllers::class, 'getTotalEmployeeCount']);
+Route::post('/api/get-employee-company-detail',[App\Http\Controllers\API\EmployeeControllers::class, 'getEmployeeCompanyDetail']);
+Route::post('/api/get-employee-financial-detail',[App\Http\Controllers\API\EmployeeControllers::class, 'getEmployeeFinancialDetail']);
+Route::post('/api/get-employees',[App\Http\Controllers\API\EmployeeControllers::class, 'getEmployees']);
+
 
 Route::post('/api/add-employee-personal-detail',[App\Http\Controllers\API\EmployeeControllers::class, 'storeEmployeePersonalDetail']);
 Route::post('/api/add-employee-company-detail',[App\Http\Controllers\API\EmployeeControllers::class, 'storeEmployeeCompanyDetail']);
