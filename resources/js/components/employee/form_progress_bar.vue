@@ -16,13 +16,12 @@
 
         <li class="financial_detail" v-else :class="[(setup == 3 ?'onProgress':''),(step_completed >= 3 ?'active':'')]"><strong>Financial Detail</strong></li>
 
-        <router-link to="/employee/bank-account-detail" v-if="(step_completed >= 4)"><li class="bank_detail" :class="[(setup == 4 ?'onProgress':''),(step_completed >= 4 ?'active':'')]"><strong>Bank Detail</strong></li></router-link>
+       <!--  <router-link to="/employee/bank-account-detail" v-if="(step_completed >= 4)"><li class="bank_detail" :class="[(setup == 4 ?'onProgress':''),(step_completed >= 4 ?'active':'')]"><strong>Bank Detail</strong></li></router-link>
         
-        <li class="bank_detail" v-else :class="[(setup == 4 ?'onProgress':''),(step_completed >= 4 ?'active':'')]"><strong>Bank Detail</strong></li>
+        <li class="bank_detail" v-else :class="[(setup == 4 ?'onProgress':''),(step_completed >= 4 ?'active':'')]"><strong>Bank Detail</strong></li> -->
+        <router-link to="/employee/documents-detail" v-if="(step_completed >= 4)"><li class="document_detail " :class="[(setup == 4 ?'onProgress':''),(step_completed >= 4 ?'active':'')]"><strong>Document Detail</strong></li></router-link>
 
-        <router-link to="/employee/documents-detail" v-if="(step_completed >= 4)"><li class="document_detail " :class="[(setup == 5 ?'onProgress':''),(step_completed >= 5 ?'active':'')]"><strong>Document Detail</strong></li></router-link>
-
-        <li class="document_detail " v-else :class="[(setup == 5 ?'onProgress':''),(step_completed >= 5 ?'active':'')]"><strong>Document Detail</strong></li>
+        <li class="document_detail " v-else :class="[(setup == 4 ?'onProgress':''),(step_completed >= 4 ?'active':'')]"><strong>Document Detail</strong></li>
 
     </ul>
     <div class="progress">

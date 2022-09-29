@@ -32,10 +32,10 @@
               </div>
               <div class="card-body">
                 <div class="form-group row">
-                  <label for="basis_salary" class="col-sm-6 col-form-label col-form-label-sm">Basic Salary*</label>
+                  <label for="basic_salary" class="col-sm-6 col-form-label col-form-label-sm">Basic Salary<span class="text-danger font-weight-bold">*</span></label>
                   <div class="col-sm-6">
-                    <input type="text" v-model="form.basis_salary" class="form-control form-control-sm" id="basis_salary" placeholder="Enter Basic Salary"  />
-                    <div v-if="errors.basis_salary" class="text-danger">{{ errors.basis_salary[0] }}</div>
+                    <input type="text" v-model="form.basic_salary" class="form-control form-control-sm" id="basic_salary" placeholder="Enter Basic Salary"  />
+                    <div v-if="errors.basic_salary" class="text-danger">{{ errors.basic_salary[0] }}</div>
                   </div>
                 </div>
                 <div class="form-group row">
@@ -67,21 +67,65 @@
                   </div>
                 </div>
                 <div class="form-group row">
-                  <label for="monthly_salary" class="col-sm-6 col-form-label col-form-label-sm">Monthly Salary*</label>
+                  <label for="monthly_salary" class="col-sm-6 col-form-label col-form-label-sm">Monthly Salary<span class="text-danger font-weight-bold">*</span></label>
                   <div class="col-sm-6">
                     <input type="text" v-model="form.monthly_salary" class="form-control form-control-sm" id="monthly_salary" placeholder="Enter Monthly Salary"  />
                     <div v-if="errors.monthly_salary" class="text-danger">{{ errors.monthly_salary[0] }}</div>
                   </div>
                 </div>
                 <div class="form-group row">
-                  <label for="yearly_salary" class="col-sm-6 col-form-label col-form-label-sm">Yearly  Salary*</label>
+                  <label for="yearly_salary" class="col-sm-6 col-form-label col-form-label-sm">Yearly  Salary<span class="text-danger font-weight-bold">*</span></label>
                   <div class="col-sm-6">
                     <input type="text" v-model="form.yearly_salary" class="form-control form-control-sm" id="yearly_salary" placeholder="Enter Yearly Salary"  />
                     <div v-if="errors.yearly_salary" class="text-danger">{{ errors.yearly_salary[0] }}</div>
                   </div>
                 </div>
                 </div>
-              </div>
+              </div> 
+            </div>
+             <div class="col-md-6">
+                <div class="form-container">
+                  <div class="card-header">
+                    <h2 class="card-title title_decoration">Bank Account Details</h2>
+                  </div>
+                  <div class="card-body">
+                    <div class="form-group row">
+                      <label for="account_holder_name" class="col-sm-4 col-form-label col-form-label-sm">Account Holder Name<span class="text-danger font-weight-bold">*</span></label>
+                      <div class="col-sm-8">
+                        <input type="text" v-model="form.account_holder_name" class="form-control form-control-sm" id="account_holder_name" placeholder="Enter Account Holder Name" />
+                        <div v-if="errors.account_holder_name" class="text-danger">{{ errors.account_holder_name[0] }}</div>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label for="account_number" class="col-sm-4 col-form-label col-form-label-sm">Account Number<span class="text-danger font-weight-bold"><span class="text-danger font-weight-bold">*</span></span></label>
+                      <div class="col-sm-8">
+                        <input type="text" v-model="form.account_number" class="form-control form-control-sm" id="account_number" placeholder="Enter Account Number"  />
+                        <div v-if="errors.account_number" class="text-danger">{{ errors.account_number[0] }}</div>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label for="bank_name" class="col-sm-4 col-form-label col-form-label-sm">Bank Name<span class="text-danger font-weight-bold">*</span></label>
+                      <div class="col-sm-8">
+                        <input type="text" v-model="form.bank_name" class="form-control form-control-sm" id="bank_name" placeholder="Enter Bank Name"  />
+                        <div v-if="errors.bank_name" class="text-danger">{{ errors.bank_name[0] }}</div>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label for="branch" class="col-sm-4 col-form-label col-form-label-sm">Branch<span class="text-danger font-weight-bold">*</span></label>
+                      <div class="col-sm-8">
+                        <input type="text" v-model="form.branch" class="form-control form-control-sm" id="branch" placeholder="Enter Branch"  />
+                        <div v-if="errors.branch" class="text-danger">{{ errors.branch[0] }}</div>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label for="ifsc_code" class="col-sm-4 col-form-label col-form-label-sm">IFSC Code<span class="text-danger font-weight-bold">*</span></label>
+                      <div class="col-sm-8">
+                        <input type="text" v-model="form.ifsc_code" class="form-control form-control-sm" id="ifsc_code" placeholder="Enter Bank Name"  />
+                        <div v-if="errors.ifsc_code" class="text-danger">{{ errors.ifsc_code[0] }}</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
             </div>
             <div class="card-footer col-md-12 ">
               <button type="submit" @click="addEmployeeFinancialDetail" class="btn btn-primary float-sm-right mr-10">Submit & Continue</button>
@@ -110,13 +154,18 @@
   const step_completed = ref('');
 	const form = reactive({
 				user_id: localStorage.getItem('emp_id'),
-        basis_salary: '',
+        basic_salary: '',
         allowances: '',
         allowances_amount: '',
         deductions: '',
         deductions_amount: '',
         monthly_salary: '',
         yearly_salary: '',
+        account_holder_name: '',
+        account_number: '',
+        bank_name: '',
+        branch: '',
+        ifsc_code: ''
 	});
   const goPreviousStepForm = () => {   
    window.location = '/employee/company-detail';
@@ -135,7 +184,7 @@
                   confirmButtonText: 'ok'
                 }).then((result) => {
                   if (result.isConfirmed) {
-                    window.location = '/employee/bank-account-detail';
+                    window.location = '/employee/documents-detail';
                   }
                 })
               
@@ -159,11 +208,35 @@
               }
           }).catch((e) => {
                 console.log(e);
-                // Swal.fire('Failed!','Something went wrong.', 'warning');
+                 Swal.fire('Failed!','Something went wrong.', 'warning');
           });
       }
   }
+
+  const getEmployeeFinancialDetail = () => {
+      let userId = localStorage.getItem('emp_id');
+      if((userId != '') && (userId != null)){
+          axios.post('/api/get-employee-financial-detail',{ 'userId':userId}).then((response) => {
+          if(response.data.code == 'success'){
+            console.log(response.data.code)
+             Object.assign(form, response.data.data);
+             Object.assign(form, response.data.data.employee_financial_info);
+             form.department = response.data.data.basic_salary;
+             // form.designation = response.data.data.designation_id; 
+          }else{
+             //console.log(response.data.message);
+             Swal.fire('Failed!', response.data.message, 'warning');
+          }
+          
+          }).catch((e) => {
+              console.log(e);
+              // Swal.fire('Failed!','Something went wrong.', 'warning');
+          });
+      }
+      
+  }
 	onMounted (() => {
+      getEmployeeFinancialDetail();
       getFilledFormSetup();
 			toastr.info('Success');
 	});

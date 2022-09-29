@@ -45,6 +45,7 @@ class EmployeeControllers extends Controller
             $inputs['photo'] = 'required|image|mimes:jpeg,bmp,png,jpg,svg';
         }else{
             $inputs['photo'] = 'nullable|sometimes|image|mimes:jpeg,bmp,png,jpg,svg';
+
         }
 
         $validator = Validator::make($request->all(),$inputs);

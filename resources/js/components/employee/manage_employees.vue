@@ -66,15 +66,23 @@
                              <td>{{ employeesData.email }}</td>
                              <td>
                               <span v-if="(employeesData.employee_company_info != null)">
-                                 {{ employeesData.employee_company_info.emp_department_info.name }}
+                                 <span v-if="(employeesData.employee_company_info.emp_department_info != null)">
+                                    {{ employeesData.employee_company_info.emp_department_info.name }}
+                                 </span>
+                                 <span v-else>-</span> 
                               </span>
                               <span v-else>-</span> 
+                              
                              </td>
-                             <td>                             
+                             <td> 
                               <span v-if="(employeesData.employee_company_info != null)">
-                                {{ employeesData.employee_company_info.emp_designation_info.name }}
+                                 <span v-if="(employeesData.employee_company_info.emp_designation_info != null)">
+                                 {{ employeesData.employee_company_info.emp_designation_info.name }}
+                                 </span>
+                                 <span v-else>-</span>
                               </span>
-                              <span v-else>-</span>
+                              <span v-else>-</span>                            
+                              
                             </td>
                              <td><span class="badge bg-success">Approved</span></td>
                              <td>
@@ -93,7 +101,6 @@
                                 </div>
                               </td>  
                           </tr>
-                         
                        </tbody>
                     </table>
                  </div>
@@ -120,8 +127,7 @@
 
   import { ref, onMounted , reactive} from 'vue';
   import Swal from 'sweetalert2'
-  
-  
+
   const employeesDataArr = ref({});
   const pagination_data = ref({});
   const totalRecord = ref(0);
