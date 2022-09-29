@@ -19,4 +19,18 @@ class EmployeeCompanyDetail extends Model
         'dol',
         'status'
     ];
+
+    public function departmentInfo()
+    {
+        return $this->hasMany(Department::class,'id','department_id');
+    }
+
+    public function empDepartmentInfo()
+    {
+        return $this->hasOne(Department::class,'id','department_id');
+    }
+    public function empDesignationInfo()
+    {
+        return $this->hasOne(Designation::class,'id','designation_id');
+    }
 }

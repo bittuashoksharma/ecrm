@@ -12,6 +12,7 @@ use App\Models\EmployeeFinancialDetail;
 use App\Models\EmployeeBankDetail;
 use App\Models\EmployeeDocumentsDetail;
 use App\Models\EmployeeAdditionalDetail;
+use Illuminate\Support\Facades\Storage;
 class EmployeeControllers extends Controller
 {
     /**
@@ -22,22 +23,31 @@ class EmployeeControllers extends Controller
      */
     public function storeEmployeePersonalDetail(Request $request)
     {
-        
-        $validator = Validator::make($request->all(),[
-            'name' => 'required|max:255',
-            'father_name' => 'required|max:255',
-            'dob' => 'required|date',
-            'gender' => 'required',
-            'contact_number_1' => 'required|numeric',
-            'contact_number_2' => 'nullable|numeric',
-            'current_address' => 'nullable',
-            'permanent_address' => 'required',
-            'nationality' => 'required',
-            'maritial_status' => 'required',
-            'email' => 'required|unique:users|max:255|email',
-            'password' => 'required|min:8',
-            'photo' => 'required|mimes:jpg,jpeg,png',
-        ]);
+        $inputs = [
+            // 'name' => 'required|max:255',
+            // 'father_name' => 'required|max:255',
+            // 'dob' => 'required|date',
+            // 'gender' => 'required',
+            // 'contact_number_1' => 'required|numeric',
+            // 'contact_number_2' => 'nullable|numeric',
+            // 'current_address' => 'nullable',
+            // 'permanent_address' => 'required',
+            // 'nationality' => 'required',
+            // 'maritial_status' => 'required',
+            // 'email' => 'required|unique:users,email,' .request('user_id'),
+            // 'password' => 'required|min:8',
+            // 'pan_number' => 'required|max:10|min:10',
+            // 'adhaar_number' => 'required|min:12|numeric',
+            // 'esi_number' => 'nullable',
+            // 'pf_account' => 'required',
+        ];
+        if(request('is_photo') == 0){
+            $inputs['photo'] = 'required|image|mimes:jpeg,bmp,png,jpg,svg';
+        }else{
+            $inputs['photo'] = 'nullable|sometimes|image|mimes:jpeg,bmp,png,jpg,svg';
+        }
+
+        $validator = Validator::make($request->all(),$inputs);
 
         if ($validator->fails()) {
 
@@ -46,7 +56,19 @@ class EmployeeControllers extends Controller
           return json_encode(array('code'=>'error_validate','errors'=>$validator->errors()));
           
         }
-        $userData = User::create([
+        $file_name = "";
+        if($request->hasFile('photo')) {
+                $profilePic = $request->file('photo');
+                $file_name = time().'_profilepic_'.$profilePic->getClientOriginalName();
+                $file_path = $request->file('photo')->storeAs('profile_pics', $file_name, 'public');
+        }
+
+        if(!empty(request('name'))){
+            $userId = request('user_id');
+        }
+        $userData = User::updateOrCreate([
+                        'id'   => $userId,
+                    ],[
                         'name' => request('name'),
                         'email' => request('email'),
                         'phone_number' => request('contact_number_1'),
@@ -54,31 +76,32 @@ class EmployeeControllers extends Controller
                         'role_id' => 3,
                     ]);
         if(!empty($userData) && !empty($userData->id)){
-            $empPerData = EmployeePersonalDetail::create([
+            $employeeRecord = [
                             'user_id' => $userData->id,
                             'father_name' => (!empty(request('name'))?request('name'):''),
                             'dob' => (!empty(request('dob'))?date('Y-m-d',strtotime(request('dob'))):''),
                             'gender' => (!empty(request('gender'))?request('gender'):''),
-                            'phone_number_2' => (!empty(request('phone_number_2'))?request('phone_number_2'):''),
+                            'phone_number_2' => (!empty(request('contact_number_2'))?request('contact_number_2'):''),
                             'current_address' => (!empty(request('current_address'))?request('current_address'):''),
                             'permanent_address' => (!empty(request('permanent_address'))?request('permanent_address'):''),
                             'nationality' => (!empty(request('nationality'))?request('nationality'):''),
                             'maritial_status' => (!empty(request('maritial_status'))?request('maritial_status'):''),
-                            'photo' => (!empty(request('photo'))?request('photo'):''),
-                        ]);
+                            
+                            'pan_number' => (!empty(request('pan_number'))?request('pan_number'):''),
+                            'adhaar_number' => (!empty(request('adhaar_number'))?request('adhaar_number'):''),
+                            'esi_number' => (!empty(request('esi_number'))?request('esi_number'):''),
+                            'pf_account' => (!empty(request('pf_account'))?request('pf_account'):''),
+                        ];
+            if(!empty($file_name)){
+               $employeeRecord['photo'] = $file_name; 
+            }
+            $empPerData = EmployeePersonalDetail::updateOrCreate([
+                              'user_id'   => $userData->id,
+                          ],$employeeRecord);
             $this->checkAndUpdateEmpFormStep($userData->id,1);
 
         }
-        if($request->hasFile('photo') && !empty($userData->id)) {
-                $uploadDocuments = new EmployeeDocumentsDetail;
-                $profilePic = $request->file('photo');
-                $file_name = time().'_profilepic_'.$profilePic->getClientOriginalName();
-                $file_path = $request->file('photo')->storeAs('profile_pics', $file_name, 'public');
-                $uploadDocuments->user_id = $userData->id;
-                $uploadDocuments->document_name = 'profile_pic';
-                $uploadDocuments->upload_file_name = $file_name; 
-                $uploadDocuments->save();
-            }
+       
             
 
         return json_encode(array('code'=>'success','data'=>$userData));
@@ -102,6 +125,8 @@ class EmployeeControllers extends Controller
             'doj' => 'required',
             'dol' => 'nullable',
             'status' => 'required',
+            'search_by_email' => 'nullable',
+            'search_by_name' => 'nullable',
         ]);
 
         if ($validator->fails()) {
@@ -113,8 +138,10 @@ class EmployeeControllers extends Controller
         }
         
         if(!empty(request('user_id'))){
-            $empCompanyData = EmployeeCompanyDetail::create([
-                            'user_id' => (!empty(request('user_id'))?request('user_id'):2),
+            $empCompanyData = EmployeeCompanyDetail::updateOrCreate([
+                              'user_id'   => request('user_id'),
+                          ],[
+                            'user_id' => (!empty(request('user_id'))?request('user_id'):''),
                             'employee_id' => (!empty(request('employee_id'))?request('employee_id'):''),
                             'department_id' => (!empty(request('department'))?request('department'):''),
                             'designation_id' => (!empty(request('designation'))?request('designation'):''),
@@ -140,16 +167,20 @@ class EmployeeControllers extends Controller
      */
     public function storeEmployeeFinancialDetail(Request $request)
     {
-
         $validator = Validator::make($request->all(),[
             'user_id' => 'required',
-            'basis_salary' => 'required|numeric|between:0,99.99',
+            'basic_salary' => 'required|numeric|between:0,99.99',
             // 'allowances' => 'required|numeric|between:0,99.99',
             // 'allowances_amount' => 'required|numeric|between:0,99.99',
             // 'deductions' => 'required|numeric|between:0,99.99',
             // 'deductions_amount' => 'required|numeric|between:0,99.99',
             'monthly_salary' => 'required|numeric|between:0,99.99',
             'yearly_salary' => 'required|numeric|between:0,99.99',
+            'account_holder_name' => 'required',
+            'account_number' => 'required|numeric',
+            'bank_name' => 'required',
+            'branch' => 'required',
+            'ifsc_code' => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -171,13 +202,26 @@ class EmployeeControllers extends Controller
                 $deductionArr[request('deductions')] = request('deductions_amount');
             }
             
-            $empFinancialData = EmployeeFinancialDetail::create([
+            $empFinancialData = EmployeeFinancialDetail::updateOrCreate([
+                              'user_id'   => request('user_id'),
+                          ],[
                             'user_id' => (!empty(request('user_id'))?request('user_id'):2),
-                            'basic_salary' => (!empty(request('basis_salary'))?request('basis_salary'):''),
+                            'basic_salary' => (!empty(request('basic_salary'))?request('basic_salary'):''),
                             'allowances' => (!empty(request('allowances'))?json_encode($allowancesArr):''),
                             'deductions' => (!empty(request('deductions'))?json_encode($deductionArr):''),
                             'monthly_salary' => (!empty(request('monthly_salary'))?request('monthly_salary'):''),
                             'yearly_salary' => (!empty(request('yearly_salary'))?request('yearly_salary'):''),
+                        ]);
+            //insert back detail
+             $empBankData = EmployeeBankDetail::updateOrCreate([
+                              'user_id'   => request('user_id'),
+                          ],[
+                            'user_id' => (!empty(request('user_id'))?request('user_id'):2),
+                            'account_holder_name' => (!empty(request('account_holder_name'))?request('account_holder_name'):''),
+                            'account_number' => (!empty(request('account_number'))?request('account_number'):''),
+                            'bank_name' => (!empty(request('bank_name'))?request('bank_name'):''),
+                            'branch' => (!empty(request('bank_name'))?request('branch'):''),
+                            'ifsc_code' => (!empty(request('ifsc_code'))?request('ifsc_code'):''),
                         ]);
             $this->checkAndUpdateEmpFormStep(request('user_id'), 3);
 
@@ -194,44 +238,44 @@ class EmployeeControllers extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function storeEmployeeBankAccountDetail(Request $request)
-    {
+    // public function storeEmployeeBankAccountDetail(Request $request)
+    // {
 
-        $validator = Validator::make($request->all(),[
-            'user_id' => 'required',
-            'account_holder_name' => 'required',
-            'account_number' => 'required|numeric',
-            'bank_name' => 'required',
-            'branch' => 'required',
-            'ifsc_code' => 'required',
-        ]);
+    //     $validator = Validator::make($request->all(),[
+    //         'user_id' => 'required',
+    //         'account_holder_name' => 'required',
+    //         'account_number' => 'required|numeric',
+    //         'bank_name' => 'required',
+    //         'branch' => 'required',
+    //         'ifsc_code' => 'required',
+    //     ]);
 
-        if ($validator->fails()) {
+    //     if ($validator->fails()) {
 
-          $validationError = [];
-          $validationErrors = $validator->errors();
-          return json_encode(array('code'=>'error_validate','errors'=>$validator->errors()));
+    //       $validationError = [];
+    //       $validationErrors = $validator->errors();
+    //       return json_encode(array('code'=>'error_validate','errors'=>$validator->errors()));
           
-        }
+    //     }
         
-        if(!empty(request('user_id'))){
+    //     if(!empty(request('user_id'))){
             
-            $empBankData = EmployeeBankDetail::create([
-                            'user_id' => (!empty(request('user_id'))?request('user_id'):2),
-                            'account_holder_name' => (!empty(request('account_holder_name'))?request('account_holder_name'):''),
-                            'account_number' => (!empty(request('account_number'))?request('account_number'):''),
-                            'bank_name' => (!empty(request('bank_name'))?request('bank_name'):''),
-                            'branch' => (!empty(request('bank_name'))?request('branch'):''),
-                            'ifsc_code' => (!empty(request('ifsc_code'))?request('ifsc_code'):''),
-                        ]);
-            $this->checkAndUpdateEmpFormStep(request('user_id'), 4);
+    //         $empBankData = EmployeeBankDetail::create([
+    //                         'user_id' => (!empty(request('user_id'))?request('user_id'):2),
+    //                         'account_holder_name' => (!empty(request('account_holder_name'))?request('account_holder_name'):''),
+    //                         'account_number' => (!empty(request('account_number'))?request('account_number'):''),
+    //                         'bank_name' => (!empty(request('bank_name'))?request('bank_name'):''),
+    //                         'branch' => (!empty(request('bank_name'))?request('branch'):''),
+    //                         'ifsc_code' => (!empty(request('ifsc_code'))?request('ifsc_code'):''),
+    //                     ]);
+    //         $this->checkAndUpdateEmpFormStep(request('user_id'), 4);
 
-             return json_encode(array('code'=>'success','data'=>$empBankData));
+    //          return json_encode(array('code'=>'success','data'=>$empBankData));
 
-        }else{
-            return json_encode(array('code'=>'error','message'=>'Something went wrong !! Please try again.'));
-        }
-    }
+    //     }else{
+    //         return json_encode(array('code'=>'error','message'=>'Something went wrong !! Please try again.'));
+    //     }
+    // }
 
     /**
      * Store a employee document details.
@@ -264,44 +308,28 @@ class EmployeeControllers extends Controller
          $userID = $request->input('user_id');
 
          if($request->hasFile('resume_file')) {
-            $uploadDocuments = new EmployeeDocumentsDetail;
             $resume = $request->file('resume_file');
             $file_name = time().'_resume_'.$resume->getClientOriginalName();
             $file_path = $request->file('resume_file')->storeAs('employee_documents', $file_name, 'public');
-            $uploadDocuments->user_id = $userID;
-            $uploadDocuments->document_name = 'resume';
-            $uploadDocuments->upload_file_name = $file_name; 
-            $uploadDocuments->save();
+            $this->uploadEmpDocument(request('user_id'),'resume',$file_name);
         } 
         if($request->hasFile('offer_letter')) {
-             $uploadDocuments = new EmployeeDocumentsDetail;
             $resume = $request->file('offer_letter');
             $file_name = time().'_resume_'.$resume->getClientOriginalName();
             $file_path = $request->file('offer_letter')->storeAs('employee_documents', $file_name, 'public');
-            $uploadDocuments->user_id = $userID;
-            $uploadDocuments->document_name = 'offer_letter';
-            $uploadDocuments->upload_file_name = $file_name;
-            $uploadDocuments->save(); 
+            $this->uploadEmpDocument(request('user_id'),'offer_letter',$file_name); 
         } 
         if($request->hasFile('joining_letter')) {
-             $uploadDocuments = new EmployeeDocumentsDetail;
             $resume = $request->file('joining_letter');
             $file_name = time().'_resume_'.$resume->getClientOriginalName();
             $file_path = $request->file('joining_letter')->storeAs('employee_documents', $file_name, 'public');
-            $uploadDocuments->user_id = $userID; 
-            $uploadDocuments->document_name = 'joining_letter';
-            $uploadDocuments->upload_file_name = $file_name; 
-            $uploadDocuments->save();
+            $this->uploadEmpDocument(request('user_id'),'joining_letter',$file_name); 
         } 
         if($request->hasFile('agreement')) {
-             $uploadDocuments = new EmployeeDocumentsDetail;
             $resume = $request->file('agreement');
             $file_name = time().'_resume_'.$resume->getClientOriginalName();
             $file_path = $request->file('agreement')->storeAs('employee_documents', $file_name, 'public');
-            $uploadDocuments->user_id = $userID;
-            $uploadDocuments->document_name = 'agreement';
-            $uploadDocuments->upload_file_name = $file_name; 
-            $uploadDocuments->save();
+             $this->uploadEmpDocument(request('user_id'),'agreement',$file_name); 
         } 
         //check if user is already exist
 
@@ -313,7 +341,7 @@ class EmployeeControllers extends Controller
             'google_drive' => (!empty(request('google_drive'))?request('google_drive'):''),
         ]);
 
-        $this->checkAndUpdateEmpFormStep($userID,5);
+        $this->checkAndUpdateEmpFormStep($userID,4);
  
        return json_encode(array('code'=>'success','data'=>[]));
      }else{
@@ -343,10 +371,54 @@ class EmployeeControllers extends Controller
         }
     }
 
+    public function uploadEmpDocument($user_id,$fileName,$storeFileName)
+    {
+        if(!empty($user_id) && !empty($fileName) && !empty($storeFileName) ){
+            EmployeeDocumentsDetail::updateOrCreate([
+                  'user_id'   => $user_id,
+                  'document_name'   => $fileName,
+              ],[
+                'user_id'   => $user_id,
+                 'document_name'   => $fileName,
+                'upload_file_name' => $storeFileName,
+            ]);
+
+            return true;
+        }
+    }
+
     public function getEmployeePersonalDetail(Request $request){
         if(!empty(request('userId'))){
             $employeeDetails = User::where('id',request('userId'))->with('employeePersonalInfo')->first();
+            //print_r($employeeDetails); die;
+            if(!empty($employeeDetails)){
+                $employeeDetails->profile_pic_src =  Storage::disk('public')->url('profile_pics/'.$employeeDetails->employeePersonalInfo->photo);
+            }
             return json_encode(array('code'=>'success','data'=>$employeeDetails));
+
+        }else{
+             return json_encode(array('code'=>'error','message'=>'Something went wrong !! Please try again.'));
+        }
+        
+
+    }
+
+    public function getEmployeeCompanyDetail(Request $request){
+        if(!empty(request('userId'))){
+            $employeeCompDetails = EmployeeCompanyDetail::where('user_id',request('userId'))->first();
+            return json_encode(array('code'=>'success','data'=>$employeeCompDetails));
+
+        }else{
+             return json_encode(array('code'=>'error','message'=>'Something went wrong !! Please try again.'));
+        }
+        
+
+    }
+
+     public function getEmployeeFinancialDetail(Request $request){
+        if(!empty(request('userId'))){
+            $employeeFinancialDetail = EmployeeFinancialDetail::where('user_id',request('userId'))->with('employeeFinancialInfo')->first();
+            return json_encode(array('code'=>'success','data'=>$employeeFinancialDetail));
 
         }else{
              return json_encode(array('code'=>'error','message'=>'Something went wrong !! Please try again.'));
@@ -359,7 +431,7 @@ class EmployeeControllers extends Controller
 
             $employeeCount = User::where('role_id',3)
                             ->whereHas('employeeAditionalInfo', function($q){
-                                    $q->where('step_completed',5);
+                                    $q->where('step_completed',4);
                             })->count();
             //$employeeCount = User::where('role_id',3)->with('employeePersonalInfo')->count();
             if(!empty($employeeCount)){
@@ -382,5 +454,19 @@ class EmployeeControllers extends Controller
         }else{
              return json_encode(array('code'=>'error','message'=>'Something went wrong !! Please try again.'));
         }
+    }
+
+    public function getEmployees(Request $request)
+    {
+        $show_records = env('DEFAULT_PAGINATION_RECORD');
+        $parmas = (!empty(request('params'))) ? request('params') : [];
+        if(!empty($parmas)){
+           $show_records = $parmas['show_records'];
+        }
+        $employees = User::where('role_id',3)->with('employeePersonalInfo','employeeCompanyInfo','employeeCompanyInfo.empDesignationInfo', 'employeeCompanyInfo.empDepartmentInfo' )->paginate($show_records);
+        
+       //print_r($employees); die;
+
+         return json_encode(array('code'=>'success','employees'=>$employees));
     }
 }
