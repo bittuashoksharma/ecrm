@@ -12,4 +12,10 @@ class Department extends Model
     protected $fillable = [
         'name'
     ];
+
+    public function designationInfo()
+    {
+        return $this->hasMany(Designation::class,'department_id','id');
+    }
+    
 }

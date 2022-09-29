@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+use Carbon\Carbon;
 
 class EmployeePersonalDetail extends Model
 {
@@ -26,4 +28,14 @@ class EmployeePersonalDetail extends Model
         'pf_account',
 
     ];
+    protected $appends = ['age'];
+
+    /**
+     * Accessor for Age.
+     */
+    public function getAgeAttribute()
+    {
+            $dateNow = Carbon::now();
+            return $dateNow->diffInYears(Carbon::parse($this->attributes['dob']));
+    }
 }

@@ -24,27 +24,28 @@ class EmployeeControllers extends Controller
     public function storeEmployeePersonalDetail(Request $request)
     {
         $inputs = [
-            'name' => 'required|max:255',
-            'father_name' => 'required|max:255',
-            'dob' => 'required|date',
-            'gender' => 'required',
-            'contact_number_1' => 'required|numeric',
-            'contact_number_2' => 'nullable|numeric',
-            'current_address' => 'nullable',
-            'permanent_address' => 'required',
-            'nationality' => 'required',
-            'maritial_status' => 'required',
-            'email' => 'required|unique:users,email,' .request('user_id'),
-            'password' => 'required|min:8',
-            'pan_number' => 'required|max:10|min:10',
-            'adhaar_number' => 'required|min:12|numeric',
-            'esi_number' => 'nullable',
-            'pf_account' => 'required',
+            // 'name' => 'required|max:255',
+            // 'father_name' => 'required|max:255',
+            // 'dob' => 'required|date',
+            // 'gender' => 'required',
+            // 'contact_number_1' => 'required|numeric',
+            // 'contact_number_2' => 'nullable|numeric',
+            // 'current_address' => 'nullable',
+            // 'permanent_address' => 'required',
+            // 'nationality' => 'required',
+            // 'maritial_status' => 'required',
+            // 'email' => 'required|unique:users,email,' .request('user_id'),
+            // 'password' => 'required|min:8',
+            // 'pan_number' => 'required|max:10|min:10',
+            // 'adhaar_number' => 'required|min:12|numeric',
+            // 'esi_number' => 'nullable',
+            // 'pf_account' => 'required',
         ];
         if(request('is_photo') == 0){
-            $inputs['phone'] = 'required|image|mimes:jpeg,bmp,png,jpg,svg';
+            $inputs['photo'] = 'required|image|mimes:jpeg,bmp,png,jpg,svg';
         }else{
-            $inputs['phone'] = 'nullable|sometimes|image|mimes:jpeg,bmp,png,jpg,svg';
+            $inputs['photo'] = 'nullable|sometimes|image|mimes:jpeg,bmp,png,jpg,svg';
+
         }
 
         $validator = Validator::make($request->all(),$inputs);
@@ -458,7 +459,15 @@ class EmployeeControllers extends Controller
 
     public function getEmployees(Request $request)
     {
-         $employees = User::where('role_id',3)->with('employeePersonalInfo')->paginate(10);
+        $show_records = env('DEFAULT_PAGINATION_RECORD');
+        $parmas = (!empty(request('params'))) ? request('params') : [];
+        if(!empty($parmas)){
+           $show_records = $parmas['show_records'];
+        }
+        $employees = User::where('role_id',3)->with('employeePersonalInfo','employeeCompanyInfo','employeeCompanyInfo.empDesignationInfo', 'employeeCompanyInfo.empDepartmentInfo' )->paginate($show_records);
+        
+       //print_r($employees); die;
+
          return json_encode(array('code'=>'success','employees'=>$employees));
     }
 }

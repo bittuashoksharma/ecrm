@@ -24,11 +24,11 @@
                  <div class="card-header py-1 small d-flex align-items-center d-flex justify-content-between align-items-center">
                     <div class="tableShowData d-flex justify-content-between align-items-center">
                        <span>Show</span> 
-                       <select class="form-control form-control-sm mx-2" name="" id="" style="width:70px">
-                          <option>10</option>
-                          <option>20</option>
-                          <option>30</option>
-                          <option>40</option>
+                       <select class="form-control form-control-sm mx-2" name="" id="select_show_page" @change="showRecord($event)" style="width:70px">
+                          <option value="10">10</option>
+                          <option value="20">20</option>
+                          <option value="30">30</option>
+                          <option value="40">40</option>
                        </select>
                        <span>Employees</span>
                     </div>
@@ -58,13 +58,32 @@
                           </tr>
                        </thead>
                        <tbody>
-                          <tr>
-                             <td>1</td>
-                             <td>John Doe</td>
-                             <td>40</td>
-                             <td>abc@gmail.com</td>
-                             <td>IT </td>
-                             <td>Manager </td>
+                        <!-- {{ employeesDataArr }} -->
+                          <tr v-for="(employeesData,index) in employeesDataArr">
+                             <td>{{ ((current_page - 1)*10) + (index + 1) }}</td>
+                             <td>{{ employeesData.name }}</td>
+                             <td>{{ employeesData.employee_personal_info.age }} </td>
+                             <td>{{ employeesData.email }}</td>
+                             <td>
+                              <span v-if="(employeesData.employee_company_info != null)">
+                                 <span v-if="(employeesData.employee_company_info.emp_department_info != null)">
+                                    {{ employeesData.employee_company_info.emp_department_info.name }}
+                                 </span>
+                                 <span v-else>-</span> 
+                              </span>
+                              <span v-else>-</span> 
+                              
+                             </td>
+                             <td> 
+                              <span v-if="(employeesData.employee_company_info != null)">
+                                 <span v-if="(employeesData.employee_company_info.emp_designation_info != null)">
+                                 {{ employeesData.employee_company_info.emp_designation_info.name }}
+                                 </span>
+                                 <span v-else>-</span>
+                              </span>
+                              <span v-else>-</span>                            
+                              
+                            </td>
                              <td><span class="badge bg-success">Approved</span></td>
                              <td>
                                 <div class="btnGroup">
@@ -81,54 +100,6 @@
                                    </div>
                                 </div>
                               </td>  
-                          </tr>
-                          <tr>
-                             <td>2</td>
-                             <td>John Doe</td>
-                             <td>40</td>
-                             <td>abc@gmail.com</td>
-                             <td>IT </td>
-                             <td>Manager </td>
-                             <td><span class="badge bg-success">Approved</span></td>
-                             <td>
-                                <div class="btnGroup">
-                                   <a href="#" class="btn btn-sm btn-warning py-0 px-1"><i class="far fa-eye"></i> </a>
-                                   <a href="#" class="btn btn-sm btn-primary py-0 px-1"><i class="fas fa-pencil-alt"></i> </a>
-                                   <a href="#" class="btn btn-sm btn-danger py-0 px-1"><i class="fas fa-trash-alt"></i> </a>
-                                   <div class="btn-group btn-group-sm btn-group-toggle" data-toggle="buttons">
-                                      <label class="btn btn-success py-0 px-1 active">
-                                      <input type="radio" name="options" id="option1" checked> Active
-                                      </label>
-                                      <label class="btn btn-success py-0 px-1">
-                                      <input type="radio" name="options" id="option2"> Deactive
-                                      </label>
-                                   </div>
-                                </div>
-                              </td>  
-                          </tr>
-                          <tr>
-                             <td>3</td>
-                             <td>John Doe</td>
-                             <td>40</td>
-                             <td>abc@gmail.com</td>
-                             <td>IT </td>
-                             <td>Manager </td>
-                             <td><span class="badge bg-success">Approved</span></td>
-                             <td>
-                                <div class="btnGroup">
-                                   <a href="#" class="btn btn-sm btn-warning py-0 px-1"><i class="far fa-eye"></i> </a>
-                                   <a href="#" class="btn btn-sm btn-primary py-0 px-1"><i class="fas fa-pencil-alt"></i> </a>
-                                   <a href="#" class="btn btn-sm btn-danger py-0 px-1"><i class="fas fa-trash-alt"></i> </a>
-                                   <div class="btn-group btn-group-sm btn-group-toggle" data-toggle="buttons">
-                                      <label class="btn btn-success py-0 px-1 active">
-                                      <input type="radio" name="options" id="option1" checked> Active
-                                      </label>
-                                      <label class="btn btn-success py-0 px-1">
-                                      <input type="radio" name="options" id="option2"> Deactive
-                                      </label>
-                                   </div>
-                                </div>
-                            </td>    
                           </tr>
                        </tbody>
                     </table>
@@ -136,23 +107,14 @@
                  <hr class="my-0">
                  <div class="card-footer py-1 clearfix d-flex justify-content-between align-items-center">
                     <div class="tableShowList small">
-                       Showing <span>3</span>of <span>102</span> Entries
+                       Showing <span>{{ employeesDataArr.length }}</span> of <span>{{totalRecord}}</span> Entries
                     </div>
-                    <nav class="ml-auto">
-                       <ul class="pagination pagination-sm mb-0">
-                          <li class="page-item disabled">
-                             <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
-                          </li>
-                          <li class="page-item"><a class="page-link" href="#">1</a></li>
-                          <li class="page-item active" aria-current="page">
-                             <a class="page-link" href="#">2 <span class="sr-only">(current)</span></a>
-                          </li>
-                          <li class="page-item"><a class="page-link" href="#">3</a></li>
-                          <li class="page-item">
-                             <a class="page-link" href="#">Next</a>
-                          </li>
-                       </ul>
-                    </nav>
+                     <div class="float-right">
+                     <span>
+                       <pagination :pagination="pagination_data" :current_page="current_page" :last_page="last_page" @pageURL="pageURL"></pagination>
+                     </span>
+                   </div>
+
                  </div>
               </div>
            </div>
@@ -165,17 +127,32 @@
 
   import { ref, onMounted , reactive} from 'vue';
   import Swal from 'sweetalert2'
-  
-  
 
-  const totalEmployeeCount = ref(0);
+  const employeesDataArr = ref({});
+  const pagination_data = ref({});
+  const totalRecord = ref(0);
+  const current_page = ref(1);
+  const show_records = ref(10);
+  const last_page = ref('');
   
- 
+  
   const getEmployees = () => {
-        axios.post('/api/get-employees').then((response) => {
+        pageURL('/api/get-employees/');
+  }
+  const showRecord = (event) => {
+        show_records.value = event.target.value;
+        getEmployees();
+  }
+
+  const pageURL = (url) => {
+        let params = { "current_page": current_page.value, "show_records": show_records.value};
+        axios.post(url,{ params : params}).then((response) => {
             if(response.data.code == 'success'){
-             console.log(response);
-               //totalEmployeeCount.value = response.data.totalEmployeeCount;
+               employeesDataArr.value   = response.data.employees.data; 
+               last_page.value    = response.data.employees.last_page;
+               pagination_data.value   = response.data.employees; 
+               totalRecord.value  = response.data.employees.total;
+               current_page.value = response.data.employees.current_page;
             }
         
         }).catch((e) => {
@@ -183,7 +160,6 @@
             // Swal.fire('Failed!','Something went wrong.', 'warning');
         });
   }
-
   
   onMounted (() => {
       getEmployees();

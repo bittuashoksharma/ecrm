@@ -56,5 +56,6 @@ class User extends Authenticatable
     {
         return $this->hasOne(EmployeeAdditionalDetail::class,'user_id','id');
     }
+    
 
 }
