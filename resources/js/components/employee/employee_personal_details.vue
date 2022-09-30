@@ -287,6 +287,7 @@
 	    axios.post('/api/add-employee-personal-detail',formData).then((response) => {
 	    		if(response.data.code == 'success'){
 	    				localStorage.setItem("emp_id", JSON.stringify(response.data.data.id));
+              
               Swal.fire({
                   title: 'Data Saved!',
                   text: "Employee Personal Detail has been saved!",
@@ -360,8 +361,10 @@
   }
   onMounted (() => {
       //localStorage.removeItem("emp_id");
+      //localStorage.setItem("emp_id", 2);
       getFilledFormSetup();
       getEmployeePersonalDetail();
+      
       toastr.info('Success');
   });
 

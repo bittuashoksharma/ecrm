@@ -36,5 +36,13 @@ Route::post('/api/add-employee-financial-detail',[App\Http\Controllers\API\Emplo
 Route::post('/api/add-employee-bank-account-detail',[App\Http\Controllers\API\EmployeeControllers::class, 'storeEmployeeBankAccountDetail']);
 Route::post('/api/add-employee-document-detail',[App\Http\Controllers\API\EmployeeControllers::class, 'storeEmployeeDocumentDetail']);
 Route::post('/api/add-employee-document-detail',[App\Http\Controllers\API\EmployeeControllers::class, 'storeEmployeeDocumentDetail']);
+Route::post('/api/create-offer-letter-pdf',[App\Http\Controllers\API\EmployeeControllers::class, 'createOfferLetterPdf']);
+
+
+Route::post('/api/setting-offer-letter',[App\Http\Controllers\API\SettingControllers::class, 'storeOfferLetterFormat']);
+Route::post('/api/get-offer-letter-format',[App\Http\Controllers\API\SettingControllers::class, 'getCompanyOfferLetterFormatDetail']);
+
+
+
 
 

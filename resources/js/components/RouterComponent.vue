@@ -51,6 +51,21 @@
          </li> -->
        </ul>
      </li>
+     <li class="nav-item">
+       <router-link to="/setting/offer-letter" active-class="active" class="nav-link">
+         <i class="nav-icon fas fa-gear"></i>
+         <p>Setting <i class="right fas fa-angle-left"></i>
+         </p>
+       </router-link>
+       <ul class="nav nav-treeview">
+        <li class="nav-item">
+           <router-link to="/setting/offer-letter" active-class="active" class="nav-link">
+             <i class="far fa-user nav-icon"></i>
+             <p>Offer Letter</p>
+           </router-link>
+         </li>
+        </ul>
+     </li>
      <!-- <li class="nav-item">
        <router-link to="/dashboard" active-class="active" class="nav-link">
          <i class="nav-icon fas fa-cog"></i>

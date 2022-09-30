@@ -23,7 +23,7 @@
             <div class="progress-panel col-md-12">
                 <progressbar-component ref="progressbarRef" :setup="4" :step_completed="step_completed"></progressbar-component>
             </div>
-        		<div class="col-md-6">
+        		<div class="col-md-10">
             	<div class="form-container">
               <div class="card-header">
                 <h2 class="card-title title_decoration">Document Details</h2>
@@ -31,8 +31,8 @@
               <div class="card-body">
                 <div class="form-group row">
                   
-                  <label for="resume" class="col-sm-4 col-form-label col-form-label-sm">Resume<span class="text-danger font-weight-bold">*</span></label>
-                  <div class="col-sm-8">
+                  <label for="resume" class="col-sm-2 col-form-label col-form-label-sm">Resume<span class="text-danger font-weight-bold">*</span></label>
+                  <div class="col-sm-6">
                     
                       <div class="custom-file">
                         <input type="file" class="form-control file-upload-input" v-on:change="onChangeResumeFile"  id="resume" />
@@ -44,8 +44,8 @@
                   </div>
                 </div> 
                 <div class="form-group row">
-                  <label for="offer_letter" class="col-sm-4 col-form-label col-form-label-sm">Offer Letter<span class="text-danger font-weight-bold">*</span></label>
-                  <div class="col-sm-8">
+                  <label for="offer_letter" class="col-sm-2 col-form-label col-form-label-sm">Offer Letter<span class="text-danger font-weight-bold">*</span></label>
+                  <div class="col-sm-6">
                       <div class="custom-file">
 
                         <input type="file" class="form-control file-upload-input" name="offer_letter" id="offer_letter"  v-on:change="onChangeOfferLetterFile"   />
@@ -55,10 +55,14 @@
                       </div>
                    
                   </div>
+                  <div class="col-sm-4">
+                      <button type="button" class="btn btn-primary float-sm-right mr-10" @click="createPdfForOfferLetter()">Download Letter</button>
+                      <button type="button" class="btn btn-primary float-sm-right mr-10" @click="showPopupForEditLetter()">Edit Letter</button>
+                  </div>
                 </div>
                 <div class="form-group row">
-                  <label for="joining_letter" class="col-sm-4 col-form-label col-form-label-sm">Joining Letter<span class="text-danger font-weight-bold">*</span></label>
-                  <div class="col-sm-8">
+                  <label for="joining_letter" class="col-sm-2 col-form-label col-form-label-sm">Joining Letter<span class="text-danger font-weight-bold">*</span></label>
+                  <div class="col-sm-6">
                    
                       <div class="custom-file">
 
@@ -71,8 +75,8 @@
                   </div>
                 </div>
                 <div class="form-group row">
-                  <label for="agreement" class="col-sm-4 col-form-label col-form-label-sm">Agreement<span class="text-danger font-weight-bold">*</span></label>
-                  <div class="col-sm-8">
+                  <label for="agreement" class="col-sm-2 col-form-label col-form-label-sm">Agreement<span class="text-danger font-weight-bold">*</span></label>
+                  <div class="col-sm-6">
                    
                       <div class="custom-file">
 
@@ -85,15 +89,15 @@
                 </div>
                 <div class="form-group row">
 
-                  <label for="name" class="col-sm-4 col-form-label">Dropbox URL<span class="text-danger font-weight-bold">*</span></label>
-                  <div class="col-sm-8">
+                  <label for="name" class="col-sm-2 col-form-label">Dropbox URL<span class="text-danger font-weight-bold">*</span></label>
+                  <div class="col-sm-6">
                     <input type="text" class="form-control" id="dropbox_url" placeholder="Enter Dropbox URL" v-model="documentFieldsData.dropbox_url" />
                     <div v-if="errors.dropbox_url" class="text-danger">{{ errors.dropbox_url[0] }}</div>
                   </div>
                 </div>
                 <div class="form-group row">
-                  <label for="name" class="col-sm-4 col-form-label">Google Drive<span class="text-danger font-weight-bold">*</span></label>
-                  <div class="col-sm-8">
+                  <label for="name" class="col-sm-2 col-form-label">Google Drive<span class="text-danger font-weight-bold">*</span></label>
+                  <div class="col-sm-6">
                     <input type="text" class="form-control" id="google_drive" placeholder="Enter Google Drive" v-model="documentFieldsData.google_drive" />
                     <div v-if="errors.google_drive" class="text-danger">{{ errors.google_drive[0] }}</div>
                   </div>
@@ -108,7 +112,9 @@
             
           </div>
       </div>
+      <offer-letter-format-component ref="offerLetterFormatRef"></offer-letter-format-component>
     </div>
+    
   </div>
 </template>
 
@@ -191,6 +197,7 @@
 
 
 import ProgressbarComponent from "@/components/employee/form_progress_bar.vue"
+import OfferLetterFormatComponent from "@/components/employee/offer_letter_format.vue"
 export default {
         data() {
             return {
@@ -208,12 +215,30 @@ export default {
             };
         },
         components: {
-          ProgressbarComponent
+          ProgressbarComponent,
+          OfferLetterFormatComponent
         },
         created() {
           this.getFilledFormSetup();
         },
         methods: {
+            showPopupForEditLetter(){
+              this.$refs.offerLetterFormatRef.showOfferLetterModel();
+              
+            },
+            createPdfForOfferLetter(){
+              let userId = localStorage.getItem('emp_id');
+              if((userId != '') && (userId != null)){
+                  axios.post('/api/create-offer-letter-pdf',{ 'userId':userId}).then((response) => {
+                      if(response.data.code == 'success'){
+                          window.open(response.data.pdf_path, '_blank');
+                      }
+                  }).catch((e) => {
+                        console.log(e);
+                        // Swal.fire('Failed!','Something went wrong.', 'warning');
+                  });
+              }
+            },
             goPreviousStepForm() {
                  window.location = '/employee/bank-account-detail';
             },
