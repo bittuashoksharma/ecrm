@@ -499,7 +499,7 @@ class EmployeeControllers extends Controller
                   $pdf_name = request('userId')."_offer_letter_".time().".pdf";
                   $snappy->generateFromHtml($pdfData, $pdf_path.$pdf_name);
                     
-                  $pdf_access_path = $pdf_path.$pdf_name;
+                  $pdf_access_path = url('/').'/storage/offer_pdf/'.$pdf_name;
 
                   return json_encode(array('code'=>'success','pdf_path'=>$pdf_access_path));
             }else{
