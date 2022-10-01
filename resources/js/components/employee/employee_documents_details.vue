@@ -55,6 +55,10 @@
                       </div>
                    
                   </div>
+                  <div class="col-sm-4">
+                      <button type="button" class="btn btn-primary float-sm-right mr-10" @click="createPdfForOfferLetter()">Download Letter</button>
+                      <button type="button" class="btn btn-primary float-sm-right mr-10" @click="showPopupForEditLetter()">Edit Letter</button>
+                  </div>
                 </div>
                 <div class="form-group row">
                   <label for="joining_letter" class="col-sm-4 col-form-label col-form-label-sm">Joining Letter<span class="text-danger font-weight-bold">*</span></label>
@@ -139,7 +143,9 @@
             
           </div>
       </div>
+      <offer-letter-format-component ref="offerLetterFormatRef"></offer-letter-format-component>
     </div>
+    
   </div>
 </template>
 
@@ -222,6 +228,7 @@
   
 
 import ProgressbarComponent from "@/components/employee/form_progress_bar.vue"
+import OfferLetterFormatComponent from "@/components/employee/offer_letter_format.vue"
 export default {
         data() {
             return {
@@ -244,7 +251,8 @@ export default {
             };
         },
         components: {
-          ProgressbarComponent
+          ProgressbarComponent,
+          OfferLetterFormatComponent
         },
         created() {
           this.getFilledFormSetup();
@@ -258,6 +266,23 @@ export default {
             removeOtherDocument(index){
               console.log(index);
               this.other_documents.splice(index, 1);
+            },
+            showPopupForEditLetter(){
+              this.$refs.offerLetterFormatRef.showOfferLetterModel();
+              
+            },
+            createPdfForOfferLetter(){
+              let userId = localStorage.getItem('emp_id');
+              if((userId != '') && (userId != null)){
+                  axios.post('/api/create-offer-letter-pdf',{ 'userId':userId}).then((response) => {
+                      if(response.data.code == 'success'){
+                          window.open(response.data.pdf_path, '_blank');
+                      }
+                  }).catch((e) => {
+                        console.log(e);
+                        // Swal.fire('Failed!','Something went wrong.', 'warning');
+                  });
+              }
             },
             goPreviousStepForm() {
                  window.location = '/employee/bank-account-detail';

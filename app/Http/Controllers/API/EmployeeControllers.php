@@ -15,7 +15,11 @@ use App\Models\EmployeeAdditionalDetail;
 use App\Models\Allowances;
 use App\Models\Deductions;
 
+use App\Models\EmployeeDocumentFormats;
 use Illuminate\Support\Facades\Storage;
+
+use Illuminate\Support\Facades\Route;
+use Knp\Snappy\Pdf;
 class EmployeeControllers extends Controller
 {
     /**
@@ -478,5 +482,43 @@ class EmployeeControllers extends Controller
         $deductionsData = Deductions::get();
         return json_encode(array('code'=>'success','allowancesData'=> $allowancesData,'deductionsData'=> $deductionsData));
     }
+    /**
+     * create pdf of offer letter.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function createOfferLetterPdf(Request $request)
+    {
+
+        
+        if(!empty(request('userId'))){
+            $myProjectDirectory = base_path();
+            $snappy = new Pdf($myProjectDirectory . '/vendor/h4cc/wkhtmltopdf-amd64/bin/wkhtmltopdf-amd64');
+            $employeeDocumentFormatData = EmployeeDocumentFormats::where('employee_id',request('userId'))->first();
+            if(!empty($employeeDocumentFormatData)){
+                  $pdfData = $employeeDocumentFormatData->description;
+
+                  
+                  $pdf_path = public_path('/storage/offer_pdf/');
+                  
+                  $pdf_name = request('userId')."_offer_letter_".time().".pdf";
+                  $snappy->generateFromHtml($pdfData, $pdf_path.$pdf_name);
+                    
+                  $pdf_access_path = url('/').'/storage/offer_pdf/'.$pdf_name;
+
+                  return json_encode(array('code'=>'success','pdf_path'=>$pdf_access_path));
+            }else{
+                return json_encode(array('code'=>'error','message'=>'Data Not Found.'));
+            }
+
+        }else{
+              return json_encode(array('code'=>'error','message'=>'Something went wrong !! Please try again.'));
+        }
+        
+        
+    }
+
+    
 }
  
