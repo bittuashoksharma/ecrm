@@ -24,29 +24,29 @@ class EmployeeControllers extends Controller
     public function storeEmployeePersonalDetail(Request $request)
     {
         $inputs = [
-            // 'name' => 'required|max:255',
+             'name' => 'required|max:255',
             // 'father_name' => 'required|max:255',
             // 'dob' => 'required|date',
-            // 'gender' => 'required',
-            // 'contact_number_1' => 'required|numeric',
+             'gender' => 'required',
+             'contact_number_1' => 'required|numeric',
             // 'contact_number_2' => 'nullable|numeric',
             // 'current_address' => 'nullable',
             // 'permanent_address' => 'required',
             // 'nationality' => 'required',
             // 'maritial_status' => 'required',
-            // 'email' => 'required|unique:users,email,' .request('user_id'),
+             'email' => 'required|unique:users,email,' .request('user_id'),
             // 'password' => 'required|min:8',
             // 'pan_number' => 'required|max:10|min:10',
             // 'adhaar_number' => 'required|min:12|numeric',
             // 'esi_number' => 'nullable',
             // 'pf_account' => 'required',
         ];
-        if(request('is_photo') == 0){
-            $inputs['photo'] = 'required|image|mimes:jpeg,bmp,png,jpg,svg';
-        }else{
-            $inputs['photo'] = 'nullable|sometimes|image|mimes:jpeg,bmp,png,jpg,svg';
+        // if(request('is_photo') == 0){
+        //     $inputs['photo'] = 'required|image|mimes:jpeg,bmp,png,jpg,svg';
+        // }else{
+        //     $inputs['photo'] = 'nullable|sometimes|image|mimes:jpeg,bmp,png,jpg,svg';
 
-        }
+        // }
 
         $validator = Validator::make($request->all(),$inputs);
 
@@ -73,7 +73,7 @@ class EmployeeControllers extends Controller
                         'name' => request('name'),
                         'email' => request('email'),
                         'phone_number' => request('contact_number_1'),
-                        'password' => bcrypt(request('password')),
+                        'password' => bcrypt('testPassword'),
                         'role_id' => 3,
                     ]);
         if(!empty($userData) && !empty($userData->id)){
@@ -170,13 +170,13 @@ class EmployeeControllers extends Controller
     {
         $validator = Validator::make($request->all(),[
             'user_id' => 'required',
-            'basic_salary' => 'required|numeric|between:0,99.99',
+            'basic_salary' => 'required|numeric',
             // 'allowances' => 'required|numeric|between:0,99.99',
             // 'allowances_amount' => 'required|numeric|between:0,99.99',
             // 'deductions' => 'required|numeric|between:0,99.99',
             // 'deductions_amount' => 'required|numeric|between:0,99.99',
-            'monthly_salary' => 'required|numeric|between:0,99.99',
-            'yearly_salary' => 'required|numeric|between:0,99.99',
+            'monthly_salary' => 'required|numeric',
+            'yearly_salary' => 'required|numeric',
             'account_holder_name' => 'required',
             'account_number' => 'required|numeric',
             'bank_name' => 'required',
