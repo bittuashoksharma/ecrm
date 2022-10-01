@@ -23,7 +23,7 @@
             <div class="progress-panel col-md-12">
                 <progressbar-component ref="progressbarRef" :setup="4" :step_completed="step_completed"></progressbar-component>
             </div>
-        		<div class="col-md-6">
+        		<div class="col-md-8">
             	<div class="form-container">
               <div class="card-header">
                 <h2 class="card-title title_decoration">Document Details</h2>
@@ -32,7 +32,7 @@
                 <div class="form-group row">
                   
                   <label for="resume" class="col-sm-4 col-form-label col-form-label-sm">Resume<span class="text-danger font-weight-bold">*</span></label>
-                  <div class="col-sm-8">
+                  <div class="col-sm-6">
                     
                       <div class="custom-file">
                         <input type="file" class="form-control file-upload-input" v-on:change="onChangeResumeFile"  id="resume" />
@@ -45,7 +45,7 @@
                 </div> 
                 <div class="form-group row">
                   <label for="offer_letter" class="col-sm-4 col-form-label col-form-label-sm">Offer Letter<span class="text-danger font-weight-bold">*</span></label>
-                  <div class="col-sm-8">
+                  <div class="col-sm-6">
                       <div class="custom-file">
 
                         <input type="file" class="form-control file-upload-input" name="offer_letter" id="offer_letter"  v-on:change="onChangeOfferLetterFile"   />
@@ -58,7 +58,7 @@
                 </div>
                 <div class="form-group row">
                   <label for="joining_letter" class="col-sm-4 col-form-label col-form-label-sm">Joining Letter<span class="text-danger font-weight-bold">*</span></label>
-                  <div class="col-sm-8">
+                  <div class="col-sm-6">
                    
                       <div class="custom-file">
 
@@ -72,7 +72,7 @@
                 </div>
                 <div class="form-group row">
                   <label for="agreement" class="col-sm-4 col-form-label col-form-label-sm">Agreement<span class="text-danger font-weight-bold">*</span></label>
-                  <div class="col-sm-8">
+                  <div class="col-sm-6">
                    
                       <div class="custom-file">
 
@@ -83,17 +83,48 @@
                       
                   </div>
                 </div>
+               <div class="form-group row" v-for="(other_document,keyDoc) in other_documents" :key="keyDoc">
+                   <input type="text" class="col-sm-4  form-control" v-model="other_document.name" name="other_document_name" placeholder="Document Name"/>
+                  <div class="col-sm-6">
+                   
+                      <div class="custom-file">
+
+                        <input type="file" class="form-control file-upload-input" name="other_document.attached_file" id="other_document_attached_file"/>
+                       <label class="custom-file-label" id="other_document_attached_file_label" for="other_document_attached_file">Choose File</label>
+                       <!-- <div v-if="errors.agreement" class="text-danger">{{ errors.agreement[0] }}</div>  -->
+                      </div>
+                      
+                  </div>
+                  <div class="col-sm-2">
+                        <span>
+                          <i class="fas fa-minus-circle"
+                            @click="removeOtherDocument(keyDoc)"
+                            v-show="keyDoc || ( !keyDoc && other_documents.length > 1)"
+                          ></i>
+                          <i
+                            class="fas fa-plus-circle"
+                            @click="addOtherDocument(keyDoc)"
+                            v-show="keyDoc == other_documents.length-1"
+                          ></i>
+                        </span>
+                    
+                  </div>
+                </div>
+           
+
+
+
                 <div class="form-group row">
 
                   <label for="name" class="col-sm-4 col-form-label">Dropbox URL<span class="text-danger font-weight-bold">*</span></label>
-                  <div class="col-sm-8">
+                  <div class="col-sm-6">
                     <input type="text" class="form-control" id="dropbox_url" placeholder="Enter Dropbox URL" v-model="documentFieldsData.dropbox_url" />
                     <div v-if="errors.dropbox_url" class="text-danger">{{ errors.dropbox_url[0] }}</div>
                   </div>
                 </div>
                 <div class="form-group row">
                   <label for="name" class="col-sm-4 col-form-label">Google Drive<span class="text-danger font-weight-bold">*</span></label>
-                  <div class="col-sm-8">
+                  <div class="col-sm-">
                     <input type="text" class="form-control" id="google_drive" placeholder="Enter Google Drive" v-model="documentFieldsData.google_drive" />
                     <div v-if="errors.google_drive" class="text-danger">{{ errors.google_drive[0] }}</div>
                   </div>
@@ -188,7 +219,7 @@
   //     toastr.info('Success');
   // });
 
-
+  
 
 import ProgressbarComponent from "@/components/employee/form_progress_bar.vue"
 export default {
@@ -205,6 +236,11 @@ export default {
               },
               step_completed:'',
               errors:{},
+              other_documents: [{
+                name: '',
+                attached_file: ''
+              }],
+
             };
         },
         components: {
@@ -214,6 +250,15 @@ export default {
           this.getFilledFormSetup();
         },
         methods: {
+
+            addOtherDocument(index){
+              console.log(index);
+              this.other_documents.push({ name: "", attached_file: "" });
+            },
+            removeOtherDocument(index){
+              console.log(index);
+              this.other_documents.splice(index, 1);
+            },
             goPreviousStepForm() {
                  window.location = '/employee/bank-account-detail';
             },

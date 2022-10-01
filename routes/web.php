@@ -36,5 +36,5 @@ Route::post('/api/add-employee-financial-detail',[App\Http\Controllers\API\Emplo
 Route::post('/api/add-employee-bank-account-detail',[App\Http\Controllers\API\EmployeeControllers::class, 'storeEmployeeBankAccountDetail']);
 Route::post('/api/add-employee-document-detail',[App\Http\Controllers\API\EmployeeControllers::class, 'storeEmployeeDocumentDetail']);
 Route::post('/api/add-employee-document-detail',[App\Http\Controllers\API\EmployeeControllers::class, 'storeEmployeeDocumentDetail']);
-
+Route::post('/api/add-allowances-and-deduction-list',[App\Http\Controllers\API\EmployeeControllers::class, 'getAllowancesAndDeductionList']);
 

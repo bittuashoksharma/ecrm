@@ -12,6 +12,9 @@ use App\Models\EmployeeFinancialDetail;
 use App\Models\EmployeeBankDetail;
 use App\Models\EmployeeDocumentsDetail;
 use App\Models\EmployeeAdditionalDetail;
+use App\Models\Allowances;
+use App\Models\Deductions;
+
 use Illuminate\Support\Facades\Storage;
 class EmployeeControllers extends Controller
 {
@@ -168,6 +171,7 @@ class EmployeeControllers extends Controller
      */
     public function storeEmployeeFinancialDetail(Request $request)
     {
+        //echo "<pre>request==="; print_R($request->all());die;
         $validator = Validator::make($request->all(),[
             'user_id' => 'required',
             'basic_salary' => 'required|numeric',
@@ -194,22 +198,13 @@ class EmployeeControllers extends Controller
         
         if(!empty(request('user_id'))){
 
-            $allowancesArr = array();
-            $deductionArr = array();
-            if(!empty(request('allowances'))){
-                $allowancesArr[request('allowances')] = request('allowances_amount');
-            }
-            if(!empty(request('deductions'))){
-                $deductionArr[request('deductions')] = request('deductions_amount');
-            }
-            
             $empFinancialData = EmployeeFinancialDetail::updateOrCreate([
                               'user_id'   => request('user_id'),
                           ],[
                             'user_id' => (!empty(request('user_id'))?request('user_id'):2),
                             'basic_salary' => (!empty(request('basic_salary'))?request('basic_salary'):''),
-                            'allowances' => (!empty(request('allowances'))?json_encode($allowancesArr):''),
-                            'deductions' => (!empty(request('deductions'))?json_encode($deductionArr):''),
+                            'allowances' => (!empty(request('allowances'))?request('allowances'):''),
+                            'deductions' => (!empty(request('deductions'))?request('deductions'):''),
                             'monthly_salary' => (!empty(request('monthly_salary'))?request('monthly_salary'):''),
                             'yearly_salary' => (!empty(request('yearly_salary'))?request('yearly_salary'):''),
                         ]);
@@ -419,6 +414,10 @@ class EmployeeControllers extends Controller
      public function getEmployeeFinancialDetail(Request $request){
         if(!empty(request('userId'))){
             $employeeFinancialDetail = EmployeeFinancialDetail::where('user_id',request('userId'))->with('employeeFinancialInfo')->first();
+            if(!empty($employeeFinancialDetail)){
+                $employeeFinancialDetail->allowances = json_decode($employeeFinancialDetail->allowances);
+                $employeeFinancialDetail->deductions = json_decode($employeeFinancialDetail->deductions);
+            }
             return json_encode(array('code'=>'success','data'=>$employeeFinancialDetail));
 
         }else{
@@ -470,4 +469,14 @@ class EmployeeControllers extends Controller
 
          return json_encode(array('code'=>'success','employees'=>$employees));
     }
+
+
+    public function getAllowancesAndDeductionList(Request $request)
+    {
+        
+        $allowancesData = Allowances::get();
+        $deductionsData = Deductions::get();
+        return json_encode(array('code'=>'success','allowancesData'=> $allowancesData,'deductionsData'=> $deductionsData));
+    }
 }
+ 
