@@ -16,15 +16,15 @@ return new class extends Migration
         Schema::create('employee_personal_details', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('user_id');
-            $table->string('father_name');
-            $table->date('dob');
+            $table->string('father_name')->nullable();
+            $table->date('dob')->nullable();
             $table->string('gender');
             $table->string('phone_number_2')->nullable();
             $table->text('current_address')->nullable();
-            $table->text('permanent_address');
-            $table->string('nationality');
-            $table->string('maritial_status');
-            $table->string('photo');
+            $table->text('permanent_address')->nullable();
+            $table->string('nationality')->nullable();
+            $table->string('maritial_status')->nullable();
+            $table->string('photo')->nullable();
             $table->timestamps();
         });
     }

@@ -39,14 +39,14 @@
                   </div>
                 </div>
                 <div class="form-group row">
-                  <label for="father_name" class="col-sm-4 col-form-label col-form-label-sm">Father Name<span class="text-danger font-weight-bold">*</span></label>
+                  <label for="father_name" class="col-sm-4 col-form-label col-form-label-sm">Father Name</label>
                   <div class="col-sm-8">
                     <input type="text" v-model="form.father_name" class="form-control form-control-sm" id="father_name" placeholder="Enter Father Name"  />
                     <div v-if="errors.father_name" class="text-danger">{{ errors.father_name[0] }}</div>
                   </div>
                 </div>
                 <div class="form-group row">
-                  <label for="dob" class="col-sm-4 col-form-label col-form-label-sm">Date of Birth<span class="text-danger font-weight-bold">*</span></label>
+                  <label for="dob" class="col-sm-4 col-form-label col-form-label-sm">Date of Birth</label>
                   <div class="col-sm-8">
                     <input type="date" v-model="form.dob" class="form-control form-control-sm" id="dob" placeholder="Enter Date of Birth"  />
                     <div v-if="errors.dob" class="text-danger">{{ errors.dob[0] }}</div>
@@ -65,14 +65,14 @@
                   </div>
                 </div>
                 <div class="form-group row">
-                  <label for="pan_number" class="col-sm-4 col-form-label col-form-label-sm">PAN Number <span class="text-danger font-weight-bold">*</span></label>
+                  <label for="pan_number" class="col-sm-4 col-form-label col-form-label-sm">PAN Number </label>
                   <div class="col-sm-8">
                     <input type="text" v-model="form.pan_number" name="pan_number" id="pan_number" class="form-control form-control-sm" placeholder="Enter PAN Number"  maxlength="10"/>
                     <div v-if="errors.pan_number" class="text-danger">{{ errors.pan_number[0] }}</div>
                   </div>
                 </div>
                 <div class="form-group row">
-                  <label for="adhaar_number"  class="col-sm-4 col-form-label col-form-label-sm">Adhaar Number <span class="text-danger font-weight-bold">*</span></label>
+                  <label for="adhaar_number"  class="col-sm-4 col-form-label col-form-label-sm">Adhaar Number </label>
                   <div class="col-sm-8">
                     <input type="text" v-model="form.adhaar_number" name="adhaar_number" id="adhaar_number" class="form-control form-control-sm" placeholder="Enter Adhaar Number"  maxlength="12" />
                     <div v-if="errors.adhaar_number" class="text-danger">{{ errors.adhaar_number[0] }}</div>
@@ -86,7 +86,7 @@
                   </div>
                 </div> 
                 <div class="form-group row">
-                  <label for="esi_number"  class="col-sm-4 col-form-label col-form-label-sm">PF Account <span class="text-danger font-weight-bold">*</span></label>
+                  <label for="esi_number"  class="col-sm-4 col-form-label col-form-label-sm">PF Account </label>
                   <div class="col-sm-8">
                         <div class="custom-control custom-radio d-inline-flex">
                           <div class="p-3">
@@ -103,7 +103,7 @@
                 </div>
                 
                 <div class="form-group row">
-                  <label for="nationality" class="col-sm-4 col-form-label col-form-label-sm">Nationality<span class="text-danger font-weight-bold">*</span></label>
+                  <label for="nationality" class="col-sm-4 col-form-label col-form-label-sm">Nationality</label>
                   <div class="col-sm-8">
                     <select class="form-control form-control-sm select2" v-model="form.nationality" name="nationality" id="nationality" style="width: 100%;" >
                       <option value="">Select Nationality</option>
@@ -113,7 +113,7 @@
                   </div>
                 </div>
                 <div class="form-group row">
-                  <label for="maritial_status" class="col-sm-4 col-form-label col-form-label-sm">Maritial Status<span class="text-danger font-weight-bold">*</span></label>
+                  <label for="maritial_status" class="col-sm-4 col-form-label col-form-label-sm">Maritial Status</label>
                   <div class="col-sm-8">
                     <select class="form-control form-control-sm select2" v-model="form.maritial_status" name="maritial_status" id="maritial_status" style="width: 100%;" >
                       <option value="">Select Maritial Status</option>
@@ -124,7 +124,7 @@
                   </div>
                 </div>
                  <div class="form-group row">
-                  <label for="photo" class="col-sm-4 col-form-label col-form-label-sm">Photo<span class="text-danger font-weight-bold">*</span></label>
+                  <label for="photo" class="col-sm-4 col-form-label col-form-label-sm">Photo</label>
                   <div class="col-sm-8">
                    
                       <div class="custom-file">
@@ -150,7 +150,7 @@
               </div>
               <div class="card-body">
                 <div class="form-group row">
-                  <label for="contact_number_1" class="col-sm-4 col-form-label col-form-label-sm">Contact Number 1</label>
+                  <label for="contact_number_1" class="col-sm-4 col-form-label col-form-label-sm">Contact Number 1<span class="text-danger font-weight-bold">*</span></label>
                   <div class="col-sm-8">
                     <input type="text" v-model="form.contact_number_1" name="contact_number_1" id="contact_number_1" class="form-control form-control-sm" placeholder="Enter Contact Number 1"  maxlength="10"/>
                     <div v-if="errors.contact_number_1" class="text-danger">{{ errors.contact_number_1[0] }}</div>
@@ -171,7 +171,7 @@
                   </div>
                 </div>
                 <div class="form-group row">
-                  <label for="permanent_address" class="col-sm-4 col-form-label col-form-label-sm">Permanent Address<span class="text-danger font-weight-bold">*</span></label>
+                  <label for="permanent_address" class="col-sm-4 col-form-label col-form-label-sm">Permanent Address</label>
                   <div class="col-sm-8">
                     <textarea class="form-control form-control-sm" v-model="form.permanent_address" name="permanent_address" id="permanent_address" placeholder="Enter Permanent Address" ></textarea>
                     <div v-if="errors.permanent_address" class="text-danger">{{ errors.permanent_address[0] }}</div>
@@ -192,13 +192,13 @@
                     <div v-if="errors.email" class="text-danger">{{ errors.email[0] }}</div>
                   </div>
                 </div>
-                <div class="form-group row">
+                <!-- <div class="form-group row">
                   <label for="password" class="col-sm-4 col-form-label col-form-label-sm">Password<span class="text-danger font-weight-bold">*</span></label>
                   <div class="col-sm-8">
                     <input type="password" v-model="form.password" name="password" id="password" class="form-control form-control-sm"  placeholder="Enter Password"  />
                     <div v-if="errors.password" class="text-danger">{{ errors.password[0] }}</div>
                   </div>
-                </div>
+                </div> -->
               </div>
             </div>
             </div>
@@ -245,7 +245,7 @@
         nationality: '',
         maritial_status: '',
         email: '',
-        password: '',
+        //password: '',
         photo:'',
         pan_number:'',
         adhaar_number:'',
@@ -276,7 +276,7 @@
       formData.append('nationality', form.nationality);
       formData.append('maritial_status', form.maritial_status);
       formData.append('email', form.email);
-      formData.append('password', form.password);
+      //formData.append('password', form.password);
       formData.append('photo', form.photo);
       formData.append('pan_number', form.pan_number);
       formData.append('adhaar_number', form.adhaar_number);
