@@ -37,4 +37,8 @@ Route::post('/api/add-employee-bank-account-detail',[App\Http\Controllers\API\Em
 Route::post('/api/add-employee-document-detail',[App\Http\Controllers\API\EmployeeControllers::class, 'storeEmployeeDocumentDetail']);
 Route::post('/api/add-employee-document-detail',[App\Http\Controllers\API\EmployeeControllers::class, 'storeEmployeeDocumentDetail']);
 
+Route::post('/api/permissions', [App\Http\Controllers\API\PermissionsController::class,'storePermission']);
+Route::post('/api/get-permission',[App\Http\Controllers\API\PermissionsController::class, 'getPermission']);
+
+
 
