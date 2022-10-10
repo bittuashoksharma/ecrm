@@ -17,7 +17,6 @@ class SettingControllers extends Controller
      */
     public function storeOfferLetterFormat(Request $request)
     {
-
         $requestData = $request->all();
        
        
