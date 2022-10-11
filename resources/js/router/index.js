@@ -8,6 +8,7 @@ import FinancialDetail from '@/components/employee/employee_financial_details.vu
 import BankAccountDetail from '@/components/employee/employee_bank_account_details.vue';
 import DocumentsDetail from '@/components/employee/employee_documents_details.vue';
 import PermissionListing from '@/components/tools/permission_listings.vue';
+import RoleListing from '@/components/tools/role_listings.vue';
 
 import NotFound from '@/components/NotFound.vue';
 
@@ -56,6 +57,11 @@ const routes = [
 		path:'/permission-listing',
 		name:'permission-listing',
 		component:PermissionListing,
+	},
+	{
+		path:'/role-listing',
+		name:'role-listing',
+		component:RoleListing,
 	},
 	{
 	  path: '/:pathMatch(.*)*',

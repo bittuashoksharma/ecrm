@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Http\Controllers\API;
-
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -11,10 +10,7 @@ use Illuminate\Support\Facades\Validator;
 class PermissionsController extends Controller
 {
 
-     public function __construct()
-    {
-        //$this->middleware('auth:api');
-    }
+     
     /**
      * Display a listing of the resource.
      *
@@ -57,56 +53,28 @@ class PermissionsController extends Controller
           return json_encode(array('code'=>'error_validate','errors'=>$validator->errors()));
           
         }
-        $data['name'] = $request->input('name');
-        $data['guard_name'] = 'web';
-        $permissionData = Permission::create($data);
+        
+        $permissionData = Permission::updateOrCreate(
+                            [
+                                'id' => $request->input('id')
+                            ],
+                            [
+                                'name' => $request->input('name'),
+                                'guard_name' => 'web',
+                            ]);
 
         return json_encode(array('code'=>'success','data'=>$permissionData));
     }
 
+
     /**
-     * Display the specified resource.
+     * get a listing of the resource.
      *
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function getPermissionListing(Request $request)
     {
-        return Permission::findOrFail($id);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-
-        $data = $request->validate([
-            'name' => 'required',
-        ]);
-        $data['guard_name'] = 'web';
-        $data['group']       = $request->group;
-        $permission = Permission::findOrFail($id);
-        $permission->update($data);
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {   
-        try {
-            Permission::find($id)->delete();
-            return ['status'=>'success'];
-        } catch (ModelNotFoundException $e) {
-            return ['status'=>'error'];
-        }
+        $permission = Permission::get();
+        return json_encode(array('code'=>'success','permission'=>$permission));
     }
 }

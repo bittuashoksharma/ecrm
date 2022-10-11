@@ -42,7 +42,7 @@
                           </div>
                        </div>
                     </div>
-                    <button style="float: right; margin-left: 5px;" type="button" class="btn btn-primary pull-right btn-gradient" v-on:click="addPermissionModel()" data-toggle="modal" data-target="#permissionModal">
+                    <button style="float: right; margin-left: 5px;" type="button" class="btn btn-primary pull-right btn-gradient" v-on:click="addPermissionModel()" >
                         <i class="fas fa-plus"></i> Add Permission
                     </button>
                  </div>
@@ -63,9 +63,10 @@
                              <td>{{ permissionData.name }}</td>
                              <td>{{ permissionData.created_at }}</td>
                              <td>
-                                <div class="btnGroup">
+                                <div class="btnGroup" v-on:click="editPermissionModel(permissionData)">
                                     <a href="#" class="btn btn-sm btn-primary py-0 px-1"><i class="fas fa-pencil-alt"></i> </a>
                                 </div>
+                                
                               </td>  
                           </tr>
                        </tbody>
@@ -98,7 +99,7 @@
                             </button>
                         </div>
 
-                        <form @submit.prevent="editMode ? updatePermissionModule() : createPermissionModule()">
+                        <form @submit.prevent="createPermissionModule()">
                             <div class="modal-body">
                                 <div class="form-group">
                                     <input v-model="form.name" type="text" name="name" id="name" class="form-control" placeholder="Name">
@@ -120,11 +121,15 @@
      <!--container-fluid-->
   </section>
 </template>
+<script>
+    import jQuery from "jquery";
+    const $ = jQuery;
+</script>
 <script setup>
 
   import { ref, onMounted , reactive} from 'vue';
   import Swal from 'sweetalert2'
-
+  
   const permissionDataArr = ref({});
   const pagination_data = ref({});
   const totalRecord = ref(0);
@@ -137,12 +142,20 @@
   const search_field = ref('');
   
   const form = reactive({
+        id:'',
         name: '',
   });
   const addPermissionModel = () => {
-        //$("#permissionModal").modal('show');
-        form.name.value = "";
+        form.id = "";
+        form.name = "";
+        $("#permissionModal").modal('show');
         editMode.value = false;
+  }
+  const editPermissionModel = (data) => {
+        form.id = data.id;
+        form.name = data.name;
+        $("#permissionModal").modal('show');
+        editMode.value = true;
   }
   const createPermissionModule = () => {
         //$("#permissionModal").modal('show');
@@ -158,7 +171,11 @@
                   cancelButtonColor: '#d33',
                   confirmButtonText: 'ok'
                 }).then((result) => {
-                    form.name.value = "";
+                    form.id = "";
+                    form.name = "";
+                    getPermission();
+                    $("#permissionModal").modal('hide');
+
                 })
               
           }else if(response.data.code == 'error_validate'){
@@ -172,10 +189,7 @@
           console.log(e);
     });
   }
-  const updatePermissionModule = (event) => {
-        //$("#permissionModal").modal('show');
-        editMode.value = false;
-  }
+
   const getPermission = () => {
         pageURL('/api/get-permission/');
   }
