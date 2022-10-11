@@ -13,10 +13,12 @@ use App\Models\EmployeeBankDetail;
 use App\Models\EmployeeDocumentsDetail;
 use App\Models\EmployeeAdditionalDetail;
 use App\Models\EmployeeDocumentFormats;
+use App\Models\CompanyDocumentFormat;
 use Illuminate\Support\Facades\Storage;
-
 use Illuminate\Support\Facades\Route;
 use Knp\Snappy\Pdf;
+use Auth;
+ 
 class EmployeeControllers extends Controller
 {
     /**
@@ -513,5 +515,74 @@ class EmployeeControllers extends Controller
         
     }
 
+    public function getEmployeeOfferLetterContent(Request $request){
+        if(!empty(request('userId'))){
+            $companyDocumentFormatDetail = CompanyDocumentFormat::where('company_id',Auth::id())->where('alias','offer_letter')->first();
+            //echo "<pre>companyDocumentFormatDetail=="; print_R(request('userId'));die;
+            $allowed_vars = $companyDocumentFormatDetail->allowed_vars;
+            $description = $companyDocumentFormatDetail->description;
+                
+            if(!empty($companyDocumentFormatDetail)){
+
+                $employeeDetails = User::where('id',request('userId'))->with('employeePersonalInfo','employeeCompanyInfo','employeeCompanyInfo.empDesignationInfo', 'employeeCompanyInfo.empDepartmentInfo' )->first();
+                if(!empty($employeeDetails)){
+                    
+                    $replace_fields['candidate_name'] = $employeeDetails->name;
+                    $replace_fields['address'] = @$employeeDetails->employeePersonalInfo->current_address;
+                    $replace_fields['hire_position'] = @$employeeDetails->employeeCompanyInfo->empDesignationInfo->name;
+                    $replace_fields['company_name'] = 'HR SOLUTION PVT LTD';
+
+                    $replace_with = explode(',',$companyDocumentFormatDetail->allowed_vars);
+                    $new_description = str_replace($replace_with,$replace_fields,$description);
+                    return json_encode(array('code'=>'success','letter_content'=>$new_description));
+                   
+                }
+                
+            }else{
+                 return json_encode(array('code'=>'error','message'=>'Data not found.'));
+            }
+        }else{
+             return json_encode(array('code'=>'error','message'=>'Something went wrong !! Please try again.'));
+        }
+    }
+
+    public function storeEmployeeLetterDetails(Request $request){
+        
+        $validator = Validator::make($request->input('ckFieldsData'),[
+            'description' => 'required',  
+        ]);
+
+       if ($validator->fails()) {
+
+         $validationError = [];
+         $validationErrors = $validator->errors();
+         return json_encode(array('code'=>'error_validate','errors'=>$validator->errors()));
+         
+       }
+        $requestData = $request->input('ckFieldsData');
+        if(!empty($requestData['emp_id'])){
+            $employeeDocumentFormatDetails = EmployeeDocumentFormats::updateOrCreate(
+                                            [
+                                                'company_id' => Auth::id(),
+                                                'employee_id' => $requestData['emp_id'],
+                                                'title' => 'offer_letter',
+                                            ],[
+                                                'company_id' => Auth::id(),
+                                                'employee_id' => $requestData['emp_id'],
+                                                'title' => 'offer_letter',
+                                                'description' => $requestData['description'],
+                                            ]);
+            if(!empty($employeeDocumentFormatDetails)){
+
+                 return json_encode(array('code'=>'success','document_details'=>$employeeDocumentFormatDetails));
+                   
+            }else{
+                 return json_encode(array('code'=>'error','message'=>'Data not found.'));
+            }
+        }else{
+             return json_encode(array('code'=>'error','message'=>'Something went wrong !! Please try again.'));
+        }
+    }
+    
     
 }

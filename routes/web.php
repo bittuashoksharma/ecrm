@@ -41,7 +41,8 @@ Route::post('/api/create-offer-letter-pdf',[App\Http\Controllers\API\EmployeeCon
 
 Route::post('/api/setting-offer-letter',[App\Http\Controllers\API\SettingControllers::class, 'storeOfferLetterFormat']);
 Route::post('/api/get-offer-letter-format',[App\Http\Controllers\API\SettingControllers::class, 'getCompanyOfferLetterFormatDetail']);
-
+Route::post('/api/get-employee-offer-letter-content',[App\Http\Controllers\API\EmployeeControllers::class, 'getEmployeeOfferLetterContent']);
+Route::post('/api/store-employee-letter-datails',[App\Http\Controllers\API\EmployeeControllers::class, 'storeEmployeeLetterDetails']);
 
 
 

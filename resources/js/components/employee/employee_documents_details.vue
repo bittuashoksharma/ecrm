@@ -112,7 +112,7 @@
             
           </div>
       </div>
-      <offer-letter-format-component ref="offerLetterFormatRef"></offer-letter-format-component>
+      <offer-letter-format-component ref="offerLetterFormatRef" :employeeOfferLetterCon="employeeOfferLetterContent"></offer-letter-format-component>
     </div>
     
   </div>
@@ -122,6 +122,8 @@
   import { ref, onMounted , reactive} from 'vue';
   import Swal from 'sweetalert2'
   import { useToastr } from '../../toastr.js';
+  import jQuery from "jquery";
+  const $ = jQuery;
   //const errors = ref('');
   const toastr = useToastr();
 //   const form = reactive({
@@ -212,14 +214,17 @@ export default {
               },
               step_completed:'',
               errors:{},
+              employeeOfferLetterContent:'',
             };
-        },
+        }, 
         components: {
           ProgressbarComponent,
           OfferLetterFormatComponent
         },
-        created() {
+        created() { 
+          this.getEmployeeOfferLetterContent();
           this.getFilledFormSetup();
+        
         },
         methods: {
             showPopupForEditLetter(){
@@ -288,6 +293,22 @@ export default {
                     });
                 }
             },
+            getEmployeeOfferLetterContent(){
+                let userId = localStorage.getItem('emp_id');
+                if((userId != '') && (userId != null)){
+                    axios.post('/api/get-employee-offer-letter-content',{ 'userId':userId}).then((response) => {
+                        if(response.data.code == 'success'){
+                           this.employeeOfferLetterContent = response.data.letter_content;
+
+
+                        }
+                    }).catch((e) => {
+                          console.log(e);
+                          // Swal.fire('Failed!','Something went wrong.', 'warning');
+                    });
+                }
+            },
+            
             addEmployeeDocumentDetail(e) {
                 e.preventDefault();
                 let existingObj = this.documentFieldsData;
