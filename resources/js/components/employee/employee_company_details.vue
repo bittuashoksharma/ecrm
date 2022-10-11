@@ -38,7 +38,7 @@
                   </div>
                 </div>
                 <div class="form-group row">
-                  <label for="department" class="col-sm-4 col-form-label col-form-label-sm">Department<span class="text-danger font-weight-bold">*</span></label>
+                  <label for="department" class="col-sm-4 col-form-label col-form-label-sm">Department</label>
                   <div class="col-sm-8">
                     <select class="form-control form-control-sm select2" style="width: 100%;" v-model="form.department" name="department" id="department" >
                       <option value="">Select Department</option>
@@ -49,7 +49,7 @@
                   </div>
                 </div>
                 <div class="form-group row">
-                  <label for="designation" class="col-sm-4 col-form-label col-form-label-sm">Designation<span class="text-danger font-weight-bold">*</span></label>
+                  <label for="designation" class="col-sm-4 col-form-label col-form-label-sm">Designation</label>
                   <div class="col-sm-8">
                     <select class="form-control form-control-sm select2" style="width: 100%;" v-model="form.designation" name="designation" id="designation" >
                       <option value="">Select Designation</option>
@@ -74,7 +74,7 @@
                   </div>
                 </div>
                 <div class="form-group row">
-                  <label for="status" class="col-sm-4 col-form-label col-form-label-sm">Status<span class="text-danger font-weight-bold">*</span></label>
+                  <label for="status" class="col-sm-4 col-form-label col-form-label-sm">Status</label>
                   <div class="col-sm-8">
                     <select class="form-control form-control-sm select2" style="width: 100%;" v-model="form.status" name="status" id="status" >
                       <option value="">Select Status</option>
@@ -113,7 +113,7 @@
             <div class="card-footer col-md-12 ">
               <button type="submit" @click="addEmployeeCompanyDetail" class="btn btn-primary float-sm-right mr-10">Submit & Continue</button>
               <button type="button" @click="goPreviousStepForm" class="btn btn-primary mr-20 float-right mr-10">Previous</button>
-            </div>
+            </div> 
           </div>
         
       </div>
