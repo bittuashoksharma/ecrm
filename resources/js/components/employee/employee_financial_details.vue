@@ -32,51 +32,78 @@
               </div>
               <div class="card-body">
                 <div class="form-group row">
-                  <label for="basic_salary" class="col-sm-6 col-form-label col-form-label-sm">Basic Salary<span class="text-danger font-weight-bold">*</span></label>
-                  <div class="col-sm-6">
-                    <input type="text" v-model="form.basic_salary" class="form-control form-control-sm" id="basic_salary" placeholder="Enter Basic Salary"  />
+                  <label for="basic_salary" class="col-sm-5 col-form-label col-form-label-sm">Basic Salary<span class="text-danger font-weight-bold">*</span></label>
+                  <div class="col-sm-5">
+                    <input type="number" v-model="form.basic_salary" class="form-control form-control-sm" id="basic_salary" placeholder="Enter Basic Salary"  />
                     <div v-if="errors.basic_salary" class="text-danger">{{ errors.basic_salary[0] }}</div>
                   </div>
                 </div>
-                <div class="form-group row">
-                <div class="col-sm-6">
-                  <select class="form-control form-control-sm select2" style="width: 100%;" v-model="form.allowances" name="allowances" id="allowances" >
-                    <option value="">Select Allowances</option>
-                    <option value="1">Allowances 1</option>
-                    <option value="2">Allowances 2</option>
+                <div class="form-group row" v-for="(allowance,k) in allowances" :key="k">
+                <div class="col-sm-5">
+                  <select class="form-control form-control-sm select2" style="width: 100%;" v-model="form.allowances" :name="allowances" id="allowances" >
+                    <option selected = "selected">Select Allowances</option>
+                    <option v-for="allowancesData in allowancesList" :value="allowancesData.id">{{ allowancesData.name }}</option>
                   </select>
+                  
                   </div>
                   <div v-if="errors.allowances" class="text-danger">{{ errors.allowances[0] }}</div>
-                  <div class="col-sm-6">
-                    <input type="text" v-model="form.allowances_amount" class="form-control form-control-sm" id="allowances_amount" placeholder="Enter Allowances Amount"  />
+                  <div class="col-sm-5">
+                    <input type="number" v-model="form.allowances_amount" class="form-control form-control-sm" id="allowances_amount" placeholder="Enter Allowances Amount" name />
                     <div v-if="errors.allowances_amount" class="text-danger">{{ errors.allowances_amount[0] }}</div>
                   </div>
+                  <div class="col-sm-2">
+                    <button type="button" class="btn btn-danger" @click="removeAllowance(k)" v-show="k || ( !k && allowances.length > 1)">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-minus" viewBox="0 0 16 16">
+  <path d="M5.5 8a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1H6a.5.5 0 0 1-.5-.5z"/>
+  <path d="M4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H4zm0 1h8a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z"/>
+</svg>
+                    </button>
+                    <button type="button" class="btn btn-primary" @click="addAllowance(k)" v-show="k == allowances.length-1">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-plus" viewBox="0 0 16 16">
+  <path d="M8.5 6a.5.5 0 0 0-1 0v1.5H6a.5.5 0 0 0 0 1h1.5V10a.5.5 0 0 0 1 0V8.5H10a.5.5 0 0 0 0-1H8.5V6z"/>
+  <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2zm10-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1z"/>
+</svg>
+                    </button>
+                  </div>
                 </div>
-                <div class="form-group row">
-                <div class="col-sm-6">
+                <div class="form-group row"  v-for="(deduction,key_deduction) in deductions" :key="key_deduction">
+                <div class="col-sm-5">
                   <select class="form-control form-control-sm select2" style="width: 100%;" v-model="form.deductions" name="deductions" id="deductions" >
                     <option value="">Select Deduction</option>
-                    <option value="1">Deduction 1</option>
-                    <option value="2">Deduction 2</option>
+                    <option v-for="deductionData in deductionList" :value="deductionData.id">{{ deductionData.name }}</option>
                   </select>
                   </div>
                   <div v-if="errors.deductions" class="text-danger">{{ errors.deductions[0] }}</div>
-                  <div class="col-sm-6">
-                    <input type="text" v-model="form.deductions_amount" class="form-control form-control-sm" id="deductions_amount" placeholder="Enter Deduction Amount" />
+                  <div class="col-sm-5">
+                    <input type="number" v-model="form.deductions_amount" class="form-control form-control-sm" id="deductions_amount" placeholder="Enter Deduction Amount" />
                     <div v-if="errors.deductions_amount" class="text-danger">{{ errors.deductions_amount[0] }}</div>
+                  </div>
+                  <div class="col-sm-2">
+                    <button type="button" class="btn btn-danger"  @click="removeDeductions(key_deduction)" v-show="key_deduction || ( !key_deduction && deductions.length > 1)">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-minus" viewBox="0 0 16 16">
+  <path d="M5.5 8a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1H6a.5.5 0 0 1-.5-.5z"/>
+  <path d="M4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H4zm0 1h8a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z"/>
+</svg>
+                    </button>
+                    <button type="button" class="btn btn-primary" @click="addDeductions(key_deduction)" v-show="key_deduction == deductions.length-1">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-plus" viewBox="0 0 16 16">
+  <path d="M8.5 6a.5.5 0 0 0-1 0v1.5H6a.5.5 0 0 0 0 1h1.5V10a.5.5 0 0 0 1 0V8.5H10a.5.5 0 0 0 0-1H8.5V6z"/>
+  <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2zm10-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1z"/>
+</svg>
+                    </button>
                   </div>
                 </div>
                 <div class="form-group row">
-                  <label for="monthly_salary" class="col-sm-6 col-form-label col-form-label-sm">Monthly Salary<span class="text-danger font-weight-bold">*</span></label>
-                  <div class="col-sm-6">
-                    <input type="text" v-model="form.monthly_salary" class="form-control form-control-sm" id="monthly_salary" placeholder="Enter Monthly Salary"  />
+                  <label for="monthly_salary" class="col-sm-5 col-form-label col-form-label-sm">Monthly Salary<span class="text-danger font-weight-bold">*</span></label>
+                  <div class="col-sm-5">
+                    <input type="number" v-model="form.monthly_salary" class="form-control form-control-sm" id="monthly_salary" placeholder="Enter Monthly Salary"  />
                     <div v-if="errors.monthly_salary" class="text-danger">{{ errors.monthly_salary[0] }}</div>
                   </div>
                 </div>
                 <div class="form-group row">
-                  <label for="yearly_salary" class="col-sm-6 col-form-label col-form-label-sm">Yearly  Salary<span class="text-danger font-weight-bold">*</span></label>
-                  <div class="col-sm-6">
-                    <input type="text" v-model="form.yearly_salary" class="form-control form-control-sm" id="yearly_salary" placeholder="Enter Yearly Salary"  />
+                  <label for="yearly_salary" class="col-sm-5 col-form-label col-form-label-sm">Yearly  Salary<span class="text-danger font-weight-bold">*</span></label>
+                  <div class="col-sm-5">
+                    <input type="number" v-model="form.yearly_salary" class="form-control form-control-sm" id="yearly_salary" placeholder="Enter Yearly Salary"  />
                     <div v-if="errors.yearly_salary" class="text-danger">{{ errors.yearly_salary[0] }}</div>
                   </div>
                 </div>
@@ -90,35 +117,35 @@
                   </div>
                   <div class="card-body">
                     <div class="form-group row">
-                      <label for="account_holder_name" class="col-sm-4 col-form-label col-form-label-sm">Account Holder Name<span class="text-danger font-weight-bold">*</span></label>
+                      <label for="account_holder_name" class="col-sm-4 col-form-label col-form-label-sm">Account Holder Name</label>
                       <div class="col-sm-8">
                         <input type="text" v-model="form.account_holder_name" class="form-control form-control-sm" id="account_holder_name" placeholder="Enter Account Holder Name" />
                         <div v-if="errors.account_holder_name" class="text-danger">{{ errors.account_holder_name[0] }}</div>
                       </div>
                     </div>
                     <div class="form-group row">
-                      <label for="account_number" class="col-sm-4 col-form-label col-form-label-sm">Account Number<span class="text-danger font-weight-bold"><span class="text-danger font-weight-bold">*</span></span></label>
+                      <label for="account_number" class="col-sm-4 col-form-label col-form-label-sm">Account Number<span class="text-danger font-weight-bold"></span></label>
                       <div class="col-sm-8">
                         <input type="text" v-model="form.account_number" class="form-control form-control-sm" id="account_number" placeholder="Enter Account Number"  />
                         <div v-if="errors.account_number" class="text-danger">{{ errors.account_number[0] }}</div>
                       </div>
                     </div>
                     <div class="form-group row">
-                      <label for="bank_name" class="col-sm-4 col-form-label col-form-label-sm">Bank Name<span class="text-danger font-weight-bold">*</span></label>
+                      <label for="bank_name" class="col-sm-4 col-form-label col-form-label-sm">Bank Name</label>
                       <div class="col-sm-8">
                         <input type="text" v-model="form.bank_name" class="form-control form-control-sm" id="bank_name" placeholder="Enter Bank Name"  />
                         <div v-if="errors.bank_name" class="text-danger">{{ errors.bank_name[0] }}</div>
                       </div>
                     </div>
                     <div class="form-group row">
-                      <label for="branch" class="col-sm-4 col-form-label col-form-label-sm">Branch<span class="text-danger font-weight-bold">*</span></label>
+                      <label for="branch" class="col-sm-4 col-form-label col-form-label-sm">Branch</label>
                       <div class="col-sm-8">
                         <input type="text" v-model="form.branch" class="form-control form-control-sm" id="branch" placeholder="Enter Branch"  />
                         <div v-if="errors.branch" class="text-danger">{{ errors.branch[0] }}</div>
                       </div>
                     </div>
                     <div class="form-group row">
-                      <label for="ifsc_code" class="col-sm-4 col-form-label col-form-label-sm">IFSC Code<span class="text-danger font-weight-bold">*</span></label>
+                      <label for="ifsc_code" class="col-sm-4 col-form-label col-form-label-sm">IFSC Code</label>
                       <div class="col-sm-8">
                         <input type="text" v-model="form.ifsc_code" class="form-control form-control-sm" id="ifsc_code" placeholder="Enter Bank Name"  />
                         <div v-if="errors.ifsc_code" class="text-danger">{{ errors.ifsc_code[0] }}</div>
@@ -152,21 +179,51 @@
 	const errors = ref('');
 	const toastr = useToastr();
   const step_completed = ref('');
+	const allowancesList = ref({});
+  const deductionList = ref({});
 	const form = reactive({
 				user_id: localStorage.getItem('emp_id'),
         basic_salary: '',
-        allowances: '',
-        allowances_amount: '',
-        deductions: '',
-        deductions_amount: '',
+        // allowances: '',
+        // allowances_amount: '',
+        // deductions: '',
+        // deductions_amount: '',
         monthly_salary: '',
         yearly_salary: '',
         account_holder_name: '',
         account_number: '',
         bank_name: '',
         branch: '',
-        ifsc_code: ''
+        ifsc_code: '',
+        
 	});
+  const allowances = ref([{
+            name: '',
+            amount: ''
+        }]);
+  const deductions = ref([{
+      name: '',
+      amount: ''
+  }]);
+  const addAllowance = (index) => {
+      console.log(index);
+      allowances.value.push({ name: "", amount: "" });
+  }
+  const removeAllowance = (index) => {
+      console.log(index);
+      allowances.value.splice(index, 1);
+      
+  }
+
+  const addDeductions = (index) => {
+      console.log(index);
+      deductions.value.push({ name: "", amount: "" });
+  }
+  const removeDeductions = (index) => {
+      console.log(index);
+      deductions.value.splice(index, 1);
+      
+  }
   const goPreviousStepForm = () => {   
    window.location = '/employee/company-detail';
   }
@@ -235,9 +292,28 @@
       }
       
   }
+  const getAllowancesAndDeductionList = () => {
+        axios.post('/api/add-allowances-and-deduction-list').then((response) => {
+        if(response.data.code == 'success'){
+            allowancesList.value = response.data.allowancesData;
+            deductionList.value = response.data.deductionsData;
+            
+        }else{
+            //console.log(response.data.message);
+            Swal.fire('Failed!', response.data.message, 'warning');
+        }
+        
+        }).catch((e) => {
+            console.log(e);
+            // Swal.fire('Failed!','Something went wrong.', 'warning');
+        });
+      
+      
+  }
 	onMounted (() => {
-      getEmployeeFinancialDetail();
-      getFilledFormSetup();
+    getAllowancesAndDeductionList();
+    getEmployeeFinancialDetail();
+    getFilledFormSetup();
 			toastr.info('Success');
 	});
 

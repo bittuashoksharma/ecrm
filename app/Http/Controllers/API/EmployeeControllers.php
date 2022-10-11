@@ -13,6 +13,9 @@ use App\Models\EmployeeBankDetail;
 use App\Models\EmployeeDocumentsDetail;
 use App\Models\EmployeeAdditionalDetail;
 use Illuminate\Support\Facades\Storage;
+use App\Models\Allowances;
+use App\Models\Deductions;
+
 class EmployeeControllers extends Controller
 {
     /**
@@ -80,7 +83,7 @@ class EmployeeControllers extends Controller
             $employeeRecord = [
                             'user_id' => $userData->id,
                             'father_name' => (!empty(request('name'))?request('name'):''),
-                            'dob' => (!empty(request('dob'))?date('Y-m-d',strtotime(request('dob'))):''),
+                            'dob' => (!empty(request('dob'))?date('Y-m-d',strtotime(request('dob'))):null),
                             'gender' => (!empty(request('gender'))?request('gender'):''),
                             'phone_number_2' => (!empty(request('contact_number_2'))?request('contact_number_2'):''),
                             'current_address' => (!empty(request('current_address'))?request('current_address'):''),
@@ -120,14 +123,14 @@ class EmployeeControllers extends Controller
         $validator = Validator::make($request->all(),[
             'user_id' => 'required',
             'employee_id' => 'required',
-            'department' => 'required',
-            'designation' => 'required',
-            'assigned_manager' => 'nullable',
+            // 'department' => 'required',
+            // 'designation' => 'required',
+            // 'assigned_manager' => 'nullable',
             'doj' => 'required',
-            'dol' => 'nullable',
-            'status' => 'required',
-            'search_by_email' => 'nullable',
-            'search_by_name' => 'nullable',
+            // 'dol' => 'nullable',
+            // 'status' => 'required',
+            // 'search_by_email' => 'nullable',
+            // 'search_by_name' => 'nullable',
         ]);
 
         if ($validator->fails()) {
@@ -149,7 +152,7 @@ class EmployeeControllers extends Controller
                             'assigned_manager_id' => (!empty(request('assigned_manager'))?request('assigned_manager'):''),
                             'doj' => (!empty(request('doj'))?date('Y-m-d',strtotime(request('doj'))):''),
                             'dol' => (!empty(request('dol'))?date('Y-m-d',strtotime(request('dol'))):null),
-                            'status' => (!empty(request('status'))?request('status'):''),
+                            'status' => (!empty(request('status'))?request('status'):'enable'),
                             
                         ]);
             $this->checkAndUpdateEmpFormStep(request('user_id'),2);
@@ -177,11 +180,11 @@ class EmployeeControllers extends Controller
             // 'deductions_amount' => 'required|numeric|between:0,99.99',
             'monthly_salary' => 'required|numeric',
             'yearly_salary' => 'required|numeric',
-            'account_holder_name' => 'required',
-            'account_number' => 'required|numeric',
-            'bank_name' => 'required',
-            'branch' => 'required',
-            'ifsc_code' => 'required',
+            // 'account_holder_name' => 'required',
+            // 'account_number' => 'required|numeric',
+            // 'bank_name' => 'required',
+            // 'branch' => 'required',
+            // 'ifsc_code' => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -233,50 +236,7 @@ class EmployeeControllers extends Controller
         }
     }
         
-    /**
-     * Store a employee financial details.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    // public function storeEmployeeBankAccountDetail(Request $request)
-    // {
 
-    //     $validator = Validator::make($request->all(),[
-    //         'user_id' => 'required',
-    //         'account_holder_name' => 'required',
-    //         'account_number' => 'required|numeric',
-    //         'bank_name' => 'required',
-    //         'branch' => 'required',
-    //         'ifsc_code' => 'required',
-    //     ]);
-
-    //     if ($validator->fails()) {
-
-    //       $validationError = [];
-    //       $validationErrors = $validator->errors();
-    //       return json_encode(array('code'=>'error_validate','errors'=>$validator->errors()));
-          
-    //     }
-        
-    //     if(!empty(request('user_id'))){
-            
-    //         $empBankData = EmployeeBankDetail::create([
-    //                         'user_id' => (!empty(request('user_id'))?request('user_id'):2),
-    //                         'account_holder_name' => (!empty(request('account_holder_name'))?request('account_holder_name'):''),
-    //                         'account_number' => (!empty(request('account_number'))?request('account_number'):''),
-    //                         'bank_name' => (!empty(request('bank_name'))?request('bank_name'):''),
-    //                         'branch' => (!empty(request('bank_name'))?request('branch'):''),
-    //                         'ifsc_code' => (!empty(request('ifsc_code'))?request('ifsc_code'):''),
-    //                     ]);
-    //         $this->checkAndUpdateEmpFormStep(request('user_id'), 4);
-
-    //          return json_encode(array('code'=>'success','data'=>$empBankData));
-
-    //     }else{
-    //         return json_encode(array('code'=>'error','message'=>'Something went wrong !! Please try again.'));
-    //     }
-    // }
 
     /**
      * Store a employee document details.
@@ -289,12 +249,12 @@ class EmployeeControllers extends Controller
 
         $validator = Validator::make($request->all(),[
              'user_id' => 'required',  
-             'resume_file' => 'required|mimes:jpg,jpeg,png',
-             'offer_letter' => 'required|mimes:jpg,jpeg,png',
-             'joining_letter' => 'required|mimes:jpg,jpeg,png',
-             'agreement' => 'required|mimes:jpg,jpeg,png',
-             'dropbox_url' => 'required',
-             'google_drive' => 'required',
+             'resume_file' => 'nullable|mimes:jpg,jpeg,png',
+             'offer_letter' => 'nullable|mimes:jpg,jpeg,png',
+             'joining_letter' => 'nullable|mimes:jpg,jpeg,png',
+             'agreement' => 'nullable|mimes:jpg,jpeg,png',
+             'dropbox_url' => 'nullable',
+             'google_drive' => 'nullable',
         ]);
 
         if ($validator->fails()) {
@@ -305,8 +265,20 @@ class EmployeeControllers extends Controller
           
         }
 
+        
         if(!empty(request('user_id'))){
          $userID = $request->input('user_id');
+
+         if($request->input('otherDoc')){
+            $extraDocDetail = $request->input('otherDoc');
+            foreach ($extraDocDetail as $key => $value) {
+                $lebalName = $value['label'];
+                $fileObj = $request->file('otherDoc')[$key]['doc'];
+                $file_name = time().'_extra_'.$fileObj->getClientOriginalName();
+                $file_path = $request->file('resume_file')->storeAs('employee_documents', $file_name, 'public');
+                $this->uploadEmpDocument(request('user_id'), $lebalName, $file_name, 'extra');
+            }
+        }
 
          if($request->hasFile('resume_file')) {
             $resume = $request->file('resume_file');
@@ -333,6 +305,8 @@ class EmployeeControllers extends Controller
              $this->uploadEmpDocument(request('user_id'),'agreement',$file_name); 
         } 
         //check if user is already exist
+
+        
 
         EmployeeAdditionalDetail::updateOrCreate([
              'user_id' => $userID,
@@ -372,7 +346,7 @@ class EmployeeControllers extends Controller
         }
     }
 
-    public function uploadEmpDocument($user_id,$fileName,$storeFileName)
+    public function uploadEmpDocument($user_id,$fileName,$storeFileName, $category = 'main')
     {
         if(!empty($user_id) && !empty($fileName) && !empty($storeFileName) ){
             EmployeeDocumentsDetail::updateOrCreate([
@@ -380,8 +354,9 @@ class EmployeeControllers extends Controller
                   'document_name'   => $fileName,
               ],[
                 'user_id'   => $user_id,
-                 'document_name'   => $fileName,
+                'document_name'   => $fileName,
                 'upload_file_name' => $storeFileName,
+                'document_category' => $category
             ]);
 
             return true;
@@ -469,5 +444,19 @@ class EmployeeControllers extends Controller
        //print_r($employees); die;
 
          return json_encode(array('code'=>'success','employees'=>$employees));
+    }
+
+    public function getEmployeePreviewData(Request $request, $empID)
+    {
+        $employeeDetail = User::where('id', $empID)->with('employeePersonalInfo','employeeCompanyInfo','employeeCompanyInfo.empDesignationInfo', 'employeeCompanyInfo.empDepartmentInfo', 'employeeFinancialInfo', 'employeeBankInfo' )->first();
+         return json_encode(array('code'=>'success','employees'=>$employeeDetail));
+    }
+
+    public function getAllowancesAndDeductionList(Request $request)
+    {
+        
+        $allowancesData = Allowances::get();
+        $deductionsData = Deductions::get();
+        return json_encode(array('code'=>'success','allowancesData'=> $allowancesData,'deductionsData'=> $deductionsData));
     }
 }

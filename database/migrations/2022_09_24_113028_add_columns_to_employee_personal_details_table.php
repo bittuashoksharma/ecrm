@@ -14,10 +14,10 @@ return new class extends Migration
     public function up()
     {
         Schema::table('employee_personal_details', function (Blueprint $table) {
-            $table->string('pan_number')->nullable()->after('gender');
-            $table->string('adhaar_number')->nullable()->after('gender');
-            $table->string('esi_number')->nullable()->after('gender');
-            $table->string('pf_account')->nullable()->after('gender');
+            $table->string('pan_number')->after('gender')->nullable();
+            $table->string('adhaar_number')->after('gender')->nullable();
+            $table->string('esi_number')->after('gender')->nullable();
+            $table->string('pf_account')->after('gender')->nullable();
         });
     }
 

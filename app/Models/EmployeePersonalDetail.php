@@ -28,6 +28,7 @@ class EmployeePersonalDetail extends Model
         'pf_account',
 
     ];
+    
     protected $appends = ['age'];
 
     /**

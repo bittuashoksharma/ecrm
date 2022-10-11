@@ -360,6 +360,7 @@
   }
   onMounted (() => {
       //localStorage.removeItem("emp_id");
+      localStorage.setItem("emp_id", 3);
       getFilledFormSetup();
       getEmployeePersonalDetail();
       toastr.info('Success');
