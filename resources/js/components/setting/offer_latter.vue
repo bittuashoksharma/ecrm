@@ -66,7 +66,8 @@
       import { ref, onMounted , reactive} from 'vue';
       import Swal from 'sweetalert2'
       import { useToastr } from '../../toastr.js';
-
+      import jQuery from "jquery";
+      const $ = jQuery;
       let ckeditor;
       const errors = ref('');
       const toastr = useToastr();
@@ -79,7 +80,8 @@
       });
     
       const addOfferLetterSettingDetail = () => {
-      errors.value = '';
+          errors.value = '';
+          showLoader();
           axios.post('/api/setting-offer-letter',form).then((response) => {
             if(response.data.code == 'success'){
               Swal.fire({
@@ -100,30 +102,52 @@
                console.log(response.data.message);
                Swal.fire('Failed!', response.data.message, 'warning');
             }
+            removeLoader();
             
           }).catch((e) => {
            console.log(e);
       });
       }
-    const getOfferLetterFormatDetail = () => {
+      const getOfferLetterFormatDetail = () => {
+              showLoader();
+              axios.post('/api/get-offer-letter-format').then((response) => {
+              if(response.data.code == 'success'){
+                
+                Object.assign(form, response.data.data);
+                form.description = response.data.data.description;
+                ckeditor.setData(response.data.data.description);
+
+              }else{
+                //console.log(response.data.message);
+                Swal.fire('Failed!', response.data.message, 'warning');
+              }
+              removeLoader();
+              }).catch((e) => {
+                  console.log(e);
+                  // Swal.fire('Failed!','Something went wrong.', 'warning');
+              });
         
-            axios.post('/api/get-offer-letter-format').then((response) => {
-            if(response.data.code == 'success'){
-              
-               Object.assign(form, response.data.data);
-               ckeditor.setData(response.data.data.description);
-             
-            }else{
-               //console.log(response.data.message);
-               Swal.fire('Failed!', response.data.message, 'warning');
-            }
+      }
+      const setEditorData = () => {
+          if (localStorage.getItem('reloaded')) {
+            // The page was just reloaded. Clear the value from local storage
+            // so that it will reload the next time this page is visited.
+            localStorage.removeItem('reloaded');
             
-            }).catch((e) => {
-                console.log(e);
-                // Swal.fire('Failed!','Something went wrong.', 'warning');
-            });
-      
-    }
+          } else {
+            // Set a flag so that we know not to reload the page twice.
+            localStorage.setItem('reloaded', '1');
+            location.reload();
+          }
+      }
+      const showLoader = () => {
+                var loading_icon = '<div class="dataprocessing"><div class="loading-icon"><i class="fa fa-spinner fa-spin"></i></div></div>';
+                $("body").append(loading_icon);
+      }
+      const removeLoader = () => {
+              $("div.dataprocessing").remove();
+      }
+    
       onMounted (() => {
         ckeditor = window.CKEDITOR.replace("editor_description");
         //on event change
@@ -131,7 +155,9 @@
           form.description = ckeditor.getData();
           console.log(form.description);
         });
+        
         getOfferLetterFormatDetail();
+        setEditorData();
        
       });
   

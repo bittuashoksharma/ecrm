@@ -492,30 +492,38 @@ class EmployeeControllers extends Controller
 
     public function getEmployeeOfferLetterContent(Request $request){
         if(!empty(request('userId'))){
-            $companyDocumentFormatDetail = CompanyDocumentFormat::where('company_id',Auth::id())->where('alias','offer_letter')->first();
-            //echo "<pre>companyDocumentFormatDetail=="; print_R(request('userId'));die;
-            $allowed_vars = $companyDocumentFormatDetail->allowed_vars;
-            $description = $companyDocumentFormatDetail->description;
-                
-            if(!empty($companyDocumentFormatDetail)){
 
-                $employeeDetails = User::where('id',request('userId'))->with('employeePersonalInfo','employeeCompanyInfo','employeeCompanyInfo.empDesignationInfo', 'employeeCompanyInfo.empDepartmentInfo' )->first();
-                if(!empty($employeeDetails)){
-                    
-                    $replace_fields['candidate_name'] = $employeeDetails->name;
-                    $replace_fields['address'] = @$employeeDetails->employeePersonalInfo->current_address;
-                    $replace_fields['hire_position'] = @$employeeDetails->employeeCompanyInfo->empDesignationInfo->name;
-                    $replace_fields['company_name'] = 'HR SOLUTION PVT LTD';
+            $employeeDocumentFormatsDetail = EmployeeDocumentFormats::where('company_id',Auth::id())->where('employee_id',request('userId'))->where('title','offer_letter')->first();
 
-                    $replace_with = explode(',',$companyDocumentFormatDetail->allowed_vars);
-                    $new_description = str_replace($replace_with,$replace_fields,$description);
-                    return json_encode(array('code'=>'success','letter_content'=>$new_description));
-                   
-                }
-                
+            if(!empty($employeeDocumentFormatsDetail)){
+                return json_encode(array('code'=>'success','letter_content'=>$employeeDocumentFormatsDetail->description));
             }else{
-                 return json_encode(array('code'=>'error','message'=>'Data not found.'));
+                $companyDocumentFormatDetail = CompanyDocumentFormat::where('company_id',Auth::id())->where('alias','offer_letter')->first();
+                $allowed_vars = $companyDocumentFormatDetail->allowed_vars;
+                $description = $companyDocumentFormatDetail->description;
+                    
+                if(!empty($companyDocumentFormatDetail)){
+
+                    $employeeDetails = User::where('id',request('userId'))->with('employeePersonalInfo','employeeCompanyInfo','employeeCompanyInfo.empDesignationInfo', 'employeeCompanyInfo.empDepartmentInfo' )->first();
+                    if(!empty($employeeDetails)){
+                        
+                        $replace_fields['candidate_name'] = $employeeDetails->name;
+                        $replace_fields['address'] = @$employeeDetails->employeePersonalInfo->current_address;
+                        $replace_fields['hire_position'] = @$employeeDetails->employeeCompanyInfo->empDesignationInfo->name;
+                        $replace_fields['company_name'] = 'HR SOLUTION PVT LTD';
+
+                        $replace_with = explode(',',$companyDocumentFormatDetail->allowed_vars);
+                        $new_description = str_replace($replace_with,$replace_fields,$description);
+                        return json_encode(array('code'=>'success','letter_content'=>$new_description));
+                    
+                    }
+                    
+                }else{
+                    return json_encode(array('code'=>'error','message'=>'Data not found.'));
+                }
             }
+
+            
         }else{
              return json_encode(array('code'=>'error','message'=>'Something went wrong !! Please try again.'));
         }
