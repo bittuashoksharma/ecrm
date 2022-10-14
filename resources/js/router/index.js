@@ -7,6 +7,7 @@ import CompanyDetail from '@/components/employee/employee_company_details.vue';
 import FinancialDetail from '@/components/employee/employee_financial_details.vue';
 import BankAccountDetail from '@/components/employee/employee_bank_account_details.vue';
 import DocumentsDetail from '@/components/employee/employee_documents_details.vue';
+import EmployeeProfileView from '@/components/employee/employee_profile_view.vue';
 
 import OfferLetterDetail from '@/components/setting/offer_latter.vue';
 import PermissionListing from '@/components/tools/permission_listings.vue';
@@ -71,6 +72,12 @@ const routes = [
 		component:OfferLetterDetail,
 	},
 	
+
+	{
+		path:'/employee/profile-view/:id',
+		name:'profile-view',
+		component:EmployeeProfileView,
+	},
 
 	{
 	  path: '/:pathMatch(.*)*',

@@ -66,6 +66,16 @@ class User extends Authenticatable
     {
         return $this->hasOne(EmployeeBankDetail::class,'user_id','id');
     }
+
+    public function EmployeeDocumentsInfo()
+    {
+        return $this->hasOne(EmployeeDocumentsDetail::class,'user_id','id');
+    }
+
+    public function EmployeeAdditionalInfo()
+    {
+        return $this->hasOne(EmployeeAdditionalDetail::class,'user_id','id');
+    }
     
 
 }

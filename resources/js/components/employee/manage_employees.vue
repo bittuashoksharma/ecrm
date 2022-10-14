@@ -87,7 +87,9 @@
                              <td><span class="badge bg-success">Approved</span></td>
                              <td>
                                 <div class="btnGroup">
-                                   <a href="#" class="btn btn-sm btn-warning py-0 px-1"><i class="far fa-eye"></i> </a>
+                                 <router-link :to="{ name: 'profile-view', params: { id: employeesData.id }}" class="btn btn-sm btn-warning py-0 px-1">
+                                    <i class="far fa-eye"></i></router-link>
+                                   <!-- <a href="/employee/profile-view/" class="btn btn-sm btn-warning py-0 px-1"><i class="far fa-eye"></i> </a> -->
                                    <a href="#" class="btn btn-sm btn-primary py-0 px-1"><i class="fas fa-pencil-alt"></i> </a>
                                    <a href="#" class="btn btn-sm btn-danger py-0 px-1"><i class="fas fa-trash-alt"></i> </a>
                                    <div class="btn-group btn-group-sm btn-group-toggle" data-toggle="buttons">
