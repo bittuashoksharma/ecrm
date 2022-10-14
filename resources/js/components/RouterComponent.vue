@@ -51,6 +51,19 @@
          </li> -->
        </ul>
      </li>
+     <li class="nav-item">
+       <router-link to="/permission-listing" active-class="active" class="nav-link">
+         <i class="fas fa-pen-alt nav-icon"></i>
+         <p> Permission </p>
+       </router-link>
+     </li>
+     <li class="nav-item">
+       <router-link to="/role-listing" active-class="active" class="nav-link">
+         <i class="fas fa-user-circle nav-icon"></i>
+         <p> Roles </p>
+       </router-link>
+     </li>
+     
      <!-- <li class="nav-item">
        <router-link to="/dashboard" active-class="active" class="nav-link">
          <i class="nav-icon fas fa-cog"></i>

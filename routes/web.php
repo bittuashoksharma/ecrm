@@ -39,4 +39,14 @@ Route::post('/api/add-employee-document-detail',[App\Http\Controllers\API\Employ
 Route::post('/api/add-employee-document-detail',[App\Http\Controllers\API\EmployeeControllers::class, 'storeEmployeeDocumentDetail']);
 Route::post('/api/add-allowances-and-deduction-list',[App\Http\Controllers\API\EmployeeControllers::class, 'getAllowancesAndDeductionList']);
 
+Route::post('/api/permissions', [App\Http\Controllers\API\PermissionsController::class,'storePermission']);
+Route::post('/api/get-permission',[App\Http\Controllers\API\PermissionsController::class, 'getPermission']);
+Route::post('/api/get-permission-list',[App\Http\Controllers\API\PermissionsController::class, 'getPermissionListing']);
+Route::post('/api/roles',[App\Http\Controllers\API\RolesController::class, 'storeRolePermission']);
+Route::post('/api/roles-permission-update',[App\Http\Controllers\API\RolesController::class, 'updateRolePermission']);
+Route::post('/api/get-role-listing',[App\Http\Controllers\API\RolesController::class, 'getRoleListing']);
+Route::post('/api/delete-roles/{id?}',[App\Http\Controllers\API\RolesController::class, 'deleteRole']);
+
+
+
 
