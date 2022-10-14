@@ -220,3 +220,6 @@ label:not(.form-check-label):not(.custom-file-label) {
     border: none !important;
     -webkit-appearance: none;
 }
+.ck-editor__editable_inline {
+    min-height: 400px;
+}
