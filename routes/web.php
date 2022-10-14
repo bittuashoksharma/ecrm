@@ -21,6 +21,7 @@ Auth::routes();
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('main');
 Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard');
 Route::get('{view}',App\Http\Controllers\HomeController::class)->where('view','(.*)');
+Route::post('/api/get-employee-preview-data/{empID}',[App\Http\Controllers\API\EmployeeControllers::class, 'getEmployeePreviewData']);
 
 Route::post('/api/get-filled-form-setup',[App\Http\Controllers\API\EmployeeControllers::class, 'getFilledFormSetup']);
 Route::post('/api/get-employee-personal-detail',[App\Http\Controllers\API\EmployeeControllers::class, 'getEmployeePersonalDetail']);
@@ -36,6 +37,7 @@ Route::post('/api/add-employee-financial-detail',[App\Http\Controllers\API\Emplo
 Route::post('/api/add-employee-bank-account-detail',[App\Http\Controllers\API\EmployeeControllers::class, 'storeEmployeeBankAccountDetail']);
 Route::post('/api/add-employee-document-detail',[App\Http\Controllers\API\EmployeeControllers::class, 'storeEmployeeDocumentDetail']);
 Route::post('/api/add-employee-document-detail',[App\Http\Controllers\API\EmployeeControllers::class, 'storeEmployeeDocumentDetail']);
+Route::post('/api/add-allowances-and-deduction-list',[App\Http\Controllers\API\EmployeeControllers::class, 'getAllowancesAndDeductionList']);
 
 Route::post('/api/permissions', [App\Http\Controllers\API\PermissionsController::class,'storePermission']);
 Route::post('/api/get-permission',[App\Http\Controllers\API\PermissionsController::class, 'getPermission']);

@@ -17,8 +17,8 @@ return new class extends Migration
             $table->id();
             $table->bigInteger('user_id');
             $table->string('employee_id');
-            $table->string('department_id');
-            $table->string('designation_id');
+            $table->string('department_id')->nullable();
+            $table->string('designation_id')->nullable();
             $table->string('assigned_manager_id')->nullable();
             $table->date('doj')->comment('Date of Joining');
             $table->date('dol')->comment('Date of Leaving')->nullable();

@@ -20,7 +20,7 @@
            </router-link>
          </li>
          <li class="nav-item">
-           <router-link to="/employee/personal-detail" active-class="active" class="nav-link">
+           <router-link to="/employee/personal-detail" active-class="active" class="nav-link" id="addEmp" v-on:click="removeEmpId">
              <i class="far fa-user nav-icon"></i>
              <p>Add Employee</p>
            </router-link>
@@ -92,3 +92,15 @@
       </li> -->
    
 </template>
+<script setup>
+  import { ref, onMounted , reactive} from 'vue';
+
+  const removeEmpId = () => {
+    console.log(localStorage.getItem('emp_id'));
+      localStorage.removeItem("emp_id");
+  }
+  onMounted (() => {
+    
+  });
+
+</script>

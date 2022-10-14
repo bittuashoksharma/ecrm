@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->bigInteger('user_id');
             $table->string('father_name')->nullable();
-            $table->date('dob')->nullable();
+            $table->date('dob')->nullable()->default(null);
             $table->string('gender');
             $table->string('phone_number_2')->nullable();
             $table->text('current_address')->nullable();
