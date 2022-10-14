@@ -9,6 +9,8 @@ import BankAccountDetail from '@/components/employee/employee_bank_account_detai
 import DocumentsDetail from '@/components/employee/employee_documents_details.vue';
 
 import OfferLetterDetail from '@/components/setting/offer_latter.vue';
+import PermissionListing from '@/components/tools/permission_listings.vue';
+import RoleListing from '@/components/tools/role_listings.vue';
 
 import NotFound from '@/components/NotFound.vue';
 
@@ -53,7 +55,16 @@ const routes = [
 		name:'documents-detail',
 		component:DocumentsDetail,
 	},
-
+	{
+		path:'/permission-listing',
+		name:'permission-listing',
+		component:PermissionListing,
+	},
+	{
+		path:'/role-listing',
+		name:'role-listing',
+		component:RoleListing,
+	},
 	{
 		path:'/setting/offer-letter',
 		name:'setting-offer-letter',

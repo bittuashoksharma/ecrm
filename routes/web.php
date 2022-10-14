@@ -21,6 +21,7 @@ Auth::routes();
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('main');
 Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard');
 Route::get('{view}',App\Http\Controllers\HomeController::class)->where('view','(.*)');
+Route::post('/api/get-employee-preview-data/{empID}',[App\Http\Controllers\API\EmployeeControllers::class, 'getEmployeePreviewData']);
 
 Route::post('/api/get-filled-form-setup',[App\Http\Controllers\API\EmployeeControllers::class, 'getFilledFormSetup']);
 Route::post('/api/get-employee-personal-detail',[App\Http\Controllers\API\EmployeeControllers::class, 'getEmployeePersonalDetail']);
@@ -43,6 +44,15 @@ Route::post('/api/setting-offer-letter',[App\Http\Controllers\API\SettingControl
 Route::post('/api/get-offer-letter-format',[App\Http\Controllers\API\SettingControllers::class, 'getCompanyOfferLetterFormatDetail']);
 Route::post('/api/get-employee-offer-letter-content',[App\Http\Controllers\API\EmployeeControllers::class, 'getEmployeeOfferLetterContent']);
 Route::post('/api/store-employee-letter-datails',[App\Http\Controllers\API\EmployeeControllers::class, 'storeEmployeeLetterDetails']);
+Route::post('/api/add-allowances-and-deduction-list',[App\Http\Controllers\API\EmployeeControllers::class, 'getAllowancesAndDeductionList']);
+
+Route::post('/api/permissions', [App\Http\Controllers\API\PermissionsController::class,'storePermission']);
+Route::post('/api/get-permission',[App\Http\Controllers\API\PermissionsController::class, 'getPermission']);
+Route::post('/api/get-permission-list',[App\Http\Controllers\API\PermissionsController::class, 'getPermissionListing']);
+Route::post('/api/roles',[App\Http\Controllers\API\RolesController::class, 'storeRolePermission']);
+Route::post('/api/roles-permission-update',[App\Http\Controllers\API\RolesController::class, 'updateRolePermission']);
+Route::post('/api/get-role-listing',[App\Http\Controllers\API\RolesController::class, 'getRoleListing']);
+Route::post('/api/delete-roles/{id?}',[App\Http\Controllers\API\RolesController::class, 'deleteRole']);
 
 
 

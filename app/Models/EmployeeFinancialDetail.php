@@ -22,4 +22,19 @@ class EmployeeFinancialDetail extends Model
     {
         return $this->hasOne(EmployeeBankDetail::class,'user_id','user_id');
     }
+
+    protected function allowances(): Attribute
+    {
+        return new Attribute(
+            get: fn ($value) =>  json_decode($value),
+            
+        );
+    }
+    protected function deductions(): Attribute
+    {
+        return new Attribute(
+            get: fn ($value) =>  json_decode($value),
+            
+        );
+    }
 }
