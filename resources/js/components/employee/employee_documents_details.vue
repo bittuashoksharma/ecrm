@@ -174,7 +174,7 @@
             
           </div>
       </div>
-      <offer-letter-format-component ref="offerLetterFormatRef" :employeeOfferLetterCon="employeeOfferLetterContent"></offer-letter-format-component>
+      <offer-letter-format-component ref="offerLetterFormatRef" @callOfferLetterContent="getEmployeeOfferLetterCont" :employeeOfferLetterCon="employeeOfferLetterContent"></offer-letter-format-component>
     </div>
     
   </div>
@@ -348,12 +348,15 @@ export default {
           ProgressbarComponent,
           OfferLetterFormatComponent
         },
-        created() { 
+        mounted() { 
           this.getEmployeeOfferLetterContent();
           this.getFilledFormSetup();
         
         },
         methods: {
+            getEmployeeOfferLetterCont(){
+                this.getEmployeeOfferLetterContent();
+            },
             showPopupForEditLetter(){
               this.$refs.offerLetterFormatRef.showOfferLetterModel();
               

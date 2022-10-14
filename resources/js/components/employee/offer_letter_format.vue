@@ -28,6 +28,8 @@ import Swal from 'sweetalert2'
 import { useToastr } from '../../toastr.js';
 import jQuery from "jquery";
 const $ = jQuery;
+let ckeditor;
+
 export default {
     name: 'OfferLetterFormatComponent',
     props: ['employeeOfferLetterCon'],
@@ -43,20 +45,19 @@ export default {
         } 
     },
     mounted() {
-      let ckeditor;  
-      ckeditor = window.CKEDITOR.replace("editor_description");
-      
-      this.ckFieldsData.description =  this.employeeOfferLetterCon;  
-      //ckeditor.setData(this.employeeOfferLetterCon);
-      //on event change  
-      ckeditor.on('change',()=>{
-        this.ckFieldsData.description = ckeditor.getData();
-       // console.log(form.description);
-      });
+        ckeditor = window.CKEDITOR.replace("editor_description");
+        //on event change  
+        ckeditor.on('change',()=>{
+            this.ckFieldsData.description = ckeditor.getData();
+            //console.log(this.ckFieldsData.description);
+        });
     },
     methods: {
+        
         showOfferLetterModel(){
             $('#changeOfferLetterFormat').modal('show');
+            ckeditor.setData(this.employeeOfferLetterCon);
+            this.ckFieldsData.description =  this.employeeOfferLetterCon; 
         },
         storeEmployeeOfferLatterDetails(){  
             let userId = localStorage.getItem('emp_id');
@@ -65,6 +66,7 @@ export default {
                     if(response.data.code == 'success'){
                         Swal.fire('Success!', 'Employee Offer Letter has been updated.', 'success');
                         $('#changeOfferLetterFormat').modal('hide');
+                        this.$emit('callOfferLetterContent')
                     }else if(response.data.code == 'error_validate'){
                         this.errors = response.data.errors;
                     }
