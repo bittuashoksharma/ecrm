@@ -6,6 +6,8 @@
     <title>ECRM</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" >
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.3/css/font-awesome.css">
+    
+    <script src="{{ url('/') }}/ckeditor/ckeditor.js"></script>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
   </head>
   <body class="hold-transition sidebar-mini">
@@ -55,6 +57,6 @@
         <strong>Copyright &copy; 2022 <a href="#">ECRM</a>. </strong> All rights reserved.
       </footer>
     </div>
-
+  
   </body>
 </html>
