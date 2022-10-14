@@ -313,7 +313,7 @@
   const $ = jQuery;
   //const errors = ref('');
   const toastr = useToastr();
-  const $ = jQuery;
+  
   
 
 
