@@ -7,6 +7,7 @@ import CompanyDetail from '@/components/employee/employee_company_details.vue';
 import FinancialDetail from '@/components/employee/employee_financial_details.vue';
 import BankAccountDetail from '@/components/employee/employee_bank_account_details.vue';
 import DocumentsDetail from '@/components/employee/employee_documents_details.vue';
+import EmployeeProfileView from '@/components/employee/employee_profile_view.vue';
 import NotFound from '@/components/NotFound.vue';
 
 const routes = [
@@ -49,6 +50,12 @@ const routes = [
 		path:'/employee/documents-detail',
 		name:'documents-detail',
 		component:DocumentsDetail,
+	},
+
+	{
+		path:'/employee/profile-view/:id',
+		name:'profile-view',
+		component:EmployeeProfileView,
 	},
 
 	{

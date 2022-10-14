@@ -22,6 +22,7 @@ Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('ma
 Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard');
 Route::get('{view}',App\Http\Controllers\HomeController::class)->where('view','(.*)');
 Route::post('/api/get-employee-preview-data/{empID}',[App\Http\Controllers\API\EmployeeControllers::class, 'getEmployeePreviewData']);
+//Route::get('/api/get-employee-profile-data/{empID}',[App\Http\Controllers\API\EmployeeControllers::class, 'getEmployeeprofileData']);
 
 Route::post('/api/get-filled-form-setup',[App\Http\Controllers\API\EmployeeControllers::class, 'getFilledFormSetup']);
 Route::post('/api/get-employee-personal-detail',[App\Http\Controllers\API\EmployeeControllers::class, 'getEmployeePersonalDetail']);

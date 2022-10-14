@@ -448,10 +448,15 @@ class EmployeeControllers extends Controller
 
     public function getEmployeePreviewData(Request $request, $empID)
     {
-        $employeeDetail = User::where('id', $empID)->with('employeePersonalInfo','employeeCompanyInfo','employeeCompanyInfo.empDesignationInfo', 'employeeCompanyInfo.empDepartmentInfo', 'employeeFinancialInfo', 'employeeBankInfo' )->first();
+        $employeeDetail = User::where('id', $empID)->with('employeePersonalInfo','employeeCompanyInfo','employeeCompanyInfo.empDesignationInfo', 'employeeCompanyInfo.empDepartmentInfo', 'employeeFinancialInfo', 'employeeBankInfo', 'EmployeeDocumentsInfo', 'EmployeeAdditionalInfo' )->first();
          return json_encode(array('code'=>'success','employees'=>$employeeDetail));
     }
-
+    
+    public function getEmployeeprofileData(Request $request, $empID)
+    {
+        $employeeDetail = User::where('id', $empID)->with('employeePersonalInfo','employeeCompanyInfo','employeeCompanyInfo.empDesignationInfo', 'employeeCompanyInfo.empDepartmentInfo', 'employeeFinancialInfo', 'employeeBankInfo', 'EmployeeDocumentsInfo', 'EmployeeAdditionalInfo' )->first();
+         return json_encode(array('code'=>'success','employees'=>$employeeDetail));
+    }
     public function getAllowancesAndDeductionList(Request $request)
     {
         

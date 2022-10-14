@@ -15,6 +15,10 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
+// Route::middleware(['admin'])->group(function () {
+//     Route::get('/get-employee-profile-data/{empID}',[App\Http\Controllers\API\EmployeeControllers::class, 'getEmployeeprofileData']);
+// });
+Route::get('/get-employee-profile-data/{empID}',[App\Http\Controllers\API\EmployeeControllers::class, 'getEmployeeprofileData']);
