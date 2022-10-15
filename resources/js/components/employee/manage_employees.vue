@@ -62,7 +62,7 @@
                           <tr v-for="(employeesData,index) in employeesDataArr">
                              <td>{{ ((current_page - 1)*10) + (index + 1) }}</td>
                              <td>{{ employeesData.name }}</td>
-                             <td>{{ employeesData.employee_personal_info.age }} </td>
+                             <td><span v-if="employeesData.employee_personal_info != null">{{ employeesData.employee_personal_info.age }}</span> </td>
                              <td>{{ employeesData.email }}</td>
                              <td>
                               <span v-if="(employeesData.employee_company_info != null)">
